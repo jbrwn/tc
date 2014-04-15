@@ -18,7 +18,7 @@ namespace TileCook
             _gridSets = new ConcurrentDictionary<string, GridSet>();
         }
         
-        public static void RegisterDirecotry(string directory)
+        public static void RegisterDirectory(string directory)
         {
             DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(GridSet));
 
