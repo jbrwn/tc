@@ -1,7 +1,7 @@
 {
   "name": "example",
   "browserCache": 3600,
-  "formats": ["png","jpg"],
+  "formats": ["png"],
   "minZoom": 0,
   "maxZoom": 19,
   "bounds": {
