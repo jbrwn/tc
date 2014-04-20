@@ -1,5 +1,6 @@
 {
   "name": "example",
+  "Title": "Example Tile Layer",
   "browserCache": 3600,
   "formats": ["png"],
   "minZoom": 0,

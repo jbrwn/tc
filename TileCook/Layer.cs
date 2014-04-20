@@ -13,13 +13,14 @@ namespace TileCook
         {
         }
 
-        public Layer(string name, ICache cache, IProvider provider, GridSet gridset)
-            : this(name, cache, provider, gridset, gridset.envelope, 0, gridset.grids.Count, new List<string> { "png", "jpg" }, 3600) { }
+        public Layer(string name, string title, ICache cache, IProvider provider, GridSet gridset)
+            : this(name, title, cache, provider, gridset, gridset.envelope, 0, gridset.grids.Count, provider.getFormats(), 3600) { }
 
 
-        public Layer(string name,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache)
+        public Layer(string name, string title,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache)
         {
             this.name = name;
+            this.Title = title;
             this.cache = cache;
             this.provider = provider;
             this.gridset = gridset;
@@ -32,6 +33,9 @@ namespace TileCook
 
         [DataMember(IsRequired = true)]
         public string name { get; set; }
+
+        [DataMember]
+        public string Title { get; set; }
 
         [DataMember(IsRequired = true)]
         public ICache cache { get; set; }
@@ -97,6 +101,7 @@ namespace TileCook
         {
             //minZoom defaults to 0
             //browserCache defaults to 0
+            if (this.Title == null) { this.Title = ""; }
             if (this.bounds == null) { this.bounds = this.gridset.envelope; }
             if (this.maxZoom == 0) { this.maxZoom = this.gridset.grids.Count; }
             if (this.formats == null) { this.formats = this.provider.getFormats(); }
