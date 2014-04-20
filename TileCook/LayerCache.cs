@@ -60,5 +60,10 @@ namespace TileCook
             }
             return null;
         }
+
+        public static Dictionary<string, Layer> GetLayers()
+        {
+            return new Dictionary<string, Layer>(_layers);
+        }
     }
 }
