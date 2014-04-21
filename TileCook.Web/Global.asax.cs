@@ -23,8 +23,8 @@ namespace TileCook.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             //TileCook config
-            WellKnownScaleSet.RegisterDirectory(Server.MapPath("~/Config/WellKnownScaleSets"));
-            LayerCache.RegisterDirectory(Server.MapPath("~/Config"));
+            WellKnownScaleSet.RegisterDirectory(Server.MapPath("~/App_Data/Config/WellKnownScaleSets"));
+            LayerCache.RegisterDirectory(Server.MapPath("~/App_Data/Config"));
 
         }
     }
