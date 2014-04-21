@@ -1,0 +1,23 @@
+{
+  "name": "No Cache",
+  "Title": "Layer without cache",
+  "browserCache": 0,
+  "formats": ["png"],
+  "minZoom": 0,
+  "maxZoom": 19,
+  "bounds": {
+    "maxx": 20037508.342789,
+    "maxy": 20037508.342789,
+    "minx": -20037508.342789,
+    "miny": -20037508.342789
+  },
+  "cache": {
+    "__type": "NoCache:#TileCook"
+  },
+  "provider": {
+    "__type": "TestProvider:#TileCook"
+  },
+  "gridset": {
+    "name": "GoogleMapsCompatible"
+  }
+}
