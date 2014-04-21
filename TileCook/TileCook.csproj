@@ -54,6 +54,7 @@
     <Compile Include="Layer.cs" />
     <Compile Include="LayerCache.cs" />
     <Compile Include="MapnikProvider.cs" />
+    <Compile Include="NoCache.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestProvider.cs" />
