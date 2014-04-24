@@ -6,12 +6,16 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
+using TileCook.Web.TMSService;
 
 namespace TileCook.Web.Controllers
 {
     public class TMSController : ApiController
     {
-        public HttpResponseMessage Get(string Version, string TileMap, int Z, int X, int Y, string Format)
+
+        [HttpGet]
+        [ActionName("Tile")]
+        public HttpResponseMessage Tile(string Version, string TileMap, int Z, int X, int Y, string Format)
         {
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
@@ -45,5 +49,32 @@ namespace TileCook.Web.Controllers
             return response;
 
         }
+
+        [HttpGet]
+        [ActionName("Root")]
+        public HttpResponseMessage Root()
+        {
+            string title = "Tile Map Service";
+            string version = "1.0.0";
+            string href = Request.RequestUri.ToString() + version;
+            Services services = new Services();
+            services.Add(new TileMapServiceMetadata(title, version, href));
+            return Request.CreateResponse(HttpStatusCode.OK, services, Configuration.Formatters.XmlFormatter);
+        }
+
+        [HttpGet]
+        [ActionName("Service")]
+        public HttpResponseMessage Service(string Version)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        [ActionName("TileMap")]
+        public HttpResponseMessage TileMap(string Version, string TileMap)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

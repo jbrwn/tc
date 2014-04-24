@@ -9,32 +9,32 @@ namespace TileCook.Web
     {
         public static void Register(HttpConfiguration config)
         {
-            //TMS routes
+            // TMS routes
             config.Routes.MapHttpRoute(
                 name: "TMSTile",
                 routeTemplate: "Services/TMS/{Version}/{TileMap}/{Z}/{X}/{Y}.{Format}",
-                defaults: new { Controller = "TMS" }
+                defaults: new { Controller = "TMS", action = "Tile"}
             );
 
-            //config.Routes.MapHttpRoute(
-            //    name: "TMS",
-            //    routeTemplate: "Services/TMS/{Version}/{TileMap}",
-            //    defaults: new { Controller = "TMS" }
-            //);
+            config.Routes.MapHttpRoute(
+                name: "TMSTileMap",
+                routeTemplate: "Services/TMS/{Version}/{TileMap}",
+                defaults: new { Controller = "TMS", action="TileMap"}
+            );
 
-            //config.Routes.MapHttpRoute(
-            //    name: "TMS",
-            //    routeTemplate: "Services/TMS/{Version}",
-            //    defaults: new { Controller = "TMS" }
-            //);
+            config.Routes.MapHttpRoute(
+                name: "TMSService",
+                routeTemplate: "Services/TMS/{Version}",
+                defaults: new { Controller = "TMS", action="Service"}
+            );
 
-            //config.Routes.MapHttpRoute(
-            //    name: "TMS",
-            //    routeTemplate: "Services/TMS",
-            //    defaults: new { Controller = "TMS" }
-            //);
+            config.Routes.MapHttpRoute(
+                name: "TMSRoot",
+                routeTemplate: "Services/TMS",
+                defaults: new { Controller = "TMS", action = "Root"}
+            );
 
-            //WMTS route
+            // WMTS routes
             config.Routes.MapHttpRoute(
                 name: "WMTSGetTile",
                 routeTemplate: "Services/WMTS/{Version}/{Layer}/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.{Format}",
@@ -46,6 +46,12 @@ namespace TileCook.Web
                 routeTemplate: "Services/WMTS/{Version}/WMTSCapabilities.xml",
                 defaults: new { Controller = "WMTS", action = "GetCapabilities" }
             );
+
+            // Set Formatters 
+            config.Formatters.JsonFormatter.UseDataContractJsonSerializer = true;
+            config.Formatters.XmlFormatter.UseXmlSerializer = true;
+
+
         }
     }
 }
