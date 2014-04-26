@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    class TileOutOfRangeException : Exception
+    public class TileOutOfRangeException : Exception
     {
         public TileOutOfRangeException(string message)
             : base(message) { }

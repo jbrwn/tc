@@ -264,4 +264,10 @@ namespace TileCook.Web.TMSService
         [XmlAttribute]
         public string order;
     }
+
+    public class TileMapServiceError
+    {
+        public TileMapServiceError() { }
+        public string Message;
+    }
 }

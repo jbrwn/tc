@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    class InvalidTileFormatException : Exception
+    public class InvalidTileFormatException : Exception
     {
         public InvalidTileFormatException(string message)
             : base(message) { }

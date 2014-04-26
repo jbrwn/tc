@@ -69,12 +69,15 @@ namespace TileCook
                 throw new InvalidTileFormatException("Invalid tile format"); 
             }
 
-            Envelope tileEnvelope = this.gridset.tileToEnvelope(z, x, y);
-            
+            if (z < minZoom || z > maxZoom)
+            {
+                throw new TileOutOfRangeException("Tile out of range");
+            }
+
             //check if tile within bounds 
             Tile lowTile = this.gridset.PointToTile(new Point(this.bounds.minx, this.bounds.miny), z);
             Tile highTile = this.gridset.PointToTile(new Point(this.bounds.maxx, this.bounds.maxy), z);
-            
+
             if (x < lowTile.x || x > highTile.x)
             {
                 throw new TileOutOfRangeException("Tile out of range");
@@ -84,6 +87,8 @@ namespace TileCook
             {
                 throw new TileOutOfRangeException("Tile out of range");
             }
+
+            Envelope tileEnvelope = this.gridset.tileToEnvelope(z, x, y);
 
             byte[] img = null;
             img = this.cache.get(z, x, y, format);
