@@ -15,7 +15,7 @@ using System.Xml.Serialization;
 
 
 
-namespace TileCook.Web
+namespace TileCook.Web.Formatting
 {
     public class ExtendedXmlMediaTypeFormatter : MediaTypeFormatter
     {

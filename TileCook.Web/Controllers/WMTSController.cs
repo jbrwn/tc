@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using TileCook.Web.WMTSService;
+using TileCook.Web.Formatting;
 using System.Xml.Serialization;
 
 namespace TileCook.Web.Controllers
