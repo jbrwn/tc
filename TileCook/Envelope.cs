@@ -31,6 +31,18 @@ namespace TileCook
         [DataMember(IsRequired = true)]
         public double maxy { get; set; }
 
+        public bool Equals(Envelope other)
+        {
+            if (this.minx == other.minx &&
+                this.miny == other.miny &&
+                this.maxx == other.maxx &&
+                this.maxy == other.maxy)
+            {
+                return true;
+            }
+            return false;
+        }
+
         
     }
 }

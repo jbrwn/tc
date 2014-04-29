@@ -111,11 +111,13 @@
     <Compile Include="Controllers\LayersController.cs" />
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\WMTSController.cs" />
+    <Compile Include="ExtendedXmlMediaTypeFormatter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TMSService.cs" />
+    <Compile Include="WMTSService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
