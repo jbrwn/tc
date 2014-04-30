@@ -29,7 +29,7 @@
     <div id="map"style="width: 100%; height: 100%"></div>
     <script>
         var map = L.map('map').setView([0, 0], 0);
-        L.tileLayer('/Services/WMTS/1.0.0/@Model.name/default/@Model.gridset.name/{z}/{x}/{y}.@Model.formats[0]').addTo(map);
+        L.tileLayer('/Services/WMTS/1.0.0/@Model.name/default/@Model.gridset.name/{z}/{y}/{x}.@Model.formats[0]').addTo(map);
     </script>
 </body>
 </html>

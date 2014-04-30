@@ -66,12 +66,12 @@ namespace TileCook
             //check if format supported
             if (!formats.Contains(format))
             {
-                throw new InvalidTileFormatException("Invalid tile format"); 
+                throw new InvalidTileFormatException(string.Format("Invalid tile FORMAT {0}", format)); 
             }
 
             if (z < minZoom || z > maxZoom)
             {
-                throw new TileOutOfRangeException("Tile out of range");
+                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.minZoom, this.maxZoom));
             }
 
             //check if tile within bounds 
@@ -80,12 +80,12 @@ namespace TileCook
 
             if (x < lowTile.x || x > highTile.x)
             {
-                throw new TileOutOfRangeException("Tile out of range");
+                throw new TileOutOfRangeException(string.Format("Column {0} is out of range (min: {1} max: {2})", x, lowTile.x , highTile.x));
             }
 
             if (y < lowTile.y || y > highTile.y)
             {
-                throw new TileOutOfRangeException("Tile out of range");
+                throw new TileOutOfRangeException(string.Format("Row {0} is out of range (min: {1} max: {2})", y, lowTile.y, highTile.y));
             }
 
             Envelope tileEnvelope = this.gridset.tileToEnvelope(z, x, y);
@@ -99,6 +99,15 @@ namespace TileCook
                 cache.put(z, x, y, format, img);
             }
             return img;
+        }
+
+        public int FlipY(int z, int y)
+        {
+            if (z < this.minZoom || z > this.maxZoom)
+            {
+                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.minZoom, this.maxZoom));
+            }
+            return this.gridset.gridHeight(z) - y - 1;
         }
 
         [OnDeserialized()]

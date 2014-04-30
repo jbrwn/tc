@@ -22,8 +22,8 @@ namespace TileCook.Web.Controllers
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = "The requested version is not supported by this server";
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = string.Format("The requested service VERSION {0} is not supported by this server", Version);
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
 
             // Validate layer
@@ -31,8 +31,8 @@ namespace TileCook.Web.Controllers
             if (layer == null)
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = "The requested layer does not exist on this server";
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = string.Format("The requested LAYER {0} does not exist on this server", TileMap);
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
             
             // Get image
@@ -41,17 +41,17 @@ namespace TileCook.Web.Controllers
             {
                 img = layer.getTile(Z, X, Y, Format);
             }
-            catch (TileOutOfRangeException)
+            catch (TileOutOfRangeException e)
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = "The requested tile is outside the bounding box of the tile map";
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = e.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
-            catch (InvalidTileFormatException)
+            catch (InvalidTileFormatException e)
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested format is not supported", Version);
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = e.Message;
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
 
             // Start response
@@ -68,7 +68,6 @@ namespace TileCook.Web.Controllers
             response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.browserCache);
 
             return response;
-
         }
 
         [HttpGet]
@@ -94,8 +93,8 @@ namespace TileCook.Web.Controllers
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = "The requested version is not supported by this server";
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = string.Format("The requested service VERSION {0} is not supported by this server", Version);
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
 
             TileMapService tileMapService = new TileMapService();
@@ -148,8 +147,8 @@ namespace TileCook.Web.Controllers
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = "The requested version is not supported by this server";
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = string.Format("The requested service VERSION {0} is not supported by this server", Version);
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
 
             // Validate layer
@@ -157,27 +156,14 @@ namespace TileCook.Web.Controllers
             if (layer == null)
             {
                 TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested layer does not exist on this server", Version);
-                return Request.CreateResponse(HttpStatusCode.BadRequest, error, Configuration.Formatters.XmlFormatter);
+                error.Message = string.Format("The requested LAYER {0} does not exist on this server", TileMap);
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
 
             TileMap tileMap = new TileMap();
             tileMap.version = "1.0.0";
             tileMap.tilemapservice = Url.Link("TMSService", new { Version = "1.0.0" });
             tileMap.Title = layer.Title;
-            //tileMap.Abstract = null;
-            //tileMap.KeywordList = null;
-            //tileMap.Metadata = new Metadata();
-            //tileMap.Metadata.type =null;
-            //tileMap.Metadata.mimetype =null;
-            //tileMap.Metadata.href = null;
-            //tileMap.Attribution = new Attribution();
-            //tileMap.Attribution.Logo = new Logo();
-            //tileMap.Attribution.Logo.width = null;
-            //tileMap.Attribution.Logo.height = null;
-            //tileMap.Attribution.Logo.href= null;
-            //tileMap.WebMapContext = new WebMapContext();
-            //tileMap.WebMapContext.href = null;
             tileMap.SRS = layer.gridset.srs;
             tileMap.BoudningBox = new BoundingBox();
             tileMap.BoudningBox.minx = layer.bounds.minx.ToString();
