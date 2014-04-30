@@ -11,6 +11,7 @@ namespace TileCook
     {
         
         private Map _map;
+        private static readonly Object mapLock = new Object();
 
         private MapnikProvider() { }
         
@@ -39,10 +40,15 @@ namespace TileCook
 
         public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
-            _map.width =  Convert.ToUInt32(tileWidth);
-            _map.height = Convert.ToUInt32(tileHeight);
-            _map.zoom_to_box(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
-            return _map.save_to_bytes(format);
+            // Lock map object for rendering
+            // TO DO: better strategy is to create a pool of map objects 
+            lock (mapLock)
+            {
+                _map.width = Convert.ToUInt32(tileWidth);
+                _map.height = Convert.ToUInt32(tileHeight);
+                _map.zoom_to_box(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                return _map.save_to_bytes(format);
+            }
         }
 
         public List<string> getFormats()
