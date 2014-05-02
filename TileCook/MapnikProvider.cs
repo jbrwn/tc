@@ -22,7 +22,7 @@ namespace TileCook
             this.fontPath = fontPath;
             
             DatasourceCache.RegisterDatasources(datasourcePath);
-            //register fonts
+            freetype_engine.RegisterFonts(fontPath, false);
 
             _map = new Map();
             _map.load_map(xmlConfig);
@@ -60,7 +60,7 @@ namespace TileCook
         internal void OnDeserializedMethod(StreamingContext context)
         {
             DatasourceCache.RegisterDatasources(datasourcePath);
-            //register fonts
+            freetype_engine.RegisterFonts(fontPath, false);
 
             _map = new Map();
             _map.load_map(xmlConfig);
