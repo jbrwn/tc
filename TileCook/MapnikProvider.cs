@@ -9,34 +9,32 @@ namespace TileCook
     [DataContract]
     public class MapnikProvider : IProvider
     {
-        
+
+        public static void RegisterDatasources(string path)
+        {
+            DatasourceCache.RegisterDatasources(path);
+        }
+
+        public static void RegisterFonts(string path)
+        {
+            freetype_engine.RegisterFonts(path, false);
+        }
+
         private Map _map;
         private static readonly Object mapLock = new Object();
 
         private MapnikProvider() { }
         
-        public MapnikProvider(string xmlConfig, string datasourcePath, string fontPath)
+        public MapnikProvider(string xmlConfig)
         {
             this.xmlConfig = xmlConfig;
-            this.datasourcePath = datasourcePath;
-            this.fontPath = fontPath;
             
-            DatasourceCache.RegisterDatasources(datasourcePath);
-            freetype_engine.RegisterFonts(fontPath, false);
-
             _map = new Map();
             _map.load_map(xmlConfig);
-
         }
 
         [DataMember(IsRequired=true)]
         public string xmlConfig { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public string datasourcePath { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public string fontPath { get; set; }
 
         public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
@@ -59,8 +57,6 @@ namespace TileCook
         [OnDeserialized()]
         internal void OnDeserializedMethod(StreamingContext context)
         {
-            DatasourceCache.RegisterDatasources(datasourcePath);
-            freetype_engine.RegisterFonts(fontPath, false);
 
             _map = new Map();
             _map.load_map(xmlConfig);

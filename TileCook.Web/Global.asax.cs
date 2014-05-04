@@ -22,6 +22,10 @@ namespace TileCook.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+            //Mapnik config
+            MapnikProvider.RegisterDatasources(WebConfigurationManager.AppSettings["mapnikInput"]);
+            MapnikProvider.RegisterFonts(WebConfigurationManager.AppSettings["mapnikFonts"]);
+
             //TileCook config
             WellKnownScaleSet.RegisterDirectory(Server.MapPath("~/App_Data/Config/WellKnownScaleSets"));
             LayerCache.RegisterDirectory(Server.MapPath("~/App_Data/Config"));
