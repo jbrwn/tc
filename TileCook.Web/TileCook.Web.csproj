@@ -123,7 +123,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App_Data\Config\example.json" />
+    <Content Include="App_Data\Config\TestLayer.json" />
     <Content Include="Content\leaflet\css\leaflet.css" />
     <Content Include="Content\leaflet\images\layers-2x.png" />
     <Content Include="Content\leaflet\images\layers.png" />
@@ -132,7 +132,9 @@
     <Content Include="Content\leaflet\images\marker-shadow.png" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\leaflet.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -164,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Config\WellKnownScaleSets\GoogleMapsCompatible.json" />
-    <Content Include="App_Data\Config\nocache.json" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
   </ItemGroup>
   <PropertyGroup>

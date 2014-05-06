@@ -1,8 +1,7 @@
 {
-  "name": "No Cache",
-  "Title": "Layer without cache",
+  "name": "MapnikDemo",
+  "Title": "Hello world Layer",
   "browserCache": 0,
-  "formats": ["png"],
   "minZoom": 0,
   "maxZoom": 19,
   "bounds": {
@@ -15,7 +14,8 @@
     "__type": "NoCache:#TileCook"
   },
   "provider": {
-    "__type": "TestProvider:#TileCook"
+    "__type": "MapnikProvider:#TileCook",
+	"xmlConfig":"..\\MapnikDemo\\HelloWorld.xml"
   },
   "gridset": {
     "name": "GoogleMapsCompatible"
