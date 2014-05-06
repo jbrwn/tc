@@ -123,7 +123,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Content Include="App_Data\Config\TestLayer.json" />
+    <Content Include="App_Data\Config\Demo.json" />
     <Content Include="Content\leaflet\css\leaflet.css" />
     <Content Include="Content\leaflet\images\layers-2x.png" />
     <Content Include="Content\leaflet\images\layers.png" />
