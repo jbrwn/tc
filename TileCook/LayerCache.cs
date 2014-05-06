@@ -13,10 +13,12 @@ namespace TileCook
 
         private static ConcurrentDictionary<string, Layer> _layers;
         private static DataContractJsonSerializer _jsonSerializer;
+        private static string _configDirectory;
 
         static LayerCache()
         {
             _layers = new ConcurrentDictionary<string, Layer>();
+            _configDirectory = string.Empty;
             _jsonSerializer = new DataContractJsonSerializer(
                typeof(Layer),
                new List<Type>{
@@ -28,8 +30,15 @@ namespace TileCook
            );
         }
 
+        public static string ConfigDirectory
+        {
+            get { return _configDirectory; }
+        }
+
         public static void RegisterDirectory(string directory)
         {
+            _configDirectory = directory;
+            
             //deserialize 
             foreach (string file in Directory.EnumerateFiles(directory, "*.json", SearchOption.TopDirectoryOnly))
             {
