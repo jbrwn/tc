@@ -11,33 +11,35 @@ namespace TileCook
 {
     [DataContract]
     public class TestProvider : IProvider
-    {
-        private byte[] imgBytes;
-        
+    {   
         public byte [] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
-            if (imgBytes == null)
+            using (Bitmap img = new Bitmap(tileWidth, tileHeight))
             {
-                using (Bitmap img = new Bitmap(tileWidth, tileHeight))
+                using (Brush background = new SolidBrush(Color.White))
+                using (Pen border = new Pen(new SolidBrush(Color.FromArgb(75, 255, 0, 0)), 50))
+                using (Font text = new Font("arial", 10))
+                using (Brush textColor = new SolidBrush(Color.Black))
+                using (var g = Graphics.FromImage(img))
                 {
-                    using (Brush background = new SolidBrush(Color.White))
-                    using (Pen border = new Pen(new SolidBrush(Color.FromArgb(75, 255, 0, 0)), 50))
-                    using (var g = Graphics.FromImage(img))
-                    {
-                        var rect = new Rectangle(0, 0, tileWidth, tileHeight);
-                        g.SmoothingMode = SmoothingMode.AntiAlias;
-                        g.FillRectangle(background, rect);
-                        g.DrawRectangle(border, rect);
-                    }
+                    var rect = new Rectangle(0, 0, tileWidth, tileHeight);
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    g.FillRectangle(background, rect);
+                    g.DrawRectangle(border, rect);
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("minx: " + envelope.minx.ToString());
+                    sb.AppendLine("miny: " + envelope.miny.ToString());
+                    sb.AppendLine("maxx: " + envelope.maxx.ToString());
+                    sb.AppendLine("maxy: " + envelope.maxy.ToString());
+                    g.DrawString(sb.ToString(),text ,textColor , new PointF(30, 30));
+                }
 
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        img.Save(ms, ImageFormat.Png);
-                        this.imgBytes = ms.ToArray();
-                    }
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    img.Save(ms, ImageFormat.Png);
+                    return ms.ToArray();
                 }
             }
-            return this.imgBytes;
         }
 
         public List<string> getFormats()
