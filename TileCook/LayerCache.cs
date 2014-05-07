@@ -30,16 +30,15 @@ namespace TileCook
            );
         }
 
+        //Use config directory to resolve relative paths in config files
         public static string ConfigDirectory
         {
             get { return _configDirectory; }
+            set { _configDirectory = value; }
         }
 
         public static void RegisterDirectory(string directory)
-        {
-            _configDirectory = directory;
-            
-            //deserialize 
+        {   
             foreach (string file in Directory.EnumerateFiles(directory, "*.json", SearchOption.TopDirectoryOnly))
             {
                 //deserialize 
@@ -50,6 +49,15 @@ namespace TileCook
                 }
             }
 
+        }
+
+        public static void RegisterFile(string path)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Open))
+            {
+                Layer l = (Layer)_jsonSerializer.ReadObject(fs);
+                _layers[l.name] = l;
+            }
         }
 
         public static void SaveToFile(Layer layer, string path)

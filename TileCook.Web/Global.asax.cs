@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,8 +28,22 @@ namespace TileCook.Web
             MapnikProvider.RegisterFonts(WebConfigurationManager.AppSettings["mapnikFonts"]);
 
             //TileCook config
-            WellKnownScaleSet.RegisterDirectory(Server.MapPath("~/App_Data/Config/WellKnownScaleSets"));
-            LayerCache.RegisterDirectory(Server.MapPath("~/App_Data/Config"));
+            string configDir = Server.MapPath("~/App_Data/Config");
+            WellKnownScaleSet.RegisterDirectory(Path.Combine(configDir,"WellKnownScaleSets"));
+            LayerCache.ConfigDirectory = configDir;
+
+            foreach (string file in Directory.EnumerateFiles(LayerCache.ConfigDirectory, "*.json", SearchOption.TopDirectoryOnly))
+            {
+                try
+                {
+
+                    LayerCache.RegisterFile(file);
+                }
+                catch (Exception e)
+                {
+                    //log failed config load
+                }
+            }
 
         }
     }
