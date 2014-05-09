@@ -22,7 +22,7 @@ namespace TileCook
 
         }
 
-        public GridSet(string name, string srs, Envelope envelope, int zoomLevels, int tileSize, double metersPerUnit)
+        public GridSet(string name, string srs, Envelope envelope, int zoomLevels, int tileSize, double metersPerUnit, bool topOrigin)
         {
             this.name = name;
             this.srs = srs;
@@ -30,6 +30,7 @@ namespace TileCook
             this.tileWidth = tileSize;
             this.tileHeight = tileSize;
             this.metersPerUnit = metersPerUnit;
+            this.topOrigin = topOrigin;
 
             this.grids = new List<Grid>();
             double initialResolution = (envelope.maxx - envelope.minx) / tileSize;
@@ -63,6 +64,9 @@ namespace TileCook
         [DataMember]
         public int tileHeight { get; set; }
 
+        [DataMember]
+        public bool topOrigin { get; set; }
+
         public double resolution(int z)
         {
             return grids[z].scale * METER_PER_PIXEL / metersPerUnit;
@@ -80,24 +84,30 @@ namespace TileCook
             double res = resolution(z);
             return (int)Math.Ceiling((envelope.maxy - envelope.miny) / res / tileHeight);
         }
-        public Envelope tileToEnvelope(int z, int x, int y)
+
+        public Envelope CoordToEnvelope(Coord coord)
         {
-            double res = resolution(z);
-            double minx = x * tileWidth * res + envelope.minx;
-            double maxx = (x + 1) * tileWidth * res + envelope.minx;
-            double miny = y * tileHeight * res + envelope.miny;
-            double maxy = (y + 1) * tileHeight * res + envelope.miny;
+            if (this.topOrigin)
+            {
+                coord.y = gridHeight(coord.z) - coord.y - 1;
+            }
+
+            double res = resolution(coord.z);
+            double minx = coord.x * tileWidth * res + envelope.minx;
+            double maxx = (coord.x + 1) * tileWidth * res + envelope.minx;
+            double miny = coord.y * tileHeight * res + envelope.miny;
+            double maxy = (coord.y + 1) * tileHeight * res + envelope.miny;
 
             return new Envelope(minx, miny, maxx, maxy);
 
         }
 
-        public Tile PointToTile(Point p , int z)
+        public Coord PointToCoord(Point p , int z)
         {
             double res = resolution(z);
             int x =  (int)Math.Ceiling((p.X - envelope.minx) / res / tileWidth);
             int y = (int)Math.Ceiling((p.Y - envelope.miny) / res / tileHeight);
-            return new Tile(z,x,y);
+            return new Coord(z,x,y);
         }
 
         private void CopyFrom(GridSet other)

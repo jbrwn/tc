@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TileCook
 {
-    public interface IProvider
+    public interface IEnvelopeProvider : IProvider
     {
-        List<string> getFormats();
+        byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight);
     }
 }

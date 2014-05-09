@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 namespace TileCook
 {
     [DataContract]
-    public class TestProvider : IProvider
+    public class TestProvider : IEnvelopeProvider
     {   
         public byte [] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {

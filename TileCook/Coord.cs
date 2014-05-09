@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TileCook
 {
-    public class Tile
+    public class Coord
     {
-        public Tile(int z, int x, int y)
+        public Coord(int z, int x, int y)
         {
             this.z = z;
             this.x = x;
@@ -18,6 +18,5 @@ namespace TileCook
         public int z { get; set; }
         public int x { get; set; }
         public int y { get; set; }
-
     }
 }

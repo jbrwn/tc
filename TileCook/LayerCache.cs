@@ -25,7 +25,8 @@ namespace TileCook
                     typeof(DiskCache),
                     typeof(NoCache),
                     typeof(MapnikProvider),
-                    typeof(TestProvider)
+                    typeof(TestProvider),
+                    typeof(ProxyProvider)
                 }
            );
         }

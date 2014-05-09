@@ -75,27 +75,45 @@ namespace TileCook
             }
 
             //check if tile within bounds 
-            Tile lowTile = this.gridset.PointToTile(new Point(this.bounds.minx, this.bounds.miny), z);
-            Tile highTile = this.gridset.PointToTile(new Point(this.bounds.maxx, this.bounds.maxy), z);
+            Coord lowCoord = this.gridset.PointToCoord(new Point(this.bounds.minx, this.bounds.miny), z);
+            Coord highCoord = this.gridset.PointToCoord(new Point(this.bounds.maxx, this.bounds.maxy), z);
 
-            if (x < lowTile.x || x > highTile.x)
+            if (x < lowCoord.x || x > highCoord.x)
             {
-                throw new TileOutOfRangeException(string.Format("Column {0} is out of range (min: {1} max: {2})", x, lowTile.x , highTile.x));
+                throw new TileOutOfRangeException(string.Format("Column {0} is out of range (min: {1} max: {2})", x, lowCoord.x , highCoord.x));
             }
 
-            if (y < lowTile.y || y > highTile.y)
+            if (y < lowCoord.y || y > highCoord.y)
             {
-                throw new TileOutOfRangeException(string.Format("Row {0} is out of range (min: {1} max: {2})", y, lowTile.y, highTile.y));
+                throw new TileOutOfRangeException(string.Format("Row {0} is out of range (min: {1} max: {2})", y, lowCoord.y, highCoord.y));
             }
-
-            Envelope tileEnvelope = this.gridset.tileToEnvelope(z, x, y);
 
             byte[] img = null;
             img = this.cache.get(z, x, y, format);
             
             if (img == null)
             {
-                img = this.provider.render(tileEnvelope, format, this.gridset.tileWidth, this.gridset.tileHeight);
+                if (this.provider is IEnvelopeProvider)
+                {
+                    Envelope tileEnvelope = this.gridset.CoordToEnvelope(new Coord(z, x, y));
+                    IEnvelopeProvider provider = (IEnvelopeProvider)this.provider;
+                    img = provider.render(tileEnvelope, format, gridset.tileWidth, gridset.tileHeight);
+                }
+                else if (this.provider is IPassThoughProvider)
+                {
+                    if (gridset.topOrigin)
+                    {
+                        y = FlipY(z, y);
+                    }
+
+                    IPassThoughProvider provider = (IPassThoughProvider)this.provider;
+                    img = provider.render(new Coord(z, x, y), format, gridset.tileWidth, gridset.tileHeight);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+                
                 cache.put(z, x, y, format, img);
             }
             return img;

@@ -203,14 +203,14 @@ namespace TileCook.Web.Controllers
                     {
                         int z = layers[i].minZoom + j;
                         Grid g = layers[i].gridset.grids[z];
-                        Tile lowTile = layers[i].gridset.PointToTile(new Point(layers[i].bounds.minx, layers[i].bounds.miny), z);
-                        Tile highTile = layers[i].gridset.PointToTile(new Point(layers[i].bounds.maxx, layers[i].bounds.maxy), z);
+                        Coord lowCoord = layers[i].gridset.PointToCoord(new Point(layers[i].bounds.minx, layers[i].bounds.miny), z);
+                        Coord highCoord = layers[i].gridset.PointToCoord(new Point(layers[i].bounds.maxx, layers[i].bounds.maxy), z);
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j] = new TileMatrixLimits();
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].TileMatrix = (layers[i].minZoom + j).ToString();
-                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MinTileRow = lowTile.x.ToString();
-                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MaxTileRow = highTile.x.ToString();
-                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MinTileCol = lowTile.y.ToString();
-                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MaxTileCol = highTile.y.ToString();
+                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MinTileRow = lowCoord.x.ToString();
+                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MaxTileRow = highCoord.x.ToString();
+                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MinTileCol = lowCoord.y.ToString();
+                        LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MaxTileCol = highCoord.y.ToString();
                     }
                 }
                 LayerType.ResourceURL = new URLTemplateType[layers[i].formats.Count];

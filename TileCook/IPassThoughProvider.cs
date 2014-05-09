@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TileCook
 {
-    public interface IProvider
+    public interface IPassThoughProvider : IProvider
     {
-        List<string> getFormats();
+        byte[] render(Coord coord, string format, int tileWidth, int tileHeight);
     }
 }

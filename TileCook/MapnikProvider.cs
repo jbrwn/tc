@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace TileCook
 {
     [DataContract]
-    public class MapnikProvider : IProvider
+    public class MapnikProvider : IEnvelopeProvider
     {
 
         private Map _map;
