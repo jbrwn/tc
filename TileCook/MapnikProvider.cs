@@ -27,8 +27,25 @@ namespace TileCook
         [DataMember(IsRequired=true)]
         public string xmlConfig { get; set; }
 
+        [DataMember]
+        public string pngOptions { get; set; }
+
+        [DataMember]
+        public string jpegOptions { get; set; }
+
         public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
+
+            string renderFormat = format;
+            if (renderFormat.Equals("png", StringComparison.OrdinalIgnoreCase))
+            {
+                renderFormat = this.pngOptions;
+            }
+            if (renderFormat.Equals("jpg", StringComparison.OrdinalIgnoreCase))
+            {
+                renderFormat = this.jpegOptions;
+            }
+            
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 
             lock (mapLock)
@@ -36,7 +53,7 @@ namespace TileCook
                 _map.width = Convert.ToUInt32(tileWidth);
                 _map.height = Convert.ToUInt32(tileHeight);
                 _map.zoom_to_box(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
-                return _map.save_to_bytes(format);
+                return _map.save_to_bytes(renderFormat);
             }
         }
 
@@ -48,12 +65,15 @@ namespace TileCook
         [OnDeserialized()]
         internal void OnDeserializedMethod(StreamingContext context)
         {
-            if (!Path.IsPathRooted(xmlConfig))
+            if (this.jpegOptions == null) { jpegOptions = "jpeg"; }
+            if (this.pngOptions == null) { pngOptions = "png"; }
+            
+            if (!Path.IsPathRooted(this.xmlConfig))
             {
-                xmlConfig = Path.Combine(LayerCache.ConfigDirectory, xmlConfig);
+                xmlConfig = Path.Combine(LayerCache.ConfigDirectory,this.xmlConfig);
             }
             _map = new Map();
-            _map.load_map(xmlConfig);
+            _map.load_map(this.xmlConfig);
         }
 
         public static void RegisterDatasources(string path)

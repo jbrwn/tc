@@ -62,9 +62,6 @@ namespace TileCook.Web.Controllers
                 );
             }
 
-            // Flip Y
-            
-
             // Get image
             byte[] img;
             try
