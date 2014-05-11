@@ -24,6 +24,7 @@ namespace TileCook
                new List<Type>{
                     typeof(DiskCache),
                     typeof(NoCache),
+                    typeof(MBTilesCache),
                     typeof(MapnikProvider),
                     typeof(TestProvider),
                     typeof(ProxyProvider),
