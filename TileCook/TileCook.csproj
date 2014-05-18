@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NETMapnik">
-      <HintPath>..\lib\NETMapnik\NETMapnik.dll</HintPath>
+      <HintPath>..\lib\NET-Mapnik\NETMapnik.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
