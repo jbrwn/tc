@@ -21,7 +21,7 @@ namespace TileCook
             this.xmlConfig = xmlConfig;
             
             _map = new Map();
-            _map.load_map(xmlConfig);
+            _map.LoadMap(xmlConfig);
         }
 
         [DataMember(IsRequired=true)]
@@ -50,10 +50,10 @@ namespace TileCook
             // TO DO: better strategy is to create a pool of map objects 
             lock (mapLock)
             {
-                _map.width = Convert.ToUInt32(tileWidth);
-                _map.height = Convert.ToUInt32(tileHeight);
-                _map.zoom_to_box(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
-                return _map.save_to_bytes(renderFormat);
+                _map.Width = Convert.ToUInt32(tileWidth);
+                _map.Height = Convert.ToUInt32(tileHeight);
+                _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                return _map.SaveToBytes(renderFormat);
             }
         }
 
@@ -73,7 +73,7 @@ namespace TileCook
                 xmlConfig = Path.Combine(LayerCache.ConfigDirectory,this.xmlConfig);
             }
             _map = new Map();
-            _map.load_map(this.xmlConfig);
+            _map.LoadMap(this.xmlConfig);
         }
 
         public static void RegisterDatasources(string path)
@@ -83,7 +83,7 @@ namespace TileCook
 
         public static void RegisterFonts(string path)
         {
-            freetype_engine.RegisterFonts(path, false);
+            FreetypeEngine.RegisterFonts(path, false);
         }
     }
 }
