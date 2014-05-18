@@ -74,6 +74,42 @@
     <Compile Include="WMSProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\lib\NET-Mapnik\boost_thread-vc100-mt-1_49.dll">
+      <Link>boost_thread-vc100-mt-1_49.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\cairo.dll">
+      <Link>cairo.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\icudt48.dll">
+      <Link>icudt48.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\icuin48.dll">
+      <Link>icuin48.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\icuuc48.dll">
+      <Link>icuuc48.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\libexpat.dll">
+      <Link>libexpat.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\libxml2.dll">
+      <Link>libxml2.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\mapnik.dll">
+      <Link>mapnik.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\proj.dll">
+      <Link>proj.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
