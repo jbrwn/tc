@@ -118,6 +118,126 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-Bold.ttf">
+      <Link>mapnik\fonts\DejaVuSans-Bold.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-BoldOblique.ttf">
+      <Link>mapnik\fonts\DejaVuSans-BoldOblique.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-ExtraLight.ttf">
+      <Link>mapnik\fonts\DejaVuSans-ExtraLight.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-Oblique.ttf">
+      <Link>mapnik\fonts\DejaVuSans-Oblique.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans.ttf">
+      <Link>mapnik\fonts\DejaVuSans.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed-Bold.ttf">
+      <Link>mapnik\fonts\DejaVuSansCondensed-Bold.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed-BoldOblique.ttf">
+      <Link>mapnik\fonts\DejaVuSansCondensed-BoldOblique.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed-Oblique.ttf">
+      <Link>mapnik\fonts\DejaVuSansCondensed-Oblique.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed.ttf">
+      <Link>mapnik\fonts\DejaVuSansCondensed.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono-Bold.ttf">
+      <Link>mapnik\fonts\DejaVuSansMono-Bold.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono-BoldOblique.ttf">
+      <Link>mapnik\fonts\DejaVuSansMono-BoldOblique.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono-Oblique.ttf">
+      <Link>mapnik\fonts\DejaVuSansMono-Oblique.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono.ttf">
+      <Link>mapnik\fonts\DejaVuSansMono.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif-Bold.ttf">
+      <Link>mapnik\fonts\DejaVuSerif-Bold.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif-BoldItalic.ttf">
+      <Link>mapnik\fonts\DejaVuSerif-BoldItalic.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif-Italic.ttf">
+      <Link>mapnik\fonts\DejaVuSerif-Italic.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif.ttf">
+      <Link>mapnik\fonts\DejaVuSerif.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed-Bold.ttf">
+      <Link>mapnik\fonts\DejaVuSerifCondensed-Bold.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed-BoldItalic.ttf">
+      <Link>mapnik\fonts\DejaVuSerifCondensed-BoldItalic.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed-Italic.ttf">
+      <Link>mapnik\fonts\DejaVuSerifCondensed-Italic.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed.ttf">
+      <Link>mapnik\fonts\DejaVuSerifCondensed.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\fonts\unifont-5.1.20080907.ttf">
+      <Link>mapnik\fonts\unifont-5.1.20080907.ttf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\csv.input">
+      <Link>mapnik\input\csv.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\gdal.input">
+      <Link>mapnik\input\gdal.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\geojson.input">
+      <Link>mapnik\input\geojson.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\ogr.input">
+      <Link>mapnik\input\ogr.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\postgis.input">
+      <Link>mapnik\input\postgis.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\raster.input">
+      <Link>mapnik\input\raster.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\shape.input">
+      <Link>mapnik\input\shape.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\lib\NET-Mapnik\mapnik\input\sqlite.input">
+      <Link>mapnik\input\sqlite.input</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
