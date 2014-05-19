@@ -19,6 +19,8 @@ namespace TileCook
         public MapnikProvider(string xmlConfig)
         {
             this.xmlConfig = xmlConfig;
+            this.pngOptions = "png";
+            this.jpegOptions = "jpeg";
             
             _map = new Map();
             _map.LoadMap(xmlConfig);
