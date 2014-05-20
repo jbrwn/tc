@@ -52,36 +52,31 @@ namespace TileCook
 
         public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
-            //short circut and return null if format is not supported
-            if (format.Equals("png", StringComparison.OrdinalIgnoreCase) ||
-                format.Equals("jpg", StringComparison.OrdinalIgnoreCase) ||
-                format.Equals("json", StringComparison.OrdinalIgnoreCase))
+            // Lock map object for rendering
+            // TO DO: better strategy is to create a pool of map objects 
+            lock (mapLock)
             {
-                // Lock map object for rendering
-                // TO DO: better strategy is to create a pool of map objects 
-                lock (mapLock)
+                _map.Width = Convert.ToUInt32(tileWidth);
+                _map.Height = Convert.ToUInt32(tileHeight);
+                _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                if (format.Equals("png", StringComparison.OrdinalIgnoreCase))
                 {
-                    _map.Width = Convert.ToUInt32(tileWidth);
-                    _map.Height = Convert.ToUInt32(tileHeight);
-                    _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
-                    if (format.Equals("png", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return _map.SaveToBytes(this.pngOptions);
-                    }
-                    if (format.Equals("jpg", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return _map.SaveToBytes(this.jpegOptions);
-                    }
-                    if (format.Equals("json", StringComparison.OrdinalIgnoreCase))
-                    {
-                        NETMapnik.Grid g = new NETMapnik.Grid(_map.Width, _map.Height);
-                        _map.RenderLayer(g, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
-                        string json = JsonConvert.SerializeObject(g.Encode("utf", true,  Convert.ToUInt32(this.gridResolution)));
-                        return Encoding.UTF8.GetBytes(json);
-                    }
+                    return _map.SaveToBytes(this.pngOptions);
                 }
+                if (format.Equals("jpg", StringComparison.OrdinalIgnoreCase))
+                {
+                    return _map.SaveToBytes(this.jpegOptions);
+                }
+                if (format.Equals("json", StringComparison.OrdinalIgnoreCase))
+                {
+                    NETMapnik.Grid g = new NETMapnik.Grid(_map.Width, _map.Height);
+                    _map.RenderLayer(g, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
+                    string json = JsonConvert.SerializeObject(g.Encode("utf", true,  Convert.ToUInt32(this.gridResolution)));
+                    return Encoding.UTF8.GetBytes(json);
+                }
+                //throw error if format is unsupported
+                throw new ArgumentException();
             }
-            return null;
         }
 
         public List<string> getFormats()
