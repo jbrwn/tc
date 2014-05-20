@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using NETMapnik;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace TileCook
 {
@@ -19,8 +20,13 @@ namespace TileCook
         public MapnikProvider(string xmlConfig)
         {
             this.xmlConfig = xmlConfig;
+
+            //set defaults
             this.pngOptions = "png";
             this.jpegOptions = "jpeg";
+            this.gridLayerIndex = 0;
+            this.gridResolution = 4;
+            this.gridFields = new List<string>();
             
             _map = new Map();
             _map.LoadMap(xmlConfig);
@@ -35,40 +41,62 @@ namespace TileCook
         [DataMember]
         public string jpegOptions { get; set; }
 
+        [DataMember]
+        public int gridLayerIndex { get; set; }
+
+        [DataMember]
+        public List<string> gridFields { get; set; }
+
+        [DataMember]
+        public int gridResolution { get; set; }
+
         public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
-
-            string renderFormat = format;
-            if (renderFormat.Equals("png", StringComparison.OrdinalIgnoreCase))
+            //short circut and return null if format is not supported
+            if (format.Equals("png", StringComparison.OrdinalIgnoreCase) ||
+                format.Equals("jpg", StringComparison.OrdinalIgnoreCase) ||
+                format.Equals("json", StringComparison.OrdinalIgnoreCase))
             {
-                renderFormat = this.pngOptions;
+                // Lock map object for rendering
+                // TO DO: better strategy is to create a pool of map objects 
+                lock (mapLock)
+                {
+                    _map.Width = Convert.ToUInt32(tileWidth);
+                    _map.Height = Convert.ToUInt32(tileHeight);
+                    _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                    if (format.Equals("png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return _map.SaveToBytes(this.pngOptions);
+                    }
+                    if (format.Equals("jpg", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return _map.SaveToBytes(this.jpegOptions);
+                    }
+                    if (format.Equals("json", StringComparison.OrdinalIgnoreCase))
+                    {
+                        NETMapnik.Grid g = new NETMapnik.Grid(_map.Width, _map.Height);
+                        _map.RenderLayer(g, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
+                        string json = JsonConvert.SerializeObject(g.Encode("utf", true,  Convert.ToUInt32(this.gridResolution)));
+                        return Encoding.UTF8.GetBytes(json);
+                    }
+                }
             }
-            if (renderFormat.Equals("jpg", StringComparison.OrdinalIgnoreCase))
-            {
-                renderFormat = this.jpegOptions;
-            }
-            
-            // Lock map object for rendering
-            // TO DO: better strategy is to create a pool of map objects 
-            lock (mapLock)
-            {
-                _map.Width = Convert.ToUInt32(tileWidth);
-                _map.Height = Convert.ToUInt32(tileHeight);
-                _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
-                return _map.SaveToBytes(renderFormat);
-            }
+            return null;
         }
 
         public List<string> getFormats()
         {
-            return new List<string>{"png", "jpg"};
+            return new List<string>{"png", "jpg", "json"};
         }
 
         [OnDeserialized()]
         internal void OnDeserializedMethod(StreamingContext context)
         {
-            if (this.jpegOptions == null) { jpegOptions = "jpeg"; }
-            if (this.pngOptions == null) { pngOptions = "png"; }
+            if (this.jpegOptions == null) { this.jpegOptions = "jpeg"; }
+            if (this.pngOptions == null) { this.pngOptions = "png"; }
+            if (this.gridResolution == 0) { this.gridResolution = 4; }
+            if (this.gridFields == null) { this.gridFields = new List<string>(); }
+            //gridLayerIndex defaults to 0
             
             if (!Path.IsPathRooted(this.xmlConfig))
             {

@@ -60,9 +60,8 @@ namespace TileCook.Web.Controllers
             response.Content = new ByteArrayContent(img);
             
             // Set content type
-            string mimeMapping = System.Web.MimeMapping.GetMimeMapping("." + Format);
+            string mimeMapping = ContentType.GetContentType(Format);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
-
             // Set browser cache control
             response.Headers.CacheControl = new CacheControlHeaderValue();
             response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.browserCache);
@@ -176,7 +175,7 @@ namespace TileCook.Web.Controllers
             tileMap.TileFormat = new TileFormat();
             tileMap.TileFormat.width = layer.gridset.tileHeight.ToString();
             tileMap.TileFormat.height = layer.gridset.tileWidth.ToString();
-            tileMap.TileFormat.mimetype = System.Web.MimeMapping.GetMimeMapping("." + layer.formats[0]);
+            tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.formats[0]);
             tileMap.TileFormat.extension = layer.formats[0];
             tileMap.TileSets = new TileSets();
             for(int i=0;i<layer.gridset.grids.Count;i++)

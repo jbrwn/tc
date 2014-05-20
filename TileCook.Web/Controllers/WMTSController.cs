@@ -107,7 +107,7 @@ namespace TileCook.Web.Controllers
             response.Content = new ByteArrayContent(img);
 
             // Set content type
-            string mimeMapping = System.Web.MimeMapping.GetMimeMapping("." + Format);
+            string mimeMapping = ContentType.GetContentType(Format);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
 
             // Set browser cache control
@@ -188,7 +188,7 @@ namespace TileCook.Web.Controllers
                 LayerType.Format = new string[layers[i].formats.Count];
                 for (int j = 0; j < layers[i].formats.Count;j++ )
                 {
-                    LayerType.Format[j] = System.Web.MimeMapping.GetMimeMapping("." + layers[i].formats[j]);
+                    LayerType.Format[j] = ContentType.GetContentType(layers[i].formats[j]);
                 }
                 LayerType.TileMatrixSetLink = new TileMatrixSetLink[] { new TileMatrixSetLink() };
                 LayerType.TileMatrixSetLink[0].TileMatrixSet = layers[i].gridset.name;
@@ -214,7 +214,7 @@ namespace TileCook.Web.Controllers
                 for (int j = 0; j < layers[i].formats.Count; j++)
                 {
                     LayerType.ResourceURL[j] = new URLTemplateType();
-                    LayerType.ResourceURL[j].format = System.Web.MimeMapping.GetMimeMapping("." + layers[i].formats[j]);
+                    LayerType.ResourceURL[j].format = ContentType.GetContentType(layers[i].formats[j]);
                     LayerType.ResourceURL[j].resourceType = URLTemplateTypeResourceType.tile;
                     LayerType.ResourceURL[j].template = HttpUtility.UrlDecode(Url.Link("WMTSGetTile", new { 
                         Version = "1.0.0", 
