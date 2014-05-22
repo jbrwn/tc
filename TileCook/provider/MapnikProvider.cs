@@ -59,23 +59,28 @@ namespace TileCook
                 _map.Width = Convert.ToUInt32(tileWidth);
                 _map.Height = Convert.ToUInt32(tileHeight);
                 _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
-                if (format.Equals("png", StringComparison.OrdinalIgnoreCase))
-                {
-                    return _map.SaveToBytes(this.pngOptions);
-                }
-                if (format.Equals("jpg", StringComparison.OrdinalIgnoreCase))
-                {
-                    return _map.SaveToBytes(this.jpegOptions);
-                }
+
+                // render utfgrid if json format requested
                 if (format.Equals("json", StringComparison.OrdinalIgnoreCase))
                 {
                     NETMapnik.Grid g = new NETMapnik.Grid(_map.Width, _map.Height);
                     _map.RenderLayer(g, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
-                    string json = JsonConvert.SerializeObject(g.Encode("utf", true,  Convert.ToUInt32(this.gridResolution)));
+                    string json = JsonConvert.SerializeObject(g.Encode("utf", true, Convert.ToUInt32(this.gridResolution)));
                     return Encoding.UTF8.GetBytes(json);
                 }
-                //throw error if format is unsupported
-                throw new ArgumentException();
+
+                // set image format
+                if (format.Equals("png", StringComparison.OrdinalIgnoreCase))
+                {
+                    format = this.pngOptions;
+                }
+                if (format.Equals("jpg", StringComparison.OrdinalIgnoreCase))
+                {
+                    format = this.jpegOptions;
+                }
+
+                // render image
+                return _map.SaveToBytes(format);     
             }
         }
 
