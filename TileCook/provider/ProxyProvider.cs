@@ -19,6 +19,8 @@ namespace TileCook
         public ProxyProvider(string urlTemplate)
         {
             this.urlTemplate = urlTemplate;
+            string format = Path.GetExtension(urlTemplate).Substring(1);
+            this._formats = new List<string> { format };
         }
 
         [DataMember(IsRequired = true)]
