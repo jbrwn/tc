@@ -125,6 +125,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="App_Data\Config\Data\demo.xml" />
     <Content Include="App_Data\Config\Demo.json" />
     <Content Include="Content\leaflet\css\leaflet.css" />
     <Content Include="Content\leaflet\images\layers-2x.png" />
@@ -168,6 +169,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Config\WellKnownScaleSets\GoogleMapsCompatible.json" />
+    <Content Include="App_Data\Config\Data\world_merc.dbf" />
+    <Content Include="App_Data\Config\Data\world_merc.prj" />
+    <Content Include="App_Data\Config\Data\world_merc.shp" />
+    <Content Include="App_Data\Config\Data\world_merc.shx" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
   </ItemGroup>
   <PropertyGroup>
