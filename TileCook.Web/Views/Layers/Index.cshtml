@@ -1,17 +1,16 @@
 ﻿@model Dictionary<string,TileCook.Layer>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "TileCook";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Layers:</h3>
 <ul>
     @foreach (KeyValuePair<string, TileCook.Layer> item in Model)
     {
         TileCook.Layer layer = item.Value;
         <li>
-            @layer.name - @layer.Title (@Html.ActionLink("Preview", "Preview", "Layers", new { id = layer.name }, null))
+           @Html.ActionLink(layer.name, "Preview", "Layers", new { id = layer.name }, null)
         </li>
     }
 </ul>

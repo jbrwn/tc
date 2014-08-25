@@ -19,6 +19,10 @@ namespace TileCook.Web.Controllers
         public ActionResult Preview(string id)
         {
             Layer layer = LayerCache.GetLayer(id);
+            if (layer == null)
+            {
+                return HttpNotFound();
+            }
             return View(layer);
         }
     }
