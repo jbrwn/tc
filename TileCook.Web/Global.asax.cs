@@ -24,13 +24,12 @@ namespace TileCook.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             //Mapnik config
-            MapnikProvider.RegisterDatasources(WebConfigurationManager.AppSettings["mapnikInput"]);
-            MapnikProvider.RegisterFonts(WebConfigurationManager.AppSettings["mapnikFonts"]);
+            MapnikProvider.RegisterDatasources(Server.MapPath("~/bin/mapnik/input"));
+            MapnikProvider.RegisterFonts(Server.MapPath("~/bin/mapnik/fonts"));
 
             //TileCook config
-            string configDir = Server.MapPath("~/App_Data/Config");
-            WellKnownScaleSet.RegisterDirectory(Path.Combine(configDir,"WellKnownScaleSets"));
-            LayerCache.ConfigDirectory = configDir;
+            LayerCache.ConfigDirectory = Server.MapPath("~/App_Data/Config");
+            WellKnownScaleSet.RegisterDirectory(Path.Combine(LayerCache.ConfigDirectory, "WellKnownScaleSets"));
 
             foreach (string file in Directory.EnumerateFiles(LayerCache.ConfigDirectory, "*.json", SearchOption.TopDirectoryOnly))
             {

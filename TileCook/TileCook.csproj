@@ -77,40 +77,40 @@
     <Compile Include="provider\WMSProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\lib\NET-Mapnik\boost_thread-vc100-mt-1_49.dll">
-      <Link>boost_thread-vc100-mt-1_49.dll</Link>
+    <Content Include="..\lib\NET-Mapnik\boost_thread-vc120-mt-1_55.dll">
+      <Link>boost_thread-vc120-mt-1_55.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\lib\NET-Mapnik\cairo.dll">
       <Link>cairo.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\lib\NET-Mapnik\icudt48.dll">
-      <Link>icudt48.dll</Link>
+    <Content Include="..\lib\NET-Mapnik\gdal111.dll">
+      <Link>gdal111.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\lib\NET-Mapnik\icuin48.dll">
-      <Link>icuin48.dll</Link>
+    <Content Include="..\lib\NET-Mapnik\icudt53.dll">
+      <Link>icudt53.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\lib\NET-Mapnik\icuuc48.dll">
-      <Link>icuuc48.dll</Link>
+    <Content Include="..\lib\NET-Mapnik\icuin53.dll">
+      <Link>icuin53.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\NET-Mapnik\icuuc53.dll">
+      <Link>icuuc53.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\lib\NET-Mapnik\libexpat.dll">
       <Link>libexpat.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\lib\NET-Mapnik\libxml2.dll">
-      <Link>libxml2.dll</Link>
+    <Content Include="..\lib\NET-Mapnik\libpng16.dll">
+      <Link>libpng16.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\lib\NET-Mapnik\mapnik.dll">
       <Link>mapnik.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\lib\NET-Mapnik\proj.dll">
-      <Link>proj.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="x64\SQLite.Interop.dll">
@@ -123,91 +123,87 @@
   <ItemGroup>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-Bold.ttf">
       <Link>mapnik\fonts\DejaVuSans-Bold.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-BoldOblique.ttf">
       <Link>mapnik\fonts\DejaVuSans-BoldOblique.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-ExtraLight.ttf">
       <Link>mapnik\fonts\DejaVuSans-ExtraLight.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans-Oblique.ttf">
       <Link>mapnik\fonts\DejaVuSans-Oblique.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSans.ttf">
       <Link>mapnik\fonts\DejaVuSans.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed-Bold.ttf">
       <Link>mapnik\fonts\DejaVuSansCondensed-Bold.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed-BoldOblique.ttf">
       <Link>mapnik\fonts\DejaVuSansCondensed-BoldOblique.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed-Oblique.ttf">
       <Link>mapnik\fonts\DejaVuSansCondensed-Oblique.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansCondensed.ttf">
       <Link>mapnik\fonts\DejaVuSansCondensed.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono-Bold.ttf">
       <Link>mapnik\fonts\DejaVuSansMono-Bold.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono-BoldOblique.ttf">
       <Link>mapnik\fonts\DejaVuSansMono-BoldOblique.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono-Oblique.ttf">
       <Link>mapnik\fonts\DejaVuSansMono-Oblique.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSansMono.ttf">
       <Link>mapnik\fonts\DejaVuSansMono.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif-Bold.ttf">
       <Link>mapnik\fonts\DejaVuSerif-Bold.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif-BoldItalic.ttf">
       <Link>mapnik\fonts\DejaVuSerif-BoldItalic.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif-Italic.ttf">
       <Link>mapnik\fonts\DejaVuSerif-Italic.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerif.ttf">
       <Link>mapnik\fonts\DejaVuSerif.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed-Bold.ttf">
       <Link>mapnik\fonts\DejaVuSerifCondensed-Bold.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed-BoldItalic.ttf">
       <Link>mapnik\fonts\DejaVuSerifCondensed-BoldItalic.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed-Italic.ttf">
       <Link>mapnik\fonts\DejaVuSerifCondensed-Italic.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\fonts\DejaVuSerifCondensed.ttf">
       <Link>mapnik\fonts\DejaVuSerifCondensed.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\lib\NET-Mapnik\mapnik\fonts\unifont-5.1.20080907.ttf">
-      <Link>mapnik\fonts\unifont-5.1.20080907.ttf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\lib\NET-Mapnik\mapnik\input\csv.input">
       <Link>mapnik\input\csv.input</Link>

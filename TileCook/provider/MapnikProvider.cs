@@ -60,33 +60,48 @@ namespace TileCook
                 _map.Height = Convert.ToUInt32(tileHeight);
                 _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
 
-                // render utfgrid if json format requested
-                if (format.Equals("json", StringComparison.OrdinalIgnoreCase))
+                format = format.ToLower();
+                byte[] bytes = null;
+                // Render Image
+                if (format == "png" || format == "jpg")
                 {
-                    NETMapnik.Grid g = new NETMapnik.Grid(_map.Width, _map.Height);
-                    _map.RenderLayer(g, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
-                    string json = JsonConvert.SerializeObject(g.Encode("utf", true, Convert.ToUInt32(this.gridResolution)));
-                    return Encoding.UTF8.GetBytes(json);
+                    Image img = new Image(Convert.ToInt32(_map.Width), Convert.ToInt32(_map.Height));
+                    _map.Render(img);
+                    if (format == "png")
+                    {
+                        format = this.pngOptions;
+                    }
+                    if (format == "jpg")
+                    {
+                        format = this.jpegOptions;
+                    }
+                    bytes = img.Encode(format);
                 }
 
-                // set image format
-                if (format.Equals("png", StringComparison.OrdinalIgnoreCase))
+                // Render UTFGrid
+                if (format == "json")
                 {
-                    format = this.pngOptions;
-                }
-                if (format.Equals("jpg", StringComparison.OrdinalIgnoreCase))
-                {
-                    format = this.jpegOptions;
+                    NETMapnik.Grid grd = new NETMapnik.Grid(_map.Width, _map.Height);
+                    _map.Render(grd, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
+                    string json = JsonConvert.SerializeObject(grd.Encode("utf", true, Convert.ToUInt32(this.gridResolution)));
+                    bytes =  Encoding.UTF8.GetBytes(json);
                 }
 
-                // render image
-                return _map.SaveToBytes(format);     
+                // Render vector tile
+                if (format == "pbf")
+                {
+                    //tile coord (i.e., 0/0/0 not needed for pbf rendering
+                    VectorTile vTile = new VectorTile(0,0,0, _map.Width,_map.Height);
+                    _map.Render(vTile);
+                    bytes =  vTile.GetBytes();
+                }
+                return bytes;
             }
         }
 
         public List<string> getFormats()
         {
-            return new List<string>{"png", "jpg", "json"};
+            return new List<string>{"png", "jpg", "json", "pbf"};
         }
 
         [OnDeserialized()]
