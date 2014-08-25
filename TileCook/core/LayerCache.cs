@@ -23,7 +23,6 @@ namespace TileCook
                typeof(Layer),
                new List<Type>{
                     typeof(DiskCache),
-                    typeof(NoCache),
                     typeof(MBTilesCache),
                     typeof(MapnikProvider),
                     typeof(TestProvider),

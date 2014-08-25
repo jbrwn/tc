@@ -1,12 +1,10 @@
 {
-  "name": "Demo",
-  "Title": "Demo tile layer with no cache",
-  "cache": {
-    "__type": "NoCache:#TileCook"
-  },
-  "provider": {
-    "__type": "TestProvider:#TileCook"
-  },
-  "gridset": {
-    "name": "GoogleMapsCompatible"
+    "name": "Demo",
+    "Title": "Demo tile layer with no cache",
+    "provider": {
+        "__type": "TestProvider:#TileCook"
+    },
+    "gridset": {
+        "name": "GoogleMapsCompatible"
+    }
 }

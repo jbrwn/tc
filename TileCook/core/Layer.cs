@@ -14,10 +14,10 @@ namespace TileCook
         }
 
         public Layer(string name, string title, ICache cache, IProvider provider, GridSet gridset)
-            : this(name, title, cache, provider, gridset, gridset.envelope, 0, gridset.grids.Count, provider.getFormats(), 3600) { }
+            : this(name, title, cache, provider, gridset, gridset.envelope, 0, gridset.grids.Count, provider.getFormats(), 3600, false, false) { }
 
 
-        public Layer(string name, string title,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache)
+        public Layer(string name, string title,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
             this.name = name;
             this.Title = title;
@@ -29,6 +29,8 @@ namespace TileCook
             this.maxZoom = maxZoom;
             this.formats = formats;
             this.browserCache = browserCache;
+            this.DisableCache = DisableCache;
+            this.DisableProvider = DisableProvider;
         }
 
         [DataMember(IsRequired = true)]
@@ -37,10 +39,10 @@ namespace TileCook
         [DataMember]
         public string Title { get; set; }
 
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public ICache cache { get; set; }
 
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public IProvider provider { get; set; }
 
         [DataMember(IsRequired = true)]
@@ -60,6 +62,12 @@ namespace TileCook
 
         [DataMember]
         public int browserCache { get; set; }
+
+        [DataMember]
+        public bool DisableCache { get; set; }
+
+        [DataMember]
+        public bool DisableProvider { get; set; }
  
         public byte[] getTile(int z, int x, int y, string format)
         {
@@ -89,9 +97,15 @@ namespace TileCook
             }
 
             byte[] img = null;
-            img = this.cache.get(z, x, y, format);
-            
-            if (img == null)
+
+            // Get tile from cache?
+            if (!DisableCache && this.cache != null)
+            {
+                img = this.cache.get(z, x, y, format);
+            }
+
+            // Get tile from provider ?
+            if (img == null && !DisableProvider && this.provider != null)
             {
                 if (this.provider is IEnvelopeProvider)
                 {
@@ -114,7 +128,11 @@ namespace TileCook
                     throw new InvalidOperationException();
                 }
                 
-                cache.put(z, x, y, format, img);
+                // Put tile in cache?
+                if (!DisableCache && this.cache != null)
+                {
+                    cache.put(z, x, y, format, img);
+                }
             }
             return img;
         }
@@ -133,10 +151,16 @@ namespace TileCook
         {
             //minZoom defaults to 0
             //browserCache defaults to 0
+            //DisableCache defaults to false
+            //DisableProvider defaults to flase
             if (this.Title == null) { this.Title = ""; }
             if (this.bounds == null) { this.bounds = this.gridset.envelope; }
             if (this.maxZoom == 0) { this.maxZoom = this.gridset.grids.Count; }
-            if (this.formats == null) { this.formats = this.provider.getFormats(); }
+            if (this.formats == null) 
+            {
+                if (this.provider != null) { this.formats = this.provider.getFormats(); }
+                else { this.formats = new List<string> {}; }
+            }
         }
     }
 }
