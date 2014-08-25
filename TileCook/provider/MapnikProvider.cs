@@ -20,10 +20,13 @@ namespace TileCook
         public MapnikProvider(string xmlConfig)
         {
             this.xmlConfig = xmlConfig;
+            this.Buffer = 0;
 
-            //set defaults
+            //set img defaults
             this.pngOptions = "png";
             this.jpegOptions = "jpeg";
+
+            //set grid defaults
             this.gridLayerIndex = 0;
             this.gridResolution = 4;
             this.gridFields = new List<string>();
@@ -34,6 +37,9 @@ namespace TileCook
 
         [DataMember(IsRequired=true)]
         public string xmlConfig { get; set; }
+
+        [DataMember]
+        public int Buffer { get; set; }
 
         [DataMember]
         public string pngOptions { get; set; }
@@ -59,6 +65,7 @@ namespace TileCook
                 _map.Width = Convert.ToUInt32(tileWidth);
                 _map.Height = Convert.ToUInt32(tileHeight);
                 _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                _map.Buffer = this.Buffer;
 
                 format = format.ToLower();
                 byte[] bytes = null;
@@ -112,6 +119,7 @@ namespace TileCook
             if (this.gridResolution == 0) { this.gridResolution = 4; }
             if (this.gridFields == null) { this.gridFields = new List<string>(); }
             //gridLayerIndex defaults to 0
+            //buffer defaults to 0
             
             if (!Path.IsPathRooted(this.xmlConfig))
             {

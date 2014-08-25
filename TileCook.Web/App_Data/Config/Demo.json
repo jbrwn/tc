@@ -3,7 +3,8 @@
     "Title": "Demo tile layer with no cache",
     "provider": {
         "__type": "MapnikProvider:#TileCook",
-        "xmlConfig": "data\\demo.xml"
+        "xmlConfig": "data\\demo.xml",
+        "Buffer":  "128"
     },
     "gridset": {
         "name": "GoogleMapsCompatible"
