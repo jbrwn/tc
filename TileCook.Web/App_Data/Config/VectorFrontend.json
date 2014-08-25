@@ -1,0 +1,12 @@
+{
+    "name": "VectorFrontend",
+    "provider": {
+        "__type": "MapnikVectorTileProvider:#TileCook",
+        "xmlConfig": "data\\demo.xml",
+		"TileSource": "VectorBackend",
+        "Buffer":  "128"
+    },
+    "gridset": {
+        "name": "GoogleMapsCompatible"
+    }
+}

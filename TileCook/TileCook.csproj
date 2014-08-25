@@ -69,6 +69,7 @@
     <Compile Include="cache\MBTilesCache.cs" />
     <Compile Include="core\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="provider\MapnikVectorTileProvider.cs" />
     <Compile Include="provider\ProxyProvider.cs" />
     <Compile Include="provider\TestProvider.cs" />
     <Compile Include="core\TileOutOfRangeException.cs" />

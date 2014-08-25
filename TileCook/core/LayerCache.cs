@@ -27,7 +27,8 @@ namespace TileCook
                     typeof(MapnikProvider),
                     typeof(TestProvider),
                     typeof(ProxyProvider),
-                    typeof(WMSProvider)
+                    typeof(WMSProvider),
+                    typeof(MapnikVectorTileProvider)
                 }
            );
         }
