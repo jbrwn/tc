@@ -49,13 +49,16 @@ namespace TileCook
 
         public byte[] render(Coord coord, string format, int tileWidth, int tileHeight)
         {
+            // Get source layer
             Layer sourceLayer = LayerCache.GetLayer(TileSource);
-            
-            VectorTile vTile = new VectorTile(coord.z, coord.x, coord.y, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
+            byte[] tileBytes = sourceLayer.getTile(coord.z, coord.x, coord.y, "pbf");
 
-            byte[] tileBytes = sourceLayer.getTile(coord.z, coord.x, sourceLayer.FlipY(coord.z,coord.y), "pbf");
+            // Flip y coordinate - mapnik vector tile assumes top left origin.
+            int flippedY = sourceLayer.FlipY(coord.z, coord.y);
+            VectorTile vTile = new VectorTile(coord.z, coord.x, flippedY, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
             vTile.SetBytes(tileBytes);
             Envelope envelope = sourceLayer.gridset.CoordToEnvelope(new Coord(coord.z,coord.x,coord.y));
+
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 
             lock (mapLock)

@@ -3,8 +3,8 @@
     "provider": {
         "__type": "MapnikVectorTileProvider:#TileCook",
         "xmlConfig": "data\\demo.xml",
-		"TileSource": "VectorBackend",
-        "Buffer":  "128"
+        "TileSource": "VectorBackend",
+        "Buffer": "64"
     },
     "gridset": {
         "name": "GoogleMapsCompatible"
