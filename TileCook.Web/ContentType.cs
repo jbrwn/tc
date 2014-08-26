@@ -15,6 +15,9 @@ namespace TileCook.Web
                 case "json":
                     contentType = "application/json";
                     break;
+                case "pbf":
+                    contentType = "application/x-protobuf";
+                    break;
                 default:
                     contentType = MimeMapping.GetMimeMapping("." + extension);
                     break;
