@@ -5,6 +5,7 @@ using System.IO;
 using NETMapnik;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using System.IO.Compression;
 
 namespace TileCook
 {
@@ -30,7 +31,8 @@ namespace TileCook
             this.gridLayerIndex = 0;
             this.gridResolution = 4;
             this.gridFields = new List<string>();
-            
+
+
             _map = new Map();
             _map.LoadMap(xmlConfig);
         }
@@ -55,6 +57,9 @@ namespace TileCook
 
         [DataMember]
         public int gridResolution { get; set; }
+
+        [DataMember]
+        public string Compression { get; set; }
 
         public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
@@ -101,6 +106,30 @@ namespace TileCook
                     VectorTile vTile = new VectorTile(0,0,0, _map.Width,_map.Height);
                     _map.Render(vTile);
                     bytes =  vTile.GetBytes();
+
+                    //compress vector tile bytes
+                    if (this.Compression.ToLower() == "gzip")
+                    {
+                        using (MemoryStream memory = new MemoryStream())
+	                    {
+	                        using (GZipStream gzip = new GZipStream(memory, CompressionMode.Compress, true))
+	                        {
+		                        gzip.Write(bytes,0,bytes.Length); 
+	                        }
+	                        bytes = memory.ToArray();
+                        }
+                    }
+                    if (this.Compression.ToLower() == "deflate")
+                    {
+                        using (MemoryStream memory = new MemoryStream())
+                        {
+                            using (DeflateStream deflate = new DeflateStream(memory, CompressionMode.Compress, true))
+                            {
+                                deflate.Write(bytes, 0, bytes.Length);
+                            }
+                            bytes = memory.ToArray();
+                        }
+                    }
                 }
                 return bytes;
             }
@@ -120,6 +149,7 @@ namespace TileCook
             if (this.gridFields == null) { this.gridFields = new List<string>(); }
             //gridLayerIndex defaults to 0
             //buffer defaults to 0
+            if (this.Compression == null) { this.Compression = "gzip"; }
             
             if (!Path.IsPathRooted(this.xmlConfig))
             {

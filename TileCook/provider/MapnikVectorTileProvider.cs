@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using NETMapnik;
 using System.IO;
+using System.IO.Compression;
 
 namespace TileCook
 {
@@ -52,6 +53,12 @@ namespace TileCook
             // Get source layer
             Layer sourceLayer = LayerCache.GetLayer(TileSource);
             byte[] tileBytes = sourceLayer.getTile(coord.z, coord.x, coord.y, "pbf");
+            
+            // Uncompress bytes
+            if (tileBytes.Length > 0)
+            {
+                tileBytes = Decompress(tileBytes);
+            }
 
             // Flip y coordinate - mapnik vector tile assumes top left origin.
             int flippedY = sourceLayer.FlipY(coord.z, coord.y);
@@ -84,6 +91,39 @@ namespace TileCook
         public List<string> getFormats()
         {
             return new List<string> { "png", "jpg"};
+        }
+
+        private byte[] Decompress(byte[] bytes)
+        {
+            if (bytes[0] == 0x1f && bytes[1] == 0x8b)
+            {
+                using (MemoryStream memory = new MemoryStream(bytes))
+                {
+                    using (GZipStream gzip = new GZipStream(memory, CompressionMode.Decompress))
+                    {
+                        using (MemoryStream result = new MemoryStream())
+                        {
+                            gzip.CopyTo(result);
+                            return result.ToArray();
+                        }
+                    }
+                }
+            }
+            if (bytes[0] == 0x78 && bytes[1] == 0x9c)
+            {
+                using (MemoryStream memory = new MemoryStream(bytes))
+                {
+                    using (DeflateStream deflate = new DeflateStream(memory, CompressionMode.Decompress))
+                    {
+                        using (MemoryStream result = new MemoryStream())
+                        {
+                            deflate.CopyTo(result);
+                            return result.ToArray();
+                        }
+                    }
+                }
+            }
+            return bytes;
         }
 
         [OnDeserialized()]
