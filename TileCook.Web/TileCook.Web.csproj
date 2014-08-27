@@ -44,6 +44,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -112,6 +113,7 @@
     <Compile Include="ContentEncoding.cs" />
     <Compile Include="ContentType.cs" />
     <Compile Include="Controllers\LayersController.cs" />
+    <Compile Include="Controllers\TileJSONController.cs" />
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\WMTSController.cs" />
     <Compile Include="ExtendedXmlMediaTypeFormatter.cs" />
@@ -119,6 +121,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TileJSONService.cs" />
     <Compile Include="TMSService.cs" />
     <Compile Include="WMTSService.cs" />
   </ItemGroup>
