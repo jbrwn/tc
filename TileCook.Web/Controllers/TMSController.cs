@@ -70,6 +70,10 @@ namespace TileCook.Web.Controllers
             // Set content type
             string mimeMapping = ContentType.GetContentType(Format);
             response.Content.Headers.ContentType = new MediaTypeHeaderValue(mimeMapping);
+
+            // Set encoding 
+            response.Content.Headers.Add("Content-Encoding", ContentEncoding.GetContentEncoding(img));
+
             // Set browser cache control
             response.Headers.CacheControl = new CacheControlHeaderValue();
             response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.browserCache);

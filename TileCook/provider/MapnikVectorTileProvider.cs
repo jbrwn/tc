@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using NETMapnik;
 using System.IO;
-using System.IO.Compression;
+using Ionic.Zlib;
 
 namespace TileCook
 {
@@ -120,7 +120,7 @@ namespace TileCook
             {
                 using (MemoryStream memory = new MemoryStream(bytes))
                 {
-                    using (DeflateStream deflate = new DeflateStream(memory, CompressionMode.Decompress))
+                    using (ZlibStream deflate = new ZlibStream(memory, CompressionMode.Decompress))
                     {
                         using (MemoryStream result = new MemoryStream())
                         {
