@@ -54,6 +54,14 @@ namespace TileCook.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
             }
 
+            // Check for null image
+            if (img == null)
+            {
+                TileMapServiceError error = new TileMapServiceError();
+                error.Message = string.Format("You requested a map tile /{0}/{1}/{2} that does not exist.", Z, X, Y);
+                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
+            }
+
             // Start response
             HttpResponseMessage response = new HttpResponseMessage();
             response.StatusCode = HttpStatusCode.OK;

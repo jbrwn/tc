@@ -76,15 +76,22 @@ namespace TileCook
                 _map.Buffer = this.Buffer;
                 Image img = new Image(Convert.ToInt32(_map.Width), Convert.ToInt32(_map.Height));
                 vTile.Render(_map, img);
-                if (format == "png")
+
+                if (format == "png" || format == "jpg")
                 {
-                    format = this.pngOptions;
+                    if (format == "png")
+                    {
+                        format = this.pngOptions;
+                    }
+                    if (format == "jpg")
+                    {
+                        format = this.jpegOptions;
+                    }
+                    return img.Encode(format);
                 }
-                if (format == "jpg")
-                {
-                    format = this.jpegOptions;
-                }
-                return img.Encode(format);
+                // Format not expected so throw exception
+                throw new InvalidOperationException(string.Format("Format {0} not expected", format));
+
             }
         }
 

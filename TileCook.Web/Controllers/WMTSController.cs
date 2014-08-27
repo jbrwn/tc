@@ -85,7 +85,7 @@ namespace TileCook.Web.Controllers
                         break;
                 }
                 return GenerateOWSException(
-                    HttpStatusCode.NotFound,
+                    HttpStatusCode.BadRequest,
                     "TileOutOfRange",
                     e.Message,
                     locator
@@ -94,10 +94,21 @@ namespace TileCook.Web.Controllers
             catch (InvalidTileFormatException e)
             {
                 return GenerateOWSException(
-                    HttpStatusCode.NotFound,
+                    HttpStatusCode.BadRequest,
                     "InvalidParameterValue",
                     e.Message,
                     "Format"
+                );
+            }
+
+            // Check for null image
+            if (img == null)
+            {
+                return GenerateOWSException(
+                    HttpStatusCode.NotFound,
+                    "FileNotFound",
+                    string.Format("You requested a map tile /{0}/{1}/{2} that does not exist.", TileMatrix, TileCol, TileRow),
+                    ""
                 );
             }
 

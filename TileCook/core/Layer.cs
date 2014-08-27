@@ -72,7 +72,7 @@ namespace TileCook
         public byte[] getTile(int z, int x, int y, string format)
         {
             //check if format supported
-            if (!formats.Contains(format))
+            if (!this.formats.Contains(format) || !this.provider.getFormats().Contains(format))
             {
                 throw new InvalidTileFormatException(string.Format("Invalid tile FORMAT {0}", format)); 
             }
@@ -125,7 +125,7 @@ namespace TileCook
                 }
                 else
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("Unexpected provider type");
                 }
                 
                 // Put tile in cache?

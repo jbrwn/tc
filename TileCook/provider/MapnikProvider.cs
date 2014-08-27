@@ -73,7 +73,6 @@ namespace TileCook
                 _map.Buffer = this.Buffer;
 
                 format = format.ToLower();
-                byte[] bytes = null;
                 // Render Image
                 if (format == "png" || format == "jpg")
                 {
@@ -87,51 +86,35 @@ namespace TileCook
                     {
                         format = this.jpegOptions;
                     }
-                    bytes = img.Encode(format);
+                    return img.Encode(format);
                 }
 
                 // Render UTFGrid
-                if (format == "json")
+                else if (format == "json")
                 {
                     NETMapnik.Grid grd = new NETMapnik.Grid(_map.Width, _map.Height);
                     _map.Render(grd, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
                     string json = JsonConvert.SerializeObject(grd.Encode("utf", true, Convert.ToUInt32(this.gridResolution)));
-                    bytes =  Encoding.UTF8.GetBytes(json);
+                    return Encoding.UTF8.GetBytes(json);
                 }
 
                 // Render vector tile
-                if (format == "pbf")
+                else if (format == "pbf")
                 {
                     //tile coord (i.e., 0/0/0 not needed for pbf rendering
                     VectorTile vTile = new VectorTile(0,0,0, _map.Width,_map.Height);
                     _map.Render(vTile);
-                    bytes =  vTile.GetBytes();
+                    byte[] bytes =  vTile.GetBytes();
 
                     //compress vector tile bytes
-                    if (this.Compression.ToLower() == "gzip")
+                    if (bytes.Length > 0)
                     {
-                        using (MemoryStream memory = new MemoryStream())
-	                    {
-	                        using (GZipStream gzip = new GZipStream(memory, CompressionMode.Compress, true))
-	                        {
-		                        gzip.Write(bytes,0,bytes.Length); 
-	                        }
-	                        bytes = memory.ToArray();
-                        }
+                        bytes = Compress(bytes);
                     }
-                    if (this.Compression.ToLower() == "deflate")
-                    {
-                        using (MemoryStream memory = new MemoryStream())
-                        {
-                            using (DeflateStream deflate = new DeflateStream(memory, CompressionMode.Compress, true))
-                            {
-                                deflate.Write(bytes, 0, bytes.Length);
-                            }
-                            bytes = memory.ToArray();
-                        }
-                    }
+                    return bytes;
                 }
-                return bytes;
+                // Format not expected so throw exception
+                throw new InvalidOperationException(string.Format("Format {0} not expected",format));
             }
         }
 
@@ -157,6 +140,34 @@ namespace TileCook
             }
             _map = new Map();
             _map.LoadMap(this.xmlConfig);
+        }
+
+        private byte[] Compress(byte[] bytes)
+        {
+            if (this.Compression.ToLower() == "gzip")
+            {
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using (GZipStream gzip = new GZipStream(memory, CompressionMode.Compress, true))
+                    {
+                        gzip.Write(bytes, 0, bytes.Length);
+                    }
+                    return memory.ToArray();
+                }
+            }
+            if (this.Compression.ToLower() == "deflate")
+            {
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using (DeflateStream deflate = new DeflateStream(memory, CompressionMode.Compress, true))
+                    {
+                        deflate.Write(bytes, 0, bytes.Length);
+                    }
+                    return memory.ToArray();
+                }
+            }
+            //no compression
+            return bytes;
         }
 
         public static void RegisterDatasources(string path)

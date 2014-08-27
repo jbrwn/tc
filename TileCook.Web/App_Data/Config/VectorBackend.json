@@ -3,7 +3,8 @@
     "provider": {
         "__type": "MapnikProvider:#TileCook",
         "xmlConfig": "data\\demo.xml",
-                "Buffer": "64"
+        "Buffer": "64",
+        "Compression": "gzip"
     },
     "gridset": {
         "name": "GoogleMapsCompatible"
