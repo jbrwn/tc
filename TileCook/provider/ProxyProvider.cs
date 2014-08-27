@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Net;
@@ -28,11 +29,11 @@ namespace TileCook
 
         public byte[] render(Coord coord, string format, int tileWidth, int tileHeight)
         {
-            StringBuilder sb = new StringBuilder(urlTemplate.ToLower());
-            sb.Replace("{z}", coord.z.ToString());
-            sb.Replace("{x}", coord.x.ToString());
-            sb.Replace("{y}", coord.y.ToString());
-            Uri uri = new Uri(sb.ToString());
+            string urlRequest = this.urlTemplate;
+            urlRequest = Regex.Replace(urlRequest, "{z}", coord.z.ToString(), RegexOptions.IgnoreCase);
+            urlRequest = Regex.Replace(urlRequest,"{x}", coord.z.ToString(), RegexOptions.IgnoreCase);
+            urlRequest = Regex.Replace(urlRequest,"{y}", coord.z.ToString(), RegexOptions.IgnoreCase);
+            Uri uri = new Uri(urlRequest);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
 
