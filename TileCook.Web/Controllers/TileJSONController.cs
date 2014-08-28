@@ -19,7 +19,23 @@ namespace TileCook.Web.Controllers
         {
 
             //string json = @"{""bounds"":[-180,-85.0511,180,85.0511],""center"":[-41.484375,-46.8000594467873,1],""description"":"""",""filesize"":213730,""format"":""pbf"",""id"":""joelsbrown1.ffb527f1"",""maxzoom"":6,""minzoom"":0,""name"":""test_source"",""private"":false,""scheme"":""xyz"",""tilejson"":""2.0.0"",""tiles"":[""http://a.tiles.mapbox.com/v4/joelsbrown1.ffb527f1/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoiam9lbHNicm93bjEiLCJhIjoidS1rR3FRdyJ9.08WBnyimBMtxAY8r6DnU-Q"",""http://b.tiles.mapbox.com/v4/joelsbrown1.ffb527f1/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoiam9lbHNicm93bjEiLCJhIjoidS1rR3FRdyJ9.08WBnyimBMtxAY8r6DnU-Q""],""vector_layers"":[{""description"":"""",""fields"":{""FID_ne_10m"":""Number"",""adm0_a3_l"":""String"",""adm0_a3_r"":""String"",""adm0_left"":""String"",""adm0_right"":""String"",""adm0_usa"":""Number"",""comment"":""String"",""featurecla"":""String"",""labelrank"":""Number"",""name"":""String"",""note_"":""String"",""scalerank"":""Number"",""sov_a3_l"":""String"",""sov_a3_r"":""String"",""type"":""String""},""id"":""ne_10m_admin_0_boundary_lines_land""}]}";
-            string json = @"{""bounds"":[-180,-85.0511,180,85.0511],""center"":[-41.484375,-46.8000594467873,1],""description"":"""",""filesize"":213730,""format"":""pbf"",""id"":""joelsbrown1.ffb527f1"",""maxzoom"":6,""minzoom"":0,""name"":""test_source"",""private"":false,""scheme"":""tms"",""tilejson"":""2.0.0"",""tiles"":[""http://localhost:49414/Services/TMS/1.0.0/world_merc/{z}/{x}/{y}.pbf""],""vector_layers"":[{""id"":""world_merc"",""description"":""world_merc_test"",""fields"":{""FIPS"":""String"",""ISO2"":""String"",""ISO3"":""String"",""UN"":""Number"",""NAME"":""String"",""AREA"":""Number"",""POP2005"":""Number"",""REGION"":""Number"",""SUBREGION"":""Number"",""LON"":""Number"",""LAT"":""Number""}}]}";
+            string json = @"{""bounds"":[-180,-85.0511,180,85.0511],
+                        ""center"":[-41.484375,-46.8000594467873,1],
+                        ""description"":"""",""filesize"":213730,
+                        ""format"":""pbf"",
+                        ""id"":""joelsbrown1.ffb527f1"",
+                        ""maxzoom"":6,
+                        ""minzoom"":0,
+                        ""name"":""test_source"",
+                        ""private"":false,
+                        ""scheme"":""tms"",
+                        ""tilejson"":""2.0.0"",
+                        ""tiles"":[""http://localhost:49414/Services/TMS/1.0.0/world_merc/{z}/{x}/{y}.pbf""],
+                        ""vector_layers"":[{""id"":""world_merc"",
+                            ""description"":""world_merc_test"",
+                            ""fields"":{""FIPS"":""String"",""ISO2"":""String"",""ISO3"":""String"",""UN"":""Number"",""NAME"":""String"",""AREA"":""Number"",""POP2005"":""Number"",""REGION"":""Number"",""SUBREGION"":""Number"",""LON"":""Number"",""LAT"":""Number""}
+                        }]
+            }";
             HttpResponseMessage response = new HttpResponseMessage();
             response.StatusCode = HttpStatusCode.OK;
 
