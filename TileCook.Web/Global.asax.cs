@@ -33,15 +33,15 @@ namespace TileCook.Web
 
             foreach (string file in Directory.EnumerateFiles(LayerCache.ConfigDirectory, "*.json", SearchOption.TopDirectoryOnly))
             {
-                //try
-                //{
+                try
+                {
 
-                LayerCache.RegisterFile(file);
-                //}
-                //catch (Exception e)
-                //{
-                //    //log failed config load
-                //}
+                    LayerCache.RegisterFile(file);
+                }
+                catch (Exception e)
+                {
+                    //log failed config load
+                }
             }
 
         }
