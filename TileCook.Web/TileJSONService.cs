@@ -9,13 +9,12 @@ namespace TileCook.Web.TileJSONService
     //https://github.com/mapbox/tilejson-spec/tree/master/2.1.0
 
     [DataContract]
-    public class TileJSONService
+    public class TileJSON
     {
-        public TileJSONService() {}
+        public TileJSON() {}
 
         [DataMember(IsRequired = true)]
         public string tilejson;
-
         [DataMember(EmitDefaultValue = false)]
         public string name;
         [DataMember(EmitDefaultValue = false)]
@@ -30,15 +29,13 @@ namespace TileCook.Web.TileJSONService
         public string legend;
         [DataMember(EmitDefaultValue = false)]
         public string scheme;
-    
         [DataMember(IsRequired = true)]
         public List<string> tiles;
-
         [DataMember(EmitDefaultValue = false)]
         public List<string> grids;
         [DataMember(EmitDefaultValue = false)]
         public List<string> data;
-        [DataMember(EmitDefaultValue = false)]
+        [DataMember]
         public int minzoom;
         [DataMember(EmitDefaultValue = false)]
         public int maxzoom;

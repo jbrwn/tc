@@ -50,12 +50,11 @@ namespace TileCook.Web
             // TileJSON routes
             config.Routes.MapHttpRoute(
                 name: "TileJSON",
-                routeTemplate: "Services/TileJSON/{Layer}.json",
-                defaults: new { Controller = "TileJSON", action = "GET" }
+                routeTemplate: "Services/TileJSON/{layer}.json",
+                defaults: new { Controller = "TileJSON", action = "GetTileJSON" }
             );
 
             // Set Formatters 
-            config.Formatters.JsonFormatter.UseDataContractJsonSerializer = true;
             config.Formatters.XmlFormatter.UseXmlSerializer = true;
 
 
