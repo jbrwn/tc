@@ -10,7 +10,7 @@ using Ionic.Zlib;
 namespace TileCook
 {
     [DataContract]
-    public class MapnikProvider : IEnvelopeProvider
+    public class MapnikProvider : IEnvelopeProvider,IVectorTileProvider
     {
 
         private Map _map;
@@ -178,6 +178,27 @@ namespace TileCook
         public static void RegisterFonts(string path)
         {
             FreetypeEngine.RegisterFonts(path, false);
+        }
+
+        public List<VectorLayerMetadata> GetVectorTileMetadata()
+        {
+            //Look for vector_layers in json paramater
+            object json;
+            if (this._map.Parameters.TryGetValue("json", out json))
+            {
+                if (json is string)
+                {
+                    Dictionary<string, object> jsonDict = JsonConvert.DeserializeObject<Dictionary<string, object>>((string)json);
+                    object vectorLayers;
+                    if (jsonDict.TryGetValue("vector_layers", out vectorLayers))
+                    {
+
+
+                    }
+                }
+
+            }
+            return new List<VectorLayerMetadata>();
         }
     }
 }
