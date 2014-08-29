@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using NETMapnik;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using Newtonsoft.Json;
 using Ionic.Zlib;
 
@@ -182,23 +183,35 @@ namespace TileCook
 
         public List<VectorLayerMetadata> GetVectorTileMetadata()
         {
+            List<VectorLayerMetadata> vectorLayers = new List<VectorLayerMetadata>();
             //Look for vector_layers in json paramater
             object json;
+            //object json = @"{""vector_layers"":[{""id"":""world_merc"",""description"":"""",""fields"":{""FIPS"":""String"",""ISO2"":""String"",""ISO3"":""String"",""UN"":""Number"",""NAME"":""String"",""AREA"":""Number"",""POP2005"":""Number"",""REGION"":""Number"",""SUBREGION"":""Number"",""LON"":""Number"",""LAT"":""Number""}}]}";
             if (this._map.Parameters.TryGetValue("json", out json))
             {
                 if (json is string)
                 {
-                    Dictionary<string, object> jsonDict = JsonConvert.DeserializeObject<Dictionary<string, object>>((string)json);
-                    object vectorLayers;
-                    if (jsonDict.TryGetValue("vector_layers", out vectorLayers))
+                    try
                     {
-
-
+                        MapnikVectorTileMetadata tileMetadata = JsonConvert.DeserializeObject<MapnikVectorTileMetadata>((string)json);
+                        foreach (MapnikVectorLayerMetadata mapnikLayerMetadata in tileMetadata.vector_layers)
+                        {
+                            VectorLayerMetadata layerMetadata = new VectorLayerMetadata();
+                            layerMetadata.Name = mapnikLayerMetadata.id;
+                            layerMetadata.Description = mapnikLayerMetadata.description;
+                            layerMetadata.Fields = mapnikLayerMetadata.fields;
+                            vectorLayers.Add(layerMetadata);
+                        }
+                        return vectorLayers;
                     }
+                    catch { }
                 }
 
             }
-            return new List<VectorLayerMetadata>();
+
+            //interograte _map object to build vector_layers 
+
+            return vectorLayers;
         }
     }
 }

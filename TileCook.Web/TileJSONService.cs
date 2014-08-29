@@ -43,8 +43,20 @@ namespace TileCook.Web.TileJSONService
         public List<int> bounds;
         [DataMember(EmitDefaultValue = false)]
         public List<int> center;
+        [DataMember(EmitDefaultValue = false)]
+        public List<vector_layer> vector_layers;
+    }
 
-    
-    
+    [DataContract]
+    public class vector_layer
+    {
+        public vector_layer() { }
+
+        [DataMember(IsRequired = true)]
+        public string id;
+        [DataMember(IsRequired = true)]
+        public string descritpion;
+        [DataMember(IsRequired = true)]
+        public Dictionary<string, string> fields;
     }
 }

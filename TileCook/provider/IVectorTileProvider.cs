@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace TileCook
 {
@@ -13,13 +14,33 @@ namespace TileCook
 
     public class VectorLayerMetadata
     {
-        public VectorLayerMetadata() 
-        {
-            this.fields = new Dictionary<string, string>();
-        }
-
-        public string id;
-        public string descritpion;
-        public Dictionary<string,string> fields;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Dictionary<string, string> Fields { get; set; }
     }
+
+    [DataContract]
+    public class MapnikVectorTileMetadata
+    {
+        public MapnikVectorTileMetadata() { }
+
+        [DataMember]
+        public List<MapnikVectorLayerMetadata> vector_layers { get; set; }
+
+    }
+
+    [DataContract]
+    public class MapnikVectorLayerMetadata
+    {
+        public MapnikVectorLayerMetadata() { }
+
+        [DataMember]
+        public string id { get; set; }
+        [DataMember]
+        public string description { get; set; }
+        [DataMember]
+        public Dictionary<string, string> fields { get; set; }
+    }
+
+
 }

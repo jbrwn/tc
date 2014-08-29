@@ -54,10 +54,20 @@ namespace TileCook.Web.Controllers
             // check for vector_layers info
             if (format == "pbf")
             {
-                if (tileLayer.provider is MapnikProvider)
+                if (tileLayer.provider is IVectorTileProvider)
                 {
-                    MapnikProvider mp = (MapnikProvider)tileLayer.provider;
-                    //tilejson.vector_layers =
+                    IVectorTileProvider vectorProvider = (IVectorTileProvider)tileLayer.provider;
+                    List<VectorLayerMetadata> vectorLayerMetadataList = vectorProvider.GetVectorTileMetadata();
+                    List<vector_layer> vlayers = new List<vector_layer>();
+                    foreach (VectorLayerMetadata vectorLayerMetadata in vectorLayerMetadataList)
+                    {
+                        vector_layer vlayer = new vector_layer();
+                        vlayer.id = vectorLayerMetadata.Name;
+                        vlayer.descritpion = vectorLayerMetadata.Description;
+                        vlayer.fields = vectorLayerMetadata.Fields;
+                        vlayers.Add(vlayer);
+                    }
+                    tilejson.vector_layers = vlayers;
                 }
             }
   
@@ -65,7 +75,6 @@ namespace TileCook.Web.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, tilejson, Configuration.Formatters.JsonFormatter);
         }
 
-        //
         private string GetDefaultFormat(Layer layer)
         {
             foreach (string format in layer.formats)
