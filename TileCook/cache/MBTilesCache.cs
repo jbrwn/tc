@@ -18,41 +18,41 @@ namespace TileCook
         private string _version;
         private bool _isCompressed;
 
-        public MBTilesCache(string database)
-            : this(database, null) { }
+        public MBTilesCache(string Database)
+            : this(Database, null) { }
 
         
-        public MBTilesCache(string database, string format)
+        public MBTilesCache(string Database, string Format)
         {
-            //create mbtiles database if not exists
-            if (!File.Exists(database))
+            //create mbtiles Database if not exists
+            if (!File.Exists(Database))
             {
-                CreateMBTiles(database, format);
+                CreateMBTiles(Database, Format);
             }
-            this.database = database;
+            this.Database = Database;
 
             //cache version for internal use
             this._version = GetVersion();
 
-            //set correct format
-            this.format = InitializeFormat(format);
+            //set correct Format
+            this.Format = InitializeFormat(Format);
 
             //check for compressed schema
             this._isCompressed = isCompressed();
         }
 
         [DataMember(IsRequired=true)]
-        public string database { get; set; }
+        public string Database { get; set; }
 
         [DataMember]
-        public string format { get; set; }
+        public string Format { get; set; }
 
-        public byte[] get(int z, int x, int y, string format)
+        public byte[] Get(int z, int x, int y, string Format)
         {
             byte[] img = null;
-            if (format.Equals(this.format, StringComparison.OrdinalIgnoreCase))
+            if (Format.Equals(this.Format, StringComparison.OrdinalIgnoreCase))
             {       
-                using(SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+                using(SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
                 {
                     con.Open();
                     string query = "SELECT tile_data FROM tiles WHERE zoom_level=@z AND tile_column=@x AND tile_row=@y";
@@ -74,14 +74,14 @@ namespace TileCook
             return img;
         }
 
-        public void put(int z, int x, int y, string format, byte[] image)
+        public void Put(int z, int x, int y, string Format, byte[] image)
         {
-            if (format.Equals(this.format, StringComparison.OrdinalIgnoreCase))
+            if (Format.Equals(this.Format, StringComparison.OrdinalIgnoreCase))
             {
                 if (this._isCompressed)
                 {
                     string uuid = Guid.NewGuid().ToString();
-                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
                     {
                         con.Open();
                         using (SQLiteCommand cmd = new SQLiteCommand(con))
@@ -112,7 +112,7 @@ namespace TileCook
                 }
                 else
                 {
-                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
                     {
                         con.Open();
                         string query = "REPLACE INTO tiles (zoom_level, tile_column, tile_row, tile_data) VALUES (@z,@x,@y,@img)";
@@ -129,13 +129,13 @@ namespace TileCook
             }
         }
 
-        public void delete(int z, int x, int y, string format)
+        public void Delete(int z, int x, int y, string Format)
         {
-            if (format.Equals(this.format, StringComparison.OrdinalIgnoreCase))
+            if (Format.Equals(this.Format, StringComparison.OrdinalIgnoreCase))
             {
                 if (this._isCompressed)
                 {
-                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
                     {
                         con.Open();
                         using (SQLiteCommand cmd = new SQLiteCommand(con))
@@ -188,7 +188,7 @@ namespace TileCook
                 }
                 else
                 {
-                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+                    using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
                     {
                         con.Open();
                         string query = "DELETE FROM tiles WHERE zoom_level=@z AND tile_column=@x AND tile_row=@y";
@@ -204,66 +204,66 @@ namespace TileCook
             }
         }
 
-        private string InitializeFormat(string format)
+        private string InitializeFormat(string Format)
         {
-            //get internal format of MBTiles database
-            string internal_format = GetInternalFormat();
+            //get internal Format of MBTiles Database
+            string internal_Format = GetInternalFormat();
 
-            //begin logic for determining mbtiles format
-            if (format == null && internal_format == null)
+            //begin logic for determining mbtiles Format
+            if (Format == null && internal_Format == null)
             {
-                string error = "Could not determine MBTiles FORMAT.";
+                string error = "Could not determine MBTiles Format.";
                 if (this._version == "1.0.0")
                 {
-                    error = error + " Cannot determine FORMAT of empty v1.0.0 database.";
+                    error = error + " Cannot determine Format of empty v1.0.0 Database.";
                 }
-                error = error + " Try explicitly configuring MBTiles cache FORMAT.";
+                error = error + " Try explicitly configuring MBTiles cache Format.";
                 throw new InvalidOperationException(error);
             }
-            else if (format == null && internal_format != null)
+            else if (Format == null && internal_Format != null)
             {
-                return internal_format;
+                return internal_Format;
             }
-            else if (format != null && internal_format == null)
+            else if (Format != null && internal_Format == null)
             {
-                return format;
+                return Format;
             }
             else
             {
-                if (!format.Equals(internal_format, StringComparison.OrdinalIgnoreCase))
+                if (!Format.Equals(internal_Format, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new ArgumentException(string.Format("FORMAT {0} does not match internal MBTiles FORMAT {1}", format, internal_format));
+                    throw new ArgumentException(string.Format("Format {0} does not match internal MBTiles Format {1}", Format, internal_Format));
                 }
-                return format;
+                return Format;
             }
         }
 
         private string GetInternalFormat()
         {
-            string format = null;
-            using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+            string Format = null;
+            using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
             {
                 con.Open();
-                string query = "SELECT value FROM metadata WHERE name='format'";
+                string query = "SELECT value FROM metadata WHERE name='Format'";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, con))
                 {
                     using (SQLiteDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-                            format = dr.GetString(0);
+                            Format = dr.GetString(0);
                         }
                     }
                 }
-                //format not required in MBTiles v1.0.0
-                //TO DO: determine format based on magic numbers (http://www.astro.keele.ac.uk/oldusers/rno/Computing/File_magic.html)
+                //Format not required in MBTiles v1.0.0
+                //TO DO: determine Format based on magic numbers (http://www.astro.keele.ac.uk/oldusers/rno/Computing/File_magic.html)
             }
-            return format;
+            return Format;
         }
 
         private string GetVersion()
         {
-            using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+            using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
             {
                 con.Open();
                 string query = "SELECT value FROM metadata WHERE name='version'";
@@ -282,17 +282,17 @@ namespace TileCook
             }  
         }
 
-        private void CreateMBTiles(string database, string format)
+        private void CreateMBTiles(string Database, string Format)
         {
-            if (format == null)
+            if (Format == null)
             {
-                throw new ArgumentNullException("FORMAT must not be null");
+                throw new ArgumentNullException("Format must not be null");
             }
         }
 
         private bool isCompressed()
         {
-            using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.database))))
+            using (SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
             {
                 con.Open();
                 string query = "SELECT 1 FROM sqlite_master WHERE type='table' AND name='tiles'";
@@ -307,24 +307,24 @@ namespace TileCook
         [OnDeserialized]
         internal void OnDeserializedMethod(StreamingContext context)
         {
-            //set absolution path if database path is relative
-            if (!Path.IsPathRooted(this.database))
+            //set absolution path if Database path is relative
+            if (!Path.IsPathRooted(this.Database))
             {
-                this.database = Path.Combine(LayerCache.ConfigDirectory, this.database);
+                this.Database = Path.Combine(LayerCache.ConfigDirectory, this.Database);
             }
 
-            //create mbtiles database if not exists
-            if (!File.Exists(database))
+            //create mbtiles Database if not exists
+            if (!File.Exists(Database))
             {
-                CreateMBTiles(database, format);
+                CreateMBTiles(Database, Format);
             }
-            this.database = database;
+            this.Database = Database;
 
             //cache version for internal use
             this._version = GetVersion();
 
-            //set format
-            this.format = InitializeFormat(this.format);
+            //set Format
+            this.Format = InitializeFormat(this.Format);
 
             //check for compressed schema
             this._isCompressed = isCompressed();

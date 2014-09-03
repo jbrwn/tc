@@ -101,7 +101,7 @@ namespace TileCook
             // Get tile from cache?
             if (!DisableCache && this.cache != null)
             {
-                img = this.cache.get(z, x, y, format);
+                img = this.cache.Get(z, x, y, format);
             }
 
             // Get tile from provider ?
@@ -131,7 +131,7 @@ namespace TileCook
                 // Put tile in cache?
                 if (!DisableCache && this.cache != null)
                 {
-                    cache.put(z, x, y, format, img);
+                    cache.Put(z, x, y, format, img);
                 }
             }
             return img;

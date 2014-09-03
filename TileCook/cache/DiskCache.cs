@@ -17,13 +17,13 @@ namespace TileCook
 
         public DiskCache(string directory)
         {
-            this.directory = directory;
+            this.CacheDirectory = directory;
         }
         
         [DataMember(IsRequired=true)]
-        public string directory { get; set; }
+        public string CacheDirectory { get; set; }
 
-        public byte[] get(int z, int x, int y, string format)
+        public byte[] Get(int z, int x, int y, string format)
         {
             string path = this.buildPath(z, x, y, format);
             byte[] img = null;
@@ -56,7 +56,7 @@ namespace TileCook
             return img;
         }
 
-        public void put(int z, int x, int y, string format, byte[] image)
+        public void Put(int z, int x, int y, string format, byte[] image)
         {
             string path = this.buildPath(z, x, y, format);
             int i = 0;
@@ -85,7 +85,7 @@ namespace TileCook
             }
         }
 
-        public void delete(int z, int x, int y, string format)
+        public void Delete(int z, int x, int y, string format)
         {
             string path = this.buildPath(z, x, y, format);
             int i = 0;
@@ -117,7 +117,7 @@ namespace TileCook
         {
             string filename = y.ToString() + "." + format;
             string path = Path.Combine(
-                this.directory,
+                this.CacheDirectory,
                 z.ToString(),
                 x.ToString(),
                 filename
