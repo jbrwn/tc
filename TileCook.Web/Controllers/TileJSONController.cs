@@ -52,25 +52,21 @@ namespace TileCook.Web.Controllers
             tilejson.tiles = new List<string>() { HttpUtility.UrlDecode(Url.Link("TMSTile", new { Version = "1.0.0", TileMap = tileLayer.name, Z = "{z}", X = "{x}", Y = "{y}", Format = format })) };
 
             // check for vector_layers info
-            if (format == "pbf")
+            if (format == "pbf" && tileLayer.provider is IVectorTileProvider)
             {
-                if (tileLayer.provider is IVectorTileProvider)
+                IVectorTileProvider vectorProvider = (IVectorTileProvider)tileLayer.provider;
+                List<VectorLayerMetadata> layerMetadataList = vectorProvider.GetVectorTileMetadata();
+                List<vector_layer> vlayers = new List<vector_layer>();
+                foreach (VectorLayerMetadata layerMetadata in layerMetadataList)
                 {
-                    IVectorTileProvider vectorProvider = (IVectorTileProvider)tileLayer.provider;
-                    List<VectorLayerMetadata> vectorLayerMetadataList = vectorProvider.GetVectorTileMetadata();
-                    List<vector_layer> vlayers = new List<vector_layer>();
-                    foreach (VectorLayerMetadata vectorLayerMetadata in vectorLayerMetadataList)
-                    {
-                        vector_layer vlayer = new vector_layer();
-                        vlayer.id = vectorLayerMetadata.Name;
-                        vlayer.descritpion = vectorLayerMetadata.Description;
-                        vlayer.fields = vectorLayerMetadata.Fields;
-                        vlayers.Add(vlayer);
-                    }
-                    tilejson.vector_layers = vlayers;
+                    vector_layer vlayer = new vector_layer();
+                    vlayer.id = layerMetadata.Name;
+                    vlayer.descritpion = layerMetadata.Description;
+                    vlayer.fields = layerMetadata.Fields;
+                    vlayers.Add(vlayer);
                 }
+                tilejson.vector_layers = vlayers;
             }
-  
 
             return Request.CreateResponse(HttpStatusCode.OK, tilejson, Configuration.Formatters.JsonFormatter);
         }
