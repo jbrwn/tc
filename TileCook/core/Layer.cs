@@ -14,16 +14,16 @@ namespace TileCook
         }
 
         public Layer(string name, string title, ICache cache, IProvider provider, GridSet gridset)
-            : this(name, title, cache, provider, gridset, gridset.envelope, 0, gridset.grids.Count, provider.getFormats(), 3600, false, false) { }
+            : this(name, title, cache, provider, gridset, gridset.Envelope, 0, gridset.Grids.Count, provider.getFormats(), 3600, false, false) { }
 
 
         public Layer(string name, string title,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
-            this.name = name;
+            this.Name = name;
             this.Title = title;
             this.cache = cache;
             this.provider = provider;
-            this.gridset = gridset;
+            this.Gridset = gridset;
             this.bounds = bounds;
             this.MinZoom = minZoom;
             this.MaxZoom = maxZoom;
@@ -34,7 +34,7 @@ namespace TileCook
         }
 
         [DataMember(IsRequired = true)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [DataMember]
         public string Title { get; set; }
@@ -46,7 +46,7 @@ namespace TileCook
         public IProvider provider { get; set; }
 
         [DataMember(IsRequired = true)]
-        public GridSet gridset { get; set; }
+        public GridSet Gridset { get; set; }
 
         [DataMember]
         public Envelope bounds { get; set; }
@@ -83,8 +83,8 @@ namespace TileCook
             }
 
             //check if tile within bounds 
-            Coord lowCoord = this.gridset.PointToCoord(new Point(this.bounds.Minx, this.bounds.Miny), z);
-            Coord highCoord = this.gridset.PointToCoord(new Point(this.bounds.Maxx, this.bounds.Maxy), z);
+            Coord lowCoord = this.Gridset.PointToCoord(new Point(this.bounds.Minx, this.bounds.Miny), z);
+            Coord highCoord = this.Gridset.PointToCoord(new Point(this.bounds.Maxx, this.bounds.Maxy), z);
 
             if (x < lowCoord.X || x > highCoord.X)
             {
@@ -109,19 +109,19 @@ namespace TileCook
             {
                 if (this.provider is IEnvelopeProvider)
                 {
-                    Envelope tileEnvelope = this.gridset.CoordToEnvelope(new Coord(z, x, y));
+                    Envelope tileEnvelope = this.Gridset.CoordToEnvelope(new Coord(z, x, y));
                     IEnvelopeProvider provider = (IEnvelopeProvider)this.provider;
-                    img = provider.render(tileEnvelope, format, gridset.tileWidth, gridset.tileHeight);
+                    img = provider.render(tileEnvelope, format, this.Gridset.TileWidth, this.Gridset.TileHeight);
                 }
                 else if (this.provider is IPassThoughProvider)
                 {
-                    if (gridset.topOrigin)
+                    if (this.Gridset.TopOrigin)
                     {
                         y = FlipY(z, y);
                     }
 
                     IPassThoughProvider provider = (IPassThoughProvider)this.provider;
-                    img = provider.render(new Coord(z, x, y), format, gridset.tileWidth, gridset.tileHeight);
+                    img = provider.render(new Coord(z, x, y), format, this.Gridset.TileWidth, this.Gridset.TileHeight);
                 }
                 else
                 {
@@ -143,7 +143,7 @@ namespace TileCook
             {
                 throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.MinZoom, this.MaxZoom));
             }
-            return this.gridset.gridHeight(z) - y - 1;
+            return this.Gridset.GridHeight(z) - y - 1;
         }
 
         [OnDeserialized()]
@@ -154,8 +154,8 @@ namespace TileCook
             //DisableCache defaults to false
             //DisableProvider defaults to flase
             if (this.Title == null) { this.Title = ""; }
-            if (this.bounds == null) { this.bounds = this.gridset.envelope; }
-            if (this.MaxZoom == 0) { this.MaxZoom = this.gridset.grids.Count; }
+            if (this.bounds == null) { this.bounds = this.Gridset.Envelope; }
+            if (this.MaxZoom == 0) { this.MaxZoom = this.Gridset.Grids.Count; }
             if (this.formats == null) 
             {
                 if (this.provider != null) { this.formats = this.provider.getFormats(); }

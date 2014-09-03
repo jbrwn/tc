@@ -48,7 +48,7 @@ namespace TileCook
                 using (FileStream fs = new FileStream(file, FileMode.Open))
                 {
                     Layer l = (Layer)_jsonSerializer.ReadObject(fs);
-                    _layers[l.name] = l;
+                    _layers[l.Name] = l;
                 }
             }
 
@@ -59,7 +59,7 @@ namespace TileCook
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
                 Layer l = (Layer)_jsonSerializer.ReadObject(fs);
-                _layers[l.name] = l;
+                _layers[l.Name] = l;
             }
         }
 

@@ -52,7 +52,7 @@ namespace TileCook.Web.Controllers
                 );
             }
 
-            if (!TileMatrixSet.Equals(layer.gridset.name, StringComparison.OrdinalIgnoreCase))
+            if (!TileMatrixSet.Equals(layer.Gridset.Name, StringComparison.OrdinalIgnoreCase))
             {
                 return GenerateOWSException(
                     HttpStatusCode.NotFound,
@@ -151,9 +151,9 @@ namespace TileCook.Web.Controllers
             Dictionary<string, GridSet> uniqueGridSets = new Dictionary<string, GridSet>();
             foreach (Layer l in layers)
             {
-                if (!uniqueGridSets.ContainsKey(l.gridset.name))
+                if (!uniqueGridSets.ContainsKey(l.Gridset.Name))
                 {
-                    uniqueGridSets[l.gridset.name] = l.gridset;
+                    uniqueGridSets[l.Gridset.Name] = l.Gridset;
                 }
             }
             List<GridSet> gridSets = new List<GridSet>(uniqueGridSets.Values);
@@ -188,11 +188,11 @@ namespace TileCook.Web.Controllers
                 capabilities.Contents.DatasetDescriptionSummary[i] = new LayerType();
                 LayerType LayerType = (LayerType)capabilities.Contents.DatasetDescriptionSummary[i];
                 LayerType.Identifier = new CodeType();
-                LayerType.Identifier.Value = layers[i].name;
+                LayerType.Identifier.Value = layers[i].Name;
                 LayerType.Title = new LanguageStringType[] { new LanguageStringType() };
                 LayerType.Title[0].Value = layers[i].Title;
                 LayerType.BoundingBox = new BoundingBoxType[] { new BoundingBoxType() };
-                LayerType.BoundingBox[0].crs = layers[i].gridset.srs;
+                LayerType.BoundingBox[0].crs = layers[i].Gridset.SRS;
                 LayerType.BoundingBox[0].LowerCorner = layers[i].bounds.Minx.ToString() + " " + layers[i].bounds.Miny.ToString();
                 LayerType.BoundingBox[0].UpperCorner = layers[i].bounds.Maxx.ToString() + " " + layers[i].bounds.Maxy.ToString();
                 LayerType.Style = new Style[] {new Style() };
@@ -205,17 +205,17 @@ namespace TileCook.Web.Controllers
                     LayerType.Format[j] = ContentType.GetContentType(layers[i].formats[j]);
                 }
                 LayerType.TileMatrixSetLink = new TileMatrixSetLink[] { new TileMatrixSetLink() };
-                LayerType.TileMatrixSetLink[0].TileMatrixSet = layers[i].gridset.name;
-                if (!layers[i].bounds.Equals(layers[i].gridset.envelope))
+                LayerType.TileMatrixSetLink[0].TileMatrixSet = layers[i].Gridset.Name;
+                if (!layers[i].bounds.Equals(layers[i].Gridset.Envelope))
                 {
                     int zLevels = layers[i].MaxZoom - layers[i].MinZoom;
                     LayerType.TileMatrixSetLink[0].TileMatrixSetLimits = new TileMatrixLimits[zLevels];
                     for (int j = 0; j < zLevels; j++)
                     {
                         int z = layers[i].MinZoom + j;
-                        Grid g = layers[i].gridset.grids[z];
-                        Coord lowCoord = layers[i].gridset.PointToCoord(new Point(layers[i].bounds.Minx, layers[i].bounds.Miny), z);
-                        Coord highCoord = layers[i].gridset.PointToCoord(new Point(layers[i].bounds.Maxx, layers[i].bounds.Maxy), z);
+                        Grid g = layers[i].Gridset.Grids[z];
+                        Coord lowCoord = layers[i].Gridset.PointToCoord(new Point(layers[i].bounds.Minx, layers[i].bounds.Miny), z);
+                        Coord highCoord = layers[i].Gridset.PointToCoord(new Point(layers[i].bounds.Maxx, layers[i].bounds.Maxy), z);
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j] = new TileMatrixLimits();
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].TileMatrix = (layers[i].MinZoom + j).ToString();
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MinTileRow = lowCoord.X.ToString();
@@ -232,9 +232,9 @@ namespace TileCook.Web.Controllers
                     LayerType.ResourceURL[j].resourceType = URLTemplateTypeResourceType.tile;
                     LayerType.ResourceURL[j].template = HttpUtility.UrlDecode(Url.Link("WMTSGetTile", new { 
                         Version = "1.0.0", 
-                        Layer = layers[i].name, 
+                        Layer = layers[i].Name, 
                         Style = "default", 
-                        TileMatrixSet = layers[i].gridset.name,
+                        TileMatrixSet = layers[i].Gridset.Name,
                         TileMatrix = "{TileMatrix}",
                         TileRow = "{TileRow}",
                         TileCol = "{TileCol}",
@@ -247,28 +247,28 @@ namespace TileCook.Web.Controllers
             {
                 capabilities.Contents.TileMatrixSet[i] = new TileMatrixSet();
                 capabilities.Contents.TileMatrixSet[i].Identifier = new CodeType();
-                capabilities.Contents.TileMatrixSet[i].Identifier.Value = gridSets[i].name;
-                capabilities.Contents.TileMatrixSet[i].SupportedCRS = gridSets[i].srs;
-                if (gridSets[i].name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase) ||
-                    gridSets[i].name.Equals("GlobalCRS84Scale", StringComparison.OrdinalIgnoreCase) ||
-                    gridSets[i].name.Equals("GlobalCRS84Pixel", StringComparison.OrdinalIgnoreCase) ||
-                    gridSets[i].name.Equals("GGoogleCRS84Quad", StringComparison.OrdinalIgnoreCase)
+                capabilities.Contents.TileMatrixSet[i].Identifier.Value = gridSets[i].Name;
+                capabilities.Contents.TileMatrixSet[i].SupportedCRS = gridSets[i].SRS;
+                if (gridSets[i].Name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase) ||
+                    gridSets[i].Name.Equals("GlobalCRS84Scale", StringComparison.OrdinalIgnoreCase) ||
+                    gridSets[i].Name.Equals("GlobalCRS84Pixel", StringComparison.OrdinalIgnoreCase) ||
+                    gridSets[i].Name.Equals("GGoogleCRS84Quad", StringComparison.OrdinalIgnoreCase)
                 )
                 {
-                    capabilities.Contents.TileMatrixSet[i].WellKnownScaleSet = gridSets[i].name;
+                    capabilities.Contents.TileMatrixSet[i].WellKnownScaleSet = gridSets[i].Name;
                 }
-                capabilities.Contents.TileMatrixSet[i].TileMatrix = new TileMatrix[gridSets[i].grids.Count];
-                for (int j = 0; j < gridSets[i].grids.Count; j++)
+                capabilities.Contents.TileMatrixSet[i].TileMatrix = new TileMatrix[gridSets[i].Grids.Count];
+                for (int j = 0; j < gridSets[i].Grids.Count; j++)
                 {
                     capabilities.Contents.TileMatrixSet[i].TileMatrix[j] = new TileMatrix();
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].ScaleDenominator = gridSets[i].grids[j].scale;
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].ScaleDenominator = gridSets[i].Grids[j].Scale;
                     capabilities.Contents.TileMatrixSet[i].TileMatrix[j].Identifier = new CodeType();
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].Identifier.Value = gridSets[i].grids[j].name;
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].TopLeftCorner = gridSets[i].envelope.Minx.ToString() + " " + gridSets[i].envelope.Maxy.ToString();
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].TileWidth = gridSets[i].tileWidth.ToString();
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].TileHeight = gridSets[i].tileHeight.ToString();
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].MatrixWidth = gridSets[i].gridWidth(j).ToString();
-                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].MatrixHeight = gridSets[i].gridHeight(j).ToString();
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].Identifier.Value = gridSets[i].Grids[j].Name;
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].TopLeftCorner = gridSets[i].Envelope.Minx.ToString() + " " + gridSets[i].Envelope.Maxy.ToString();
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].TileWidth = gridSets[i].TileWidth.ToString();
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].TileHeight = gridSets[i].TileHeight.ToString();
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].MatrixWidth = gridSets[i].GridWidth(j).ToString();
+                    capabilities.Contents.TileMatrixSet[i].TileMatrix[j].MatrixHeight = gridSets[i].GridHeight(j).ToString();
                 }
             }
 

@@ -10,10 +10,10 @@ namespace TileCook
     public class Grid
     {
         [DataMember(IsRequired = true)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [DataMember(IsRequired = true)]
-        public double scale { get; set; }
+        public double Scale { get; set; }
 
     }
 }

@@ -64,7 +64,7 @@ namespace TileCook
             int flippedY = sourceLayer.FlipY(coord.Z, coord.Y);
             VectorTile vTile = new VectorTile(coord.Z, coord.X, flippedY, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
             vTile.SetBytes(tileBytes);
-            Envelope envelope = sourceLayer.gridset.CoordToEnvelope(new Coord(coord.Z,coord.X,coord.Y));
+            Envelope envelope = sourceLayer.Gridset.CoordToEnvelope(new Coord(coord.Z,coord.X,coord.Y));
 
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 

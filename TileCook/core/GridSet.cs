@@ -24,79 +24,79 @@ namespace TileCook
 
         public GridSet(string name, string srs, Envelope envelope, int zoomLevels, int tileSize, double metersPerUnit, bool topOrigin)
         {
-            this.name = name;
-            this.srs = srs;
-            this.envelope = envelope;
-            this.tileWidth = tileSize;
-            this.tileHeight = tileSize;
-            this.metersPerUnit = metersPerUnit;
-            this.topOrigin = topOrigin;
+            this.Name = name;
+            this.SRS = srs;
+            this.Envelope = envelope;
+            this.TileWidth = tileSize;
+            this.TileHeight = tileSize;
+            this.MetersPerUnit = metersPerUnit;
+            this.TopOrigin = topOrigin;
 
-            this.grids = new List<Grid>();
+            this.Grids = new List<Grid>();
             double initialResolution = (envelope.Maxx - envelope.Minx) / tileSize;
             for (int i = 0; i < zoomLevels; i++)
             {
                 Grid g = new Grid();
-                g.name = i.ToString();
-                g.scale = (initialResolution / Math.Pow(2, i)) / METER_PER_PIXEL * metersPerUnit;
-                this.grids.Add(g);
+                g.Name = i.ToString();
+                g.Scale = (initialResolution / Math.Pow(2, i)) / METER_PER_PIXEL * metersPerUnit;
+                this.Grids.Add(g);
             }
         }
 
         [DataMember(IsRequired = true)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [DataMember]
-        public string srs { get; set; }
+        public string SRS { get; set; }
 
         [DataMember]
-        public double metersPerUnit { get; set; }
+        public double MetersPerUnit { get; set; }
 
         [DataMember]
-        public Envelope envelope { get; set; }
+        public Envelope Envelope { get; set; }
 
         [DataMember]
-        public List<Grid> grids { get; set; }
+        public List<Grid> Grids { get; set; }
 
         [DataMember]
-        public int tileWidth { get; set; }
+        public int TileWidth { get; set; }
 
         [DataMember]
-        public int tileHeight { get; set; }
+        public int TileHeight { get; set; }
 
         [DataMember]
-        public bool topOrigin { get; set; }
+        public bool TopOrigin { get; set; }
 
-        public double resolution(int z)
+        public double Resolution(int z)
         {
-            return grids[z].scale * METER_PER_PIXEL / metersPerUnit;
+            return this.Grids[z].Scale * METER_PER_PIXEL / this.MetersPerUnit;
         }
 
-        public int gridWidth(int z)
+        public int GridWidth(int z)
         {
-            double res = resolution(z);
-            return (int)Math.Ceiling((envelope.Maxx - envelope.Minx) / res / tileWidth);
+            double res = this.Resolution(z);
+            return (int)Math.Ceiling((this.Envelope.Maxx - this.Envelope.Minx) / res / this.TileWidth);
             
         }
 
-        public int gridHeight(int z)
+        public int GridHeight(int z)
         {
-            double res = resolution(z);
-            return (int)Math.Ceiling((envelope.Maxy - envelope.Miny) / res / tileHeight);
+            double res = this.Resolution(z);
+            return (int)Math.Ceiling((this.Envelope.Maxy - this.Envelope.Miny) / res / this.TileHeight);
         }
 
         public Envelope CoordToEnvelope(Coord coord)
         {
-            if (this.topOrigin)
+            if (this.TopOrigin)
             {
-                coord.Y = gridHeight(coord.Z) - coord.Y - 1;
+                coord.Y = this.GridHeight(coord.Z) - coord.Y - 1;
             }
 
-            double res = resolution(coord.Z);
-            double minx = coord.X * tileWidth * res + envelope.Minx;
-            double maxx = (coord.X + 1) * tileWidth * res + envelope.Minx;
-            double miny = coord.Y * tileHeight * res + envelope.Miny;
-            double maxy = (coord.Y + 1) * tileHeight * res + envelope.Miny;
+            double res = this.Resolution(coord.Z);
+            double minx = coord.X * this.TileWidth * res + this.Envelope.Minx;
+            double maxx = (coord.X + 1) * this.TileWidth * res + this.Envelope.Minx;
+            double miny = coord.Y * this.TileHeight * res + this.Envelope.Miny;
+            double maxy = (coord.Y + 1) * this.TileHeight * res + this.Envelope.Miny;
 
             return new Envelope(minx, miny, maxx, maxy);
 
@@ -104,55 +104,52 @@ namespace TileCook
 
         public Coord PointToCoord(Point p , int z)
         {
-            double res = resolution(z);
-            int x =  (int)Math.Ceiling((p.X - envelope.Minx) / res / tileWidth);
-            int y = (int)Math.Ceiling((p.Y - envelope.Miny) / res / tileHeight);
+            double res = this.Resolution(z);
+            int x =  (int)Math.Ceiling((p.X - this.Envelope.Minx) / res / this.TileWidth);
+            int y = (int)Math.Ceiling((p.Y - this.Envelope.Miny) / res / this.TileHeight);
             return new Coord(z,x,y);
         }
 
         private void CopyFrom(GridSet other)
         {
-            this.name = other.name;
-            this.srs = other.srs;
-            this.envelope = other.envelope;
-            this.tileWidth = other.tileWidth;
-            this.tileHeight = other.tileHeight;
-            this.metersPerUnit = other.metersPerUnit;
-            this.grids = other.grids;
+            this.Name = other.Name;
+            this.SRS = other.SRS;
+            this.Envelope = other.Envelope;
+            this.TileWidth = other.TileWidth;
+            this.TileHeight = other.TileHeight;
+            this.MetersPerUnit = other.MetersPerUnit;
+            this.Grids = other.Grids;
         }
 
         [OnDeserialized()]
         internal void OnDeserializedMethod(StreamingContext context)
         {
             if (
-                this.name != null &&
-                this.srs == null &&
-                this.envelope == null &&
-                this.tileWidth == 0 &&
-                this.tileHeight == 0 &&
-                this.metersPerUnit == 0 &&
-                this.grids == null
+                this.Name != null &&
+                this.SRS == null &&
+                this.Envelope == null &&
+                this.TileWidth == 0 &&
+                this.TileHeight == 0 &&
+                this.MetersPerUnit == 0 &&
+                this.Grids == null
             )
             {
-                this.CopyFrom(WellKnownScaleSet.GetGridSet(name));
+                this.CopyFrom(WellKnownScaleSet.GetGridSet(this.Name));
             }
 
             //validate properties
             if (
-                this.name == null ||
-                this.srs == null ||
-                this.envelope == null ||
-                this.tileWidth == 0 ||
-                this.tileHeight == 0 ||
-                this.metersPerUnit == 0 ||
-                this.grids == null
+                this.Name == null ||
+                this.SRS == null ||
+                this.Envelope == null ||
+                this.TileWidth == 0 ||
+                this.TileHeight == 0 ||
+                this.MetersPerUnit == 0 ||
+                this.Grids == null
             )
             {
                 throw new SerializationException();
             }
         }
-
-
     }
-
 }

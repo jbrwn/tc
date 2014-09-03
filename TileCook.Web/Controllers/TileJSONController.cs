@@ -36,7 +36,7 @@ namespace TileCook.Web.Controllers
             // Create tilejson object
             TileJSON tilejson = new TileJSON();
             tilejson.tilejson = "2.1.0";
-            tilejson.name = tileLayer.name;
+            tilejson.name = tileLayer.Name;
             tilejson.descritpion = tileLayer.Title;
             tilejson.scheme = "tms";
             tilejson.minzoom = tileLayer.MinZoom;
@@ -45,11 +45,11 @@ namespace TileCook.Web.Controllers
             // Check for UTFGrid
             if (HasUTFGrid(tileLayer))
             {
-                tilejson.grids = new List<string>() { HttpUtility.UrlDecode(Url.Link("TMSTile", new { Version = "1.0.0", TileMap = tileLayer.name, Z = "{z}", X = "{x}", Y = "{y}", Format = "json" })) };
+                tilejson.grids = new List<string>() { HttpUtility.UrlDecode(Url.Link("TMSTile", new { Version = "1.0.0", TileMap = tileLayer.Name, Z = "{z}", X = "{x}", Y = "{y}", Format = "json" })) };
             }
 
             // Set tile endpoint
-            tilejson.tiles = new List<string>() { HttpUtility.UrlDecode(Url.Link("TMSTile", new { Version = "1.0.0", TileMap = tileLayer.name, Z = "{z}", X = "{x}", Y = "{y}", Format = format })) };
+            tilejson.tiles = new List<string>() { HttpUtility.UrlDecode(Url.Link("TMSTile", new { Version = "1.0.0", TileMap = tileLayer.Name, Z = "{z}", X = "{x}", Y = "{y}", Format = format })) };
 
             // check for vector_layers info
             if (format == "pbf" && tileLayer.provider is IVectorTileProvider)

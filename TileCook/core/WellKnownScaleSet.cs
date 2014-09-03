@@ -30,7 +30,7 @@ namespace TileCook
                 using (FileStream fs = new FileStream(file, FileMode.Open))
                 {
                         GridSet g = (GridSet)jsonSerializer.ReadObject(fs);
-                        _gridSets[g.name] = g;
+                        _gridSets[g.Name] = g;
                 }
             }
         }

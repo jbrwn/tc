@@ -134,8 +134,8 @@ namespace TileCook.Web.Controllers
             {
                 TileMapMetadata tileMapMetadata = new TileMapMetadata();
                 tileMapMetadata.title = item.Value.Title;
-                tileMapMetadata.srs = item.Value.gridset.srs;
-                if (item.Value.gridset.name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase))
+                tileMapMetadata.srs = item.Value.Gridset.SRS;
+                if (item.Value.Gridset.Name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase))
                 {
                     tileMapMetadata.profile = "global-mercator";
                 }
@@ -143,7 +143,7 @@ namespace TileCook.Web.Controllers
                 {
                     tileMapMetadata.profile = "none";
                 }
-                tileMapMetadata.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = item.Value.name });
+                tileMapMetadata.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = item.Value.Name });
                 tileMapService.TileMaps.Add(tileMapMetadata);
             }
 
@@ -175,7 +175,7 @@ namespace TileCook.Web.Controllers
             tileMap.version = "1.0.0";
             tileMap.tilemapservice = Url.Link("TMSService", new { Version = "1.0.0" });
             tileMap.Title = layer.Title;
-            tileMap.SRS = layer.gridset.srs;
+            tileMap.SRS = layer.Gridset.SRS;
             tileMap.BoudningBox = new BoundingBox();
             tileMap.BoudningBox.minx = layer.bounds.Minx.ToString();
             tileMap.BoudningBox.miny = layer.bounds.Miny.ToString();
@@ -185,16 +185,16 @@ namespace TileCook.Web.Controllers
             tileMap.Origin.x = layer.bounds.Minx.ToString();
             tileMap.Origin.y = layer.bounds.Miny.ToString();
             tileMap.TileFormat = new TileFormat();
-            tileMap.TileFormat.width = layer.gridset.tileHeight.ToString();
-            tileMap.TileFormat.height = layer.gridset.tileWidth.ToString();
+            tileMap.TileFormat.width = layer.Gridset.TileHeight.ToString();
+            tileMap.TileFormat.height = layer.Gridset.TileWidth.ToString();
             tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.formats[0]);
             tileMap.TileFormat.extension = layer.formats[0];
             tileMap.TileSets = new TileSets();
-            for(int i=0;i<layer.gridset.grids.Count;i++)
+            for(int i=0;i<layer.Gridset.Grids.Count;i++)
             {
                 TileSet tileSet = new TileSet();
-                tileSet.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = layer.name }) + "/" + i.ToString() ;
-                tileSet.unitsperpixel = layer.gridset.resolution(i).ToString();
+                tileSet.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = layer.Name }) + "/" + i.ToString() ;
+                tileSet.unitsperpixel = layer.Gridset.Resolution(i).ToString();
                 tileSet.order = i.ToString();
                 tileMap.TileSets.Add(tileSet);
             }
