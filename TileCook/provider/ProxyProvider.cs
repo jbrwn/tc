@@ -30,9 +30,9 @@ namespace TileCook
         public byte[] render(Coord coord, string format, int tileWidth, int tileHeight)
         {
             string urlRequest = this.urlTemplate;
-            urlRequest = Regex.Replace(urlRequest, "{z}", coord.z.ToString(), RegexOptions.IgnoreCase);
-            urlRequest = Regex.Replace(urlRequest,"{x}", coord.z.ToString(), RegexOptions.IgnoreCase);
-            urlRequest = Regex.Replace(urlRequest,"{y}", coord.z.ToString(), RegexOptions.IgnoreCase);
+            urlRequest = Regex.Replace(urlRequest, "{z}", coord.Z.ToString(), RegexOptions.IgnoreCase);
+            urlRequest = Regex.Replace(urlRequest,"{x}", coord.Z.ToString(), RegexOptions.IgnoreCase);
+            urlRequest = Regex.Replace(urlRequest,"{y}", coord.Z.ToString(), RegexOptions.IgnoreCase);
             Uri uri = new Uri(urlRequest);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);

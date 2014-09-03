@@ -10,13 +10,13 @@ namespace TileCook
     {
         public Coord(int z, int x, int y)
         {
-            this.z = z;
-            this.x = x;
-            this.y = y;
+            this.Z = z;
+            this.X = x;
+            this.Y = y;
         }
         
-        public int z { get; set; }
-        public int x { get; set; }
-        public int y { get; set; }
+        public int Z { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
     }
 }

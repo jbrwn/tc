@@ -33,7 +33,7 @@ namespace TileCook
             this.topOrigin = topOrigin;
 
             this.grids = new List<Grid>();
-            double initialResolution = (envelope.maxx - envelope.minx) / tileSize;
+            double initialResolution = (envelope.Maxx - envelope.Minx) / tileSize;
             for (int i = 0; i < zoomLevels; i++)
             {
                 Grid g = new Grid();
@@ -75,28 +75,28 @@ namespace TileCook
         public int gridWidth(int z)
         {
             double res = resolution(z);
-            return (int)Math.Ceiling((envelope.maxx - envelope.minx) / res / tileWidth);
+            return (int)Math.Ceiling((envelope.Maxx - envelope.Minx) / res / tileWidth);
             
         }
 
         public int gridHeight(int z)
         {
             double res = resolution(z);
-            return (int)Math.Ceiling((envelope.maxy - envelope.miny) / res / tileHeight);
+            return (int)Math.Ceiling((envelope.Maxy - envelope.Miny) / res / tileHeight);
         }
 
         public Envelope CoordToEnvelope(Coord coord)
         {
             if (this.topOrigin)
             {
-                coord.y = gridHeight(coord.z) - coord.y - 1;
+                coord.Y = gridHeight(coord.Z) - coord.Y - 1;
             }
 
-            double res = resolution(coord.z);
-            double minx = coord.x * tileWidth * res + envelope.minx;
-            double maxx = (coord.x + 1) * tileWidth * res + envelope.minx;
-            double miny = coord.y * tileHeight * res + envelope.miny;
-            double maxy = (coord.y + 1) * tileHeight * res + envelope.miny;
+            double res = resolution(coord.Z);
+            double minx = coord.X * tileWidth * res + envelope.Minx;
+            double maxx = (coord.X + 1) * tileWidth * res + envelope.Minx;
+            double miny = coord.Y * tileHeight * res + envelope.Miny;
+            double maxy = (coord.Y + 1) * tileHeight * res + envelope.Miny;
 
             return new Envelope(minx, miny, maxx, maxy);
 
@@ -105,8 +105,8 @@ namespace TileCook
         public Coord PointToCoord(Point p , int z)
         {
             double res = resolution(z);
-            int x =  (int)Math.Ceiling((p.X - envelope.minx) / res / tileWidth);
-            int y = (int)Math.Ceiling((p.Y - envelope.miny) / res / tileHeight);
+            int x =  (int)Math.Ceiling((p.X - envelope.Minx) / res / tileWidth);
+            int y = (int)Math.Ceiling((p.Y - envelope.Miny) / res / tileHeight);
             return new Coord(z,x,y);
         }
 

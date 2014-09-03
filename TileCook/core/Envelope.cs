@@ -13,30 +13,30 @@ namespace TileCook
 
         public Envelope(double minx, double miny, double maxx, double maxy)
         {
-            this.minx = minx;
-            this.miny = miny;
-            this.maxx = maxx;
-            this.maxy = maxy;
+            this.Minx = minx;
+            this.Miny = miny;
+            this.Maxx = maxx;
+            this.Maxy = maxy;
         }
 
         [DataMember(IsRequired=true)]
-        public double minx { get; set; }
+        public double Minx { get; set; }
 
         [DataMember(IsRequired = true)]
-        public double miny { get; set; }
+        public double Miny { get; set; }
 
         [DataMember(IsRequired = true)]
-        public double maxx { get; set; }
+        public double Maxx { get; set; }
 
         [DataMember(IsRequired = true)]
-        public double maxy { get; set; }
+        public double Maxy { get; set; }
 
         public bool Equals(Envelope other)
         {
-            if (this.minx == other.minx &&
-                this.miny == other.miny &&
-                this.maxx == other.maxx &&
-                this.maxy == other.maxy)
+            if (this.Minx == other.Minx &&
+                this.Miny == other.Miny &&
+                this.Maxx == other.Maxx &&
+                this.Maxy == other.Maxy)
             {
                 return true;
             }

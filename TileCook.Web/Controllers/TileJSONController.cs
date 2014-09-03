@@ -39,8 +39,8 @@ namespace TileCook.Web.Controllers
             tilejson.name = tileLayer.name;
             tilejson.descritpion = tileLayer.Title;
             tilejson.scheme = "tms";
-            tilejson.minzoom = tileLayer.minZoom;
-            tilejson.maxzoom = tileLayer.maxZoom;
+            tilejson.minzoom = tileLayer.MinZoom;
+            tilejson.maxzoom = tileLayer.MaxZoom;
 
             // Check for UTFGrid
             if (HasUTFGrid(tileLayer))

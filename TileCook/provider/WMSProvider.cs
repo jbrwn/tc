@@ -67,7 +67,7 @@ namespace TileCook
             query.Append("&styles=" + HttpUtility.UrlEncode(this.styles));
             if (version.Equals("1.3.0")) { query.Append("&crs=" + HttpUtility.UrlEncode(this.crs)); }
             else { query.Append("&srs=" + HttpUtility.UrlEncode(this.crs)); }
-            query.Append("&bbox=" + envelope.minx.ToString() + "," + envelope.miny.ToString() + "," + envelope.maxx.ToString() + "," + envelope.maxy.ToString());
+            query.Append("&bbox=" + envelope.Minx.ToString() + "," + envelope.Miny.ToString() + "," + envelope.Maxx.ToString() + "," + envelope.Maxy.ToString());
             query.Append("&width=" + tileWidth.ToString());
             query.Append("&height=" + tileHeight.ToString());
             query.Append("&format=" + HttpUtility.UrlEncode(format));

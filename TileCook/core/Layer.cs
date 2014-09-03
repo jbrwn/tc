@@ -25,8 +25,8 @@ namespace TileCook
             this.provider = provider;
             this.gridset = gridset;
             this.bounds = bounds;
-            this.minZoom = minZoom;
-            this.maxZoom = maxZoom;
+            this.MinZoom = minZoom;
+            this.MaxZoom = maxZoom;
             this.formats = formats;
             this.browserCache = browserCache;
             this.DisableCache = DisableCache;
@@ -52,10 +52,10 @@ namespace TileCook
         public Envelope bounds { get; set; }
 
         [DataMember]
-        public int minZoom { get; set; }
+        public int MinZoom { get; set; }
 
         [DataMember]
-        public int maxZoom { get; set; }
+        public int MaxZoom { get; set; }
 
         [DataMember]
         public List<string> formats { get; set; }
@@ -77,23 +77,23 @@ namespace TileCook
                 throw new InvalidTileFormatException(string.Format("Invalid tile FORMAT {0}", format)); 
             }
 
-            if (z < minZoom || z > maxZoom)
+            if (z < this.MinZoom || z > this.MaxZoom)
             {
-                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.minZoom, this.maxZoom));
+                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.MinZoom, this.MaxZoom));
             }
 
             //check if tile within bounds 
-            Coord lowCoord = this.gridset.PointToCoord(new Point(this.bounds.minx, this.bounds.miny), z);
-            Coord highCoord = this.gridset.PointToCoord(new Point(this.bounds.maxx, this.bounds.maxy), z);
+            Coord lowCoord = this.gridset.PointToCoord(new Point(this.bounds.Minx, this.bounds.Miny), z);
+            Coord highCoord = this.gridset.PointToCoord(new Point(this.bounds.Maxx, this.bounds.Maxy), z);
 
-            if (x < lowCoord.x || x > highCoord.x)
+            if (x < lowCoord.X || x > highCoord.X)
             {
-                throw new TileOutOfRangeException(string.Format("Column {0} is out of range (min: {1} max: {2})", x, lowCoord.x , highCoord.x));
+                throw new TileOutOfRangeException(string.Format("Column {0} is out of range (min: {1} max: {2})", x, lowCoord.X , highCoord.X));
             }
 
-            if (y < lowCoord.y || y > highCoord.y)
+            if (y < lowCoord.Y || y > highCoord.Y)
             {
-                throw new TileOutOfRangeException(string.Format("Row {0} is out of range (min: {1} max: {2})", y, lowCoord.y, highCoord.y));
+                throw new TileOutOfRangeException(string.Format("Row {0} is out of range (min: {1} max: {2})", y, lowCoord.Y, highCoord.Y));
             }
 
             byte[] img = null;
@@ -139,9 +139,9 @@ namespace TileCook
 
         public int FlipY(int z, int y)
         {
-            if (z < this.minZoom || z > this.maxZoom)
+            if (z < this.MinZoom || z > this.MaxZoom)
             {
-                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.minZoom, this.maxZoom));
+                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.MinZoom, this.MaxZoom));
             }
             return this.gridset.gridHeight(z) - y - 1;
         }
@@ -155,7 +155,7 @@ namespace TileCook
             //DisableProvider defaults to flase
             if (this.Title == null) { this.Title = ""; }
             if (this.bounds == null) { this.bounds = this.gridset.envelope; }
-            if (this.maxZoom == 0) { this.maxZoom = this.gridset.grids.Count; }
+            if (this.MaxZoom == 0) { this.MaxZoom = this.gridset.grids.Count; }
             if (this.formats == null) 
             {
                 if (this.provider != null) { this.formats = this.provider.getFormats(); }

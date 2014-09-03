@@ -27,10 +27,10 @@ namespace TileCook
                     g.FillRectangle(background, rect);
                     g.DrawRectangle(border, rect);
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("minx: " + envelope.minx.ToString());
-                    sb.AppendLine("miny: " + envelope.miny.ToString());
-                    sb.AppendLine("maxx: " + envelope.maxx.ToString());
-                    sb.AppendLine("maxy: " + envelope.maxy.ToString());
+                    sb.AppendLine("minx: " + envelope.Minx.ToString());
+                    sb.AppendLine("miny: " + envelope.Miny.ToString());
+                    sb.AppendLine("maxx: " + envelope.Maxx.ToString());
+                    sb.AppendLine("maxy: " + envelope.Maxy.ToString());
                     g.DrawString(sb.ToString(),text ,textColor , new PointF(30, 30));
                 }
 

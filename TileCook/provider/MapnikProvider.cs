@@ -70,7 +70,7 @@ namespace TileCook
             {
                 _map.Width = Convert.ToUInt32(tileWidth);
                 _map.Height = Convert.ToUInt32(tileHeight);
-                _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                _map.ZoomToBox(envelope.Minx, envelope.Miny, envelope.Maxx, envelope.Maxy);
                 _map.Buffer = this.Buffer;
 
                 format = format.ToLower();

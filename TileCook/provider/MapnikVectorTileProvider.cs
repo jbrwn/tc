@@ -21,7 +21,7 @@ namespace TileCook
 
         public MapnikVectorTileProvider(string xmlConfig, string TileSource)
         {
-            this.xmlConfig = xmlConfig;
+            this.XmlConfig = xmlConfig;
             this.TileSource = TileSource;
             this.Buffer = 0;
 
@@ -34,7 +34,7 @@ namespace TileCook
         }
 
         [DataMember(IsRequired = true)]
-        public string xmlConfig { get; set; }
+        public string XmlConfig { get; set; }
 
         [DataMember(IsRequired = true)]
         public string TileSource{ get; set; }
@@ -52,7 +52,7 @@ namespace TileCook
         {
             // Get source layer
             Layer sourceLayer = LayerCache.GetLayer(TileSource);
-            byte[] tileBytes = sourceLayer.getTile(coord.z, coord.x, coord.y, "pbf");
+            byte[] tileBytes = sourceLayer.getTile(coord.Z, coord.X, coord.Y, "pbf");
             
             // Uncompress bytes
             if (tileBytes.Length > 0)
@@ -61,10 +61,10 @@ namespace TileCook
             }
 
             // Flip y coordinate - mapnik vector tile assumes top left origin.
-            int flippedY = sourceLayer.FlipY(coord.z, coord.y);
-            VectorTile vTile = new VectorTile(coord.z, coord.x, flippedY, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
+            int flippedY = sourceLayer.FlipY(coord.Z, coord.Y);
+            VectorTile vTile = new VectorTile(coord.Z, coord.X, flippedY, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
             vTile.SetBytes(tileBytes);
-            Envelope envelope = sourceLayer.gridset.CoordToEnvelope(new Coord(coord.z,coord.x,coord.y));
+            Envelope envelope = sourceLayer.gridset.CoordToEnvelope(new Coord(coord.Z,coord.X,coord.Y));
 
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 
@@ -72,7 +72,7 @@ namespace TileCook
             {
                 _map.Width = Convert.ToUInt32(tileWidth);
                 _map.Height = Convert.ToUInt32(tileHeight);
-                _map.ZoomToBox(envelope.minx, envelope.miny, envelope.maxx, envelope.maxy);
+                _map.ZoomToBox(envelope.Minx, envelope.Miny, envelope.Maxx, envelope.Maxy);
                 _map.Buffer = this.Buffer;
                 Image img = new Image(Convert.ToInt32(_map.Width), Convert.ToInt32(_map.Height));
                 vTile.Render(_map, img);
@@ -140,12 +140,12 @@ namespace TileCook
             if (this.pngOptions == null) { this.pngOptions = "png"; }
             //buffer defaults to 0
 
-            if (!Path.IsPathRooted(this.xmlConfig))
+            if (!Path.IsPathRooted(this.XmlConfig))
             {
-                xmlConfig = Path.Combine(LayerCache.ConfigDirectory, this.xmlConfig);
+                this.XmlConfig = Path.Combine(LayerCache.ConfigDirectory, this.XmlConfig);
             }
             _map = new Map();
-            _map.LoadMap(this.xmlConfig);
+            _map.LoadMap(this.XmlConfig);
         }
 
     }
