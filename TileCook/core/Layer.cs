@@ -14,21 +14,21 @@ namespace TileCook
         }
 
         public Layer(string name, string title, ICache cache, IProvider provider, GridSet gridset)
-            : this(name, title, cache, provider, gridset, gridset.Envelope, 0, gridset.Grids.Count, provider.getFormats(), 3600, false, false) { }
+            : this(name, title, cache, provider, gridset, gridset.Envelope, 0, gridset.Grids.Count, provider.GetFormats(), 3600, false, false) { }
 
 
         public Layer(string name, string title,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
             this.Name = name;
             this.Title = title;
-            this.cache = cache;
-            this.provider = provider;
+            this.Cache = cache;
+            this.Provider = provider;
             this.Gridset = gridset;
-            this.bounds = bounds;
+            this.Bounds = bounds;
             this.MinZoom = minZoom;
             this.MaxZoom = maxZoom;
-            this.formats = formats;
-            this.browserCache = browserCache;
+            this.Formats = formats;
+            this.BrowserCache = browserCache;
             this.DisableCache = DisableCache;
             this.DisableProvider = DisableProvider;
         }
@@ -40,16 +40,16 @@ namespace TileCook
         public string Title { get; set; }
 
         [DataMember]
-        public ICache cache { get; set; }
+        public ICache Cache { get; set; }
 
         [DataMember]
-        public IProvider provider { get; set; }
+        public IProvider Provider { get; set; }
 
         [DataMember(IsRequired = true)]
         public GridSet Gridset { get; set; }
 
         [DataMember]
-        public Envelope bounds { get; set; }
+        public Envelope Bounds { get; set; }
 
         [DataMember]
         public int MinZoom { get; set; }
@@ -58,10 +58,10 @@ namespace TileCook
         public int MaxZoom { get; set; }
 
         [DataMember]
-        public List<string> formats { get; set; }
+        public List<string> Formats { get; set; }
 
         [DataMember]
-        public int browserCache { get; set; }
+        public int BrowserCache { get; set; }
 
         [DataMember]
         public bool DisableCache { get; set; }
@@ -69,10 +69,10 @@ namespace TileCook
         [DataMember]
         public bool DisableProvider { get; set; }
  
-        public byte[] getTile(int z, int x, int y, string format)
+        public byte[] GetTile(int z, int x, int y, string format)
         {
             //check if format supported
-            if (!this.formats.Contains(format) || !this.provider.getFormats().Contains(format))
+            if (!this.Formats.Contains(format) || !this.Provider.GetFormats().Contains(format))
             {
                 throw new InvalidTileFormatException(string.Format("Invalid tile FORMAT {0}", format)); 
             }
@@ -83,8 +83,8 @@ namespace TileCook
             }
 
             //check if tile within bounds 
-            Coord lowCoord = this.Gridset.PointToCoord(new Point(this.bounds.Minx, this.bounds.Miny), z);
-            Coord highCoord = this.Gridset.PointToCoord(new Point(this.bounds.Maxx, this.bounds.Maxy), z);
+            Coord lowCoord = this.Gridset.PointToCoord(new Point(this.Bounds.Minx, this.Bounds.Miny), z);
+            Coord highCoord = this.Gridset.PointToCoord(new Point(this.Bounds.Maxx, this.Bounds.Maxy), z);
 
             if (x < lowCoord.X || x > highCoord.X)
             {
@@ -99,29 +99,29 @@ namespace TileCook
             byte[] img = null;
 
             // Get tile from cache?
-            if (!DisableCache && this.cache != null)
+            if (!DisableCache && this.Cache != null)
             {
-                img = this.cache.Get(z, x, y, format);
+                img = this.Cache.Get(z, x, y, format);
             }
 
             // Get tile from provider ?
-            if (img == null && !DisableProvider && this.provider != null)
+            if (img == null && !DisableProvider && this.Provider != null)
             {
-                if (this.provider is IEnvelopeProvider)
+                if (this.Provider is IEnvelopeProvider)
                 {
                     Envelope tileEnvelope = this.Gridset.CoordToEnvelope(new Coord(z, x, y));
-                    IEnvelopeProvider provider = (IEnvelopeProvider)this.provider;
-                    img = provider.render(tileEnvelope, format, this.Gridset.TileWidth, this.Gridset.TileHeight);
+                    IEnvelopeProvider provider = (IEnvelopeProvider)this.Provider;
+                    img = provider.Render(tileEnvelope, format, this.Gridset.TileWidth, this.Gridset.TileHeight);
                 }
-                else if (this.provider is IPassThoughProvider)
+                else if (this.Provider is IPassThoughProvider)
                 {
                     if (this.Gridset.TopOrigin)
                     {
                         y = FlipY(z, y);
                     }
 
-                    IPassThoughProvider provider = (IPassThoughProvider)this.provider;
-                    img = provider.render(new Coord(z, x, y), format, this.Gridset.TileWidth, this.Gridset.TileHeight);
+                    IPassThoughProvider provider = (IPassThoughProvider)this.Provider;
+                    img = provider.Render(new Coord(z, x, y), format, this.Gridset.TileWidth, this.Gridset.TileHeight);
                 }
                 else
                 {
@@ -129,9 +129,9 @@ namespace TileCook
                 }
                 
                 // Put tile in cache?
-                if (!DisableCache && this.cache != null)
+                if (!DisableCache && this.Cache != null)
                 {
-                    cache.Put(z, x, y, format, img);
+                    this.Cache.Put(z, x, y, format, img);
                 }
             }
             return img;
@@ -154,12 +154,12 @@ namespace TileCook
             //DisableCache defaults to false
             //DisableProvider defaults to flase
             if (this.Title == null) { this.Title = ""; }
-            if (this.bounds == null) { this.bounds = this.Gridset.Envelope; }
+            if (this.Bounds == null) { this.Bounds = this.Gridset.Envelope; }
             if (this.MaxZoom == 0) { this.MaxZoom = this.Gridset.Grids.Count; }
-            if (this.formats == null) 
+            if (this.Formats == null) 
             {
-                if (this.provider != null) { this.formats = this.provider.getFormats(); }
-                else { this.formats = new List<string> {}; }
+                if (this.Provider != null) { this.Formats = this.Provider.GetFormats(); }
+                else { this.Formats = new List<string> {}; }
             }
         }
     }

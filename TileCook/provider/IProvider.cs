@@ -8,6 +8,6 @@ namespace TileCook
 {
     public interface IProvider
     {
-        List<string> getFormats();
+        List<string> GetFormats();
     }
 }

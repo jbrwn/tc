@@ -52,9 +52,9 @@ namespace TileCook.Web.Controllers
             tilejson.tiles = new List<string>() { HttpUtility.UrlDecode(Url.Link("TMSTile", new { Version = "1.0.0", TileMap = tileLayer.Name, Z = "{z}", X = "{x}", Y = "{y}", Format = format })) };
 
             // check for vector_layers info
-            if (format == "pbf" && tileLayer.provider is IVectorTileProvider)
+            if (format == "pbf" && tileLayer.Provider is IVectorTileProvider)
             {
-                IVectorTileProvider vectorProvider = (IVectorTileProvider)tileLayer.provider;
+                IVectorTileProvider vectorProvider = (IVectorTileProvider)tileLayer.Provider;
                 List<VectorLayerMetadata> layerMetadataList = vectorProvider.GetVectorTileMetadata();
                 List<vector_layer> vlayers = new List<vector_layer>();
                 foreach (VectorLayerMetadata layerMetadata in layerMetadataList)
@@ -73,7 +73,7 @@ namespace TileCook.Web.Controllers
 
         private string GetDefaultFormat(Layer layer)
         {
-            foreach (string format in layer.formats)
+            foreach (string format in layer.Formats)
             {
                 if (format.ToLower() != "json")
                 {
@@ -85,7 +85,7 @@ namespace TileCook.Web.Controllers
 
         private bool HasUTFGrid(Layer layer)
         {
-            foreach (string format in layer.formats)
+            foreach (string format in layer.Formats)
             {
                 if (format.ToLower() == "json")
                 {

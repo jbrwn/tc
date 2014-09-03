@@ -48,11 +48,11 @@ namespace TileCook
         [DataMember]
         public string jpegOptions { get; set; }
 
-        public byte[] render(Coord coord, string format, int tileWidth, int tileHeight)
+        public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)
         {
             // Get source layer
             Layer sourceLayer = LayerCache.GetLayer(TileSource);
-            byte[] tileBytes = sourceLayer.getTile(coord.Z, coord.X, coord.Y, "pbf");
+            byte[] tileBytes = sourceLayer.GetTile(coord.Z, coord.X, coord.Y, "pbf");
             
             // Uncompress bytes
             if (tileBytes.Length > 0)
@@ -95,7 +95,7 @@ namespace TileCook
             }
         }
 
-        public List<string> getFormats()
+        public List<string> GetFormats()
         {
             return new List<string> { "png", "jpg"};
         }

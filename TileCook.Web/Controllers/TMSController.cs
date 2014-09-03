@@ -39,7 +39,7 @@ namespace TileCook.Web.Controllers
             byte[] img;
             try
             {
-                img = layer.getTile(Z, X, Y, Format);
+                img = layer.GetTile(Z, X, Y, Format);
             }
             catch (TileOutOfRangeException e)
             {
@@ -76,7 +76,7 @@ namespace TileCook.Web.Controllers
 
             // Set browser cache control
             response.Headers.CacheControl = new CacheControlHeaderValue();
-            response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.browserCache);
+            response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.BrowserCache);
 
             return response;
         }
@@ -177,18 +177,18 @@ namespace TileCook.Web.Controllers
             tileMap.Title = layer.Title;
             tileMap.SRS = layer.Gridset.SRS;
             tileMap.BoudningBox = new BoundingBox();
-            tileMap.BoudningBox.minx = layer.bounds.Minx.ToString();
-            tileMap.BoudningBox.miny = layer.bounds.Miny.ToString();
-            tileMap.BoudningBox.maxx = layer.bounds.Maxx.ToString();
-            tileMap.BoudningBox.maxy = layer.bounds.Maxy.ToString();
+            tileMap.BoudningBox.minx = layer.Bounds.Minx.ToString();
+            tileMap.BoudningBox.miny = layer.Bounds.Miny.ToString();
+            tileMap.BoudningBox.maxx = layer.Bounds.Maxx.ToString();
+            tileMap.BoudningBox.maxy = layer.Bounds.Maxy.ToString();
             tileMap.Origin = new Origin();
-            tileMap.Origin.x = layer.bounds.Minx.ToString();
-            tileMap.Origin.y = layer.bounds.Miny.ToString();
+            tileMap.Origin.x = layer.Bounds.Minx.ToString();
+            tileMap.Origin.y = layer.Bounds.Miny.ToString();
             tileMap.TileFormat = new TileFormat();
             tileMap.TileFormat.width = layer.Gridset.TileHeight.ToString();
             tileMap.TileFormat.height = layer.Gridset.TileWidth.ToString();
-            tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.formats[0]);
-            tileMap.TileFormat.extension = layer.formats[0];
+            tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.Formats[0]);
+            tileMap.TileFormat.extension = layer.Formats[0];
             tileMap.TileSets = new TileSets();
             for(int i=0;i<layer.Gridset.Grids.Count;i++)
             {

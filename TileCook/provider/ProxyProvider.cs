@@ -27,7 +27,7 @@ namespace TileCook
         [DataMember(IsRequired = true)]
         public string urlTemplate {get; set;}
 
-        public byte[] render(Coord coord, string format, int tileWidth, int tileHeight)
+        public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)
         {
             string urlRequest = this.urlTemplate;
             urlRequest = Regex.Replace(urlRequest, "{z}", coord.Z.ToString(), RegexOptions.IgnoreCase);
@@ -50,7 +50,7 @@ namespace TileCook
             }
         }
 
-        public List<string> getFormats()
+        public List<string> GetFormats()
         {
             return this._formats;
         }

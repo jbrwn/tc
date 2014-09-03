@@ -62,7 +62,7 @@ namespace TileCook
         [DataMember]
         public string Compression { get; set; }
 
-        public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
+        public byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 
@@ -119,7 +119,7 @@ namespace TileCook
             }
         }
 
-        public List<string> getFormats()
+        public List<string> GetFormats()
         {
             return new List<string>{"png", "jpg", "json", "pbf"};
         }

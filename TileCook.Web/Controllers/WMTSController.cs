@@ -67,7 +67,7 @@ namespace TileCook.Web.Controllers
             try
             {
                 TileRow = layer.FlipY(TileMatrix, TileRow);
-                img = layer.getTile(TileMatrix, TileCol, TileRow, Format);
+                img = layer.GetTile(TileMatrix, TileCol, TileRow, Format);
             }
             catch (TileOutOfRangeException e)
             {
@@ -126,7 +126,7 @@ namespace TileCook.Web.Controllers
 
             // Set browser cache control
             response.Headers.CacheControl = new CacheControlHeaderValue();
-            response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.browserCache);
+            response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.BrowserCache);
 
             return response;
 
@@ -193,20 +193,20 @@ namespace TileCook.Web.Controllers
                 LayerType.Title[0].Value = layers[i].Title;
                 LayerType.BoundingBox = new BoundingBoxType[] { new BoundingBoxType() };
                 LayerType.BoundingBox[0].crs = layers[i].Gridset.SRS;
-                LayerType.BoundingBox[0].LowerCorner = layers[i].bounds.Minx.ToString() + " " + layers[i].bounds.Miny.ToString();
-                LayerType.BoundingBox[0].UpperCorner = layers[i].bounds.Maxx.ToString() + " " + layers[i].bounds.Maxy.ToString();
+                LayerType.BoundingBox[0].LowerCorner = layers[i].Bounds.Minx.ToString() + " " + layers[i].Bounds.Miny.ToString();
+                LayerType.BoundingBox[0].UpperCorner = layers[i].Bounds.Maxx.ToString() + " " + layers[i].Bounds.Maxy.ToString();
                 LayerType.Style = new Style[] {new Style() };
                 LayerType.Style[0].isDefault = true;
                 LayerType.Style[0].Identifier = new CodeType();
                 LayerType.Style[0].Identifier.Value = "default";
-                LayerType.Format = new string[layers[i].formats.Count];
-                for (int j = 0; j < layers[i].formats.Count;j++ )
+                LayerType.Format = new string[layers[i].Formats.Count];
+                for (int j = 0; j < layers[i].Formats.Count;j++ )
                 {
-                    LayerType.Format[j] = ContentType.GetContentType(layers[i].formats[j]);
+                    LayerType.Format[j] = ContentType.GetContentType(layers[i].Formats[j]);
                 }
                 LayerType.TileMatrixSetLink = new TileMatrixSetLink[] { new TileMatrixSetLink() };
                 LayerType.TileMatrixSetLink[0].TileMatrixSet = layers[i].Gridset.Name;
-                if (!layers[i].bounds.Equals(layers[i].Gridset.Envelope))
+                if (!layers[i].Bounds.Equals(layers[i].Gridset.Envelope))
                 {
                     int zLevels = layers[i].MaxZoom - layers[i].MinZoom;
                     LayerType.TileMatrixSetLink[0].TileMatrixSetLimits = new TileMatrixLimits[zLevels];
@@ -214,8 +214,8 @@ namespace TileCook.Web.Controllers
                     {
                         int z = layers[i].MinZoom + j;
                         Grid g = layers[i].Gridset.Grids[z];
-                        Coord lowCoord = layers[i].Gridset.PointToCoord(new Point(layers[i].bounds.Minx, layers[i].bounds.Miny), z);
-                        Coord highCoord = layers[i].Gridset.PointToCoord(new Point(layers[i].bounds.Maxx, layers[i].bounds.Maxy), z);
+                        Coord lowCoord = layers[i].Gridset.PointToCoord(new Point(layers[i].Bounds.Minx, layers[i].Bounds.Miny), z);
+                        Coord highCoord = layers[i].Gridset.PointToCoord(new Point(layers[i].Bounds.Maxx, layers[i].Bounds.Maxy), z);
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j] = new TileMatrixLimits();
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].TileMatrix = (layers[i].MinZoom + j).ToString();
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MinTileRow = lowCoord.X.ToString();
@@ -224,11 +224,11 @@ namespace TileCook.Web.Controllers
                         LayerType.TileMatrixSetLink[0].TileMatrixSetLimits[j].MaxTileCol = highCoord.Y.ToString();
                     }
                 }
-                LayerType.ResourceURL = new URLTemplateType[layers[i].formats.Count];
-                for (int j = 0; j < layers[i].formats.Count; j++)
+                LayerType.ResourceURL = new URLTemplateType[layers[i].Formats.Count];
+                for (int j = 0; j < layers[i].Formats.Count; j++)
                 {
                     LayerType.ResourceURL[j] = new URLTemplateType();
-                    LayerType.ResourceURL[j].format = ContentType.GetContentType(layers[i].formats[j]);
+                    LayerType.ResourceURL[j].format = ContentType.GetContentType(layers[i].Formats[j]);
                     LayerType.ResourceURL[j].resourceType = URLTemplateTypeResourceType.tile;
                     LayerType.ResourceURL[j].template = HttpUtility.UrlDecode(Url.Link("WMTSGetTile", new { 
                         Version = "1.0.0", 
@@ -238,7 +238,7 @@ namespace TileCook.Web.Controllers
                         TileMatrix = "{TileMatrix}",
                         TileRow = "{TileRow}",
                         TileCol = "{TileCol}",
-                        Format = layers[i].formats[j]
+                        Format = layers[i].Formats[j]
                     }));
                 }
             }

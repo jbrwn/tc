@@ -57,7 +57,7 @@ namespace TileCook
         [DataMember]
         public string transparent { get; set; }
 
-        public byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight)
+        public byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
             StringBuilder query = new StringBuilder();
             query.Append("request=GetMap");
@@ -92,7 +92,7 @@ namespace TileCook
             }
         }
 
-        public List<string> getFormats()
+        public List<string> GetFormats()
         {
             return new List<string> { this.format };
         }

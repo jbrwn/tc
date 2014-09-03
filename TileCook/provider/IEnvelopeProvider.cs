@@ -8,6 +8,6 @@ namespace TileCook
 {
     public interface IEnvelopeProvider : IProvider
     {
-        byte[] render(Envelope envelope, string format, int tileWidth, int tileHeight);
+        byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight);
     }
 }

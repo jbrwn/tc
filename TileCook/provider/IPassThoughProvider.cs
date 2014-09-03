@@ -8,6 +8,6 @@ namespace TileCook
 {
     public interface IPassThoughProvider : IProvider
     {
-        byte[] render(Coord coord, string format, int tileWidth, int tileHeight);
+        byte[] Render(Coord coord, string format, int tileWidth, int tileHeight);
     }
 }

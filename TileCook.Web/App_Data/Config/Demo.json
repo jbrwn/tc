@@ -1,7 +1,7 @@
 {
     "Name": "Demo",
     "Title": "Demo tile layer with no cache",
-    "provider": {
+    "Provider": {
         "__type": "MapnikProvider:#TileCook",
         "xmlConfig": "data\\demo.xml",
         "Buffer":  "128"

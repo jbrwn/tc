@@ -12,7 +12,7 @@ namespace TileCook
     [DataContract]
     public class TestProvider : IEnvelopeProvider
     {   
-        public byte [] render(Envelope envelope, string format, int tileWidth, int tileHeight)
+        public byte [] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
             using (Bitmap img = new Bitmap(tileWidth, tileHeight))
             {
@@ -42,7 +42,7 @@ namespace TileCook
             }
         }
 
-        public List<string> getFormats()
+        public List<string> GetFormats()
         {
             return new List<string> {"png"};
         }
