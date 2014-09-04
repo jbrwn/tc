@@ -11,7 +11,7 @@ using System.IO;
 namespace TileCook
 {
     [DataContract]
-    class MBTilesCache : ICache
+    public class MBTilesCache : ICache
     {
         private MBTilesCache() { }
 
