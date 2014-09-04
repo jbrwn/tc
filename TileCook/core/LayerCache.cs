@@ -82,9 +82,9 @@ namespace TileCook
             return null;
         }
 
-        public static Dictionary<string, Layer> GetLayers()
+        public static IEnumerable<Layer> GetLayers()
         {
-            return new Dictionary<string, Layer>(_layers);
+            return _layers.Values.ToList();
         }
     }
 }

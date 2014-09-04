@@ -7,12 +7,19 @@ using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using TileCook;
+using TileCook.Web.Models;
 using TileCook.Web.TMSService;
 
 namespace TileCook.Web.Controllers
 {
     public class TMSController : ApiController
     {
+        private ILayerRepository _repository;
+
+        public TMSController()
+        {
+            this._repository = new LayerRepository();
+        }
 
         [HttpGet]
         [ActionName("Tile")]
@@ -27,7 +34,7 @@ namespace TileCook.Web.Controllers
             }
 
             // Validate layer
-            Layer layer = LayerCache.GetLayer(TileMap);
+            Layer layer = this._repository.Get(TileMap);
             if (layer == null)
             {
                 TileMapServiceError error = new TileMapServiceError();
@@ -130,12 +137,12 @@ namespace TileCook.Web.Controllers
             //tileMapService.ContactInformation.ContactFacsimileTelephone = null;
             //tileMapService.ContactInformation.ContactElectronicMailAddress = null;
             tileMapService.TileMaps = new List<TileMapMetadata>();
-            foreach (KeyValuePair<string, Layer> item in LayerCache.GetLayers())
+            foreach (Layer layer in this._repository.GetAll())
             {
                 TileMapMetadata tileMapMetadata = new TileMapMetadata();
-                tileMapMetadata.title = item.Value.Title;
-                tileMapMetadata.srs = item.Value.Gridset.SRS;
-                if (item.Value.Gridset.Name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase))
+                tileMapMetadata.title = layer.Title;
+                tileMapMetadata.srs = layer.Gridset.SRS;
+                if (layer.Gridset.Name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase))
                 {
                     tileMapMetadata.profile = "global-mercator";
                 }
@@ -143,7 +150,7 @@ namespace TileCook.Web.Controllers
                 {
                     tileMapMetadata.profile = "none";
                 }
-                tileMapMetadata.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = item.Value.Name });
+                tileMapMetadata.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = layer.Name });
                 tileMapService.TileMaps.Add(tileMapMetadata);
             }
 
@@ -163,7 +170,7 @@ namespace TileCook.Web.Controllers
             }
 
             // Validate layer
-            Layer layer = LayerCache.GetLayer(TileMap);
+            Layer layer = this._repository.Get(TileMap);
             if (layer == null)
             {
                 TileMapServiceError error = new TileMapServiceError();

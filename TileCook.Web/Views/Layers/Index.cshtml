@@ -1,4 +1,4 @@
-﻿@model Dictionary<string,TileCook.Layer>
+﻿@model IEnumerable<TileCook.Layer>
 
 @{
     ViewBag.Title = "TileCook";
@@ -6,9 +6,8 @@
 }
 
 <ul>
-    @foreach (KeyValuePair<string, TileCook.Layer> item in Model)
+    @foreach (TileCook.Layer layer in Model)
     {
-        TileCook.Layer layer = item.Value;
         <li>
            @Html.ActionLink(layer.Name, "Preview", "Layers", new { id = layer.Name }, null)
         </li>

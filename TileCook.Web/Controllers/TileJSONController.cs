@@ -6,6 +6,7 @@ using System.Web;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using TileCook.Web.Models;
 using TileCook.Web.TileJSONService;
 
 
@@ -13,12 +14,19 @@ namespace TileCook.Web.Controllers
 {
     public class TileJSONController : ApiController
     {
+        private ILayerRepository _repository;
+
+        public TileJSONController()
+        {
+            this._repository = new LayerRepository();
+        }
+        
         [HttpGet]
         [ActionName("GetTileJSON")]
         public HttpResponseMessage GetTileJSON(string layer)
         {
             // Validate layer
-            Layer tileLayer = LayerCache.GetLayer(layer);
+            Layer tileLayer = this._repository.Get(layer);
             if (tileLayer == null)
             {
                 string message = "Tileset does not exist";
