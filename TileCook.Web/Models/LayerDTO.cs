@@ -28,7 +28,7 @@ namespace TileCook.Web.Models
         [DataMember]
         public int MaxZoom { get; set; }
         [DataMember]
-        public List<string> Formats { get; set; }
+        public IEnumerable<string> Formats { get; set; }
         [DataMember]
         public int BrowserCache { get; set; }
         [DataMember]
@@ -74,7 +74,7 @@ namespace TileCook.Web.Models
         [DataMember]
         public int GridLayerIndex { get; set; }
         [DataMember]
-        public List<string> GridFields { get; set; }
+        public IEnumerable<string> GridFields { get; set; }
         [DataMember]
         public int GridResolution { get; set; }
         [DataMember]
