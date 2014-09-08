@@ -10,18 +10,18 @@ using System.IO;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class MBTilesCache : ICache
     {
-        private MBTilesCache() { }
 
         private string _version;
         private bool _isCompressed;
+        private string _database;
+        private string _format;
 
         public MBTilesCache(string Database)
             : this(Database, null) { }
 
-        
         public MBTilesCache(string Database, string Format)
         {
             //create mbtiles Database if not exists
@@ -29,28 +29,28 @@ namespace TileCook
             {
                 CreateMBTiles(Database, Format);
             }
-            this.Database = Database;
+            this._database = Database;
 
             //cache version for internal use
             this._version = GetVersion();
 
             //set correct Format
-            this.Format = InitializeFormat(Format);
+            this._format = InitializeFormat(Format);
 
             //check for compressed schema
             this._isCompressed = isCompressed();
         }
 
-        [DataMember(IsRequired=true)]
-        public string Database { get; set; }
 
-        [DataMember]
-        public string Format { get; set; }
+        public string Database 
+        {
+            get { return this._database; } 
+        }
 
         public byte[] Get(int z, int x, int y, string Format)
         {
             byte[] img = null;
-            if (Format.Equals(this.Format, StringComparison.OrdinalIgnoreCase))
+            if (Format.Equals(this._format, StringComparison.OrdinalIgnoreCase))
             {       
                 using(SQLiteConnection con = new SQLiteConnection((string.Format("Data Source={0}", this.Database))))
                 {
@@ -76,7 +76,7 @@ namespace TileCook
 
         public void Put(int z, int x, int y, string Format, byte[] image)
         {
-            if (Format.Equals(this.Format, StringComparison.OrdinalIgnoreCase))
+            if (Format.Equals(this._format, StringComparison.OrdinalIgnoreCase))
             {
                 if (this._isCompressed)
                 {
@@ -131,7 +131,7 @@ namespace TileCook
 
         public void Delete(int z, int x, int y, string Format)
         {
-            if (Format.Equals(this.Format, StringComparison.OrdinalIgnoreCase))
+            if (Format.Equals(this._format, StringComparison.OrdinalIgnoreCase))
             {
                 if (this._isCompressed)
                 {
@@ -301,33 +301,7 @@ namespace TileCook
                     var result = cmd.ExecuteScalar();
                     return result == null ? true : false;
                 }
-            }  
-        }
-
-        [OnDeserialized]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            //set absolution path if Database path is relative
-            if (!Path.IsPathRooted(this.Database))
-            {
-                this.Database = Path.Combine(LayerCache.ConfigDirectory, this.Database);
             }
-
-            //create mbtiles Database if not exists
-            if (!File.Exists(Database))
-            {
-                CreateMBTiles(Database, Format);
-            }
-            this.Database = Database;
-
-            //cache version for internal use
-            this._version = GetVersion();
-
-            //set Format
-            this.Format = InitializeFormat(this.Format);
-
-            //check for compressed schema
-            this._isCompressed = isCompressed();
         }
     }
 }

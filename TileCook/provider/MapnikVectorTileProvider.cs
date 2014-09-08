@@ -10,7 +10,7 @@ using Ionic.Zlib;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class MapnikVectorTileProvider : IPassThoughProvider
     {
 
@@ -33,19 +33,19 @@ namespace TileCook
             _map.LoadMap(xmlConfig);
         }
 
-        [DataMember(IsRequired = true)]
+        
         public string XmlConfig { get; set; }
 
-        [DataMember(IsRequired = true)]
+        
         public string TileSource{ get; set; }
 
-        [DataMember]
+        
         public int Buffer { get; set; }
 
-        [DataMember]
+        
         public string pngOptions { get; set; }
 
-        [DataMember]
+        
         public string jpegOptions { get; set; }
 
         public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)

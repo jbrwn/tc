@@ -5,70 +5,89 @@ using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    [DataContract]
     public class Layer
     {
+        private string _name;
+        private string _title;
+        private ICache _cache;
+        private IProvider _provider;
+        private GridSet _gridSet;
+        private Envelope _bounds;
+        private int _minZoom;
+        private int _maxZoom;
+        private List<string> _formats;
+        private int _browserCache;
+        private bool _disableCache;
+        private bool _disableProvider;
 
-        private Layer()
+
+        public Layer(string name, string title, GridSet gridset, ICache cache, IProvider provider)
+            : this(name, title, gridset, cache, provider, null, 0, 0, null, 0, false, false) { }
+
+
+        public Layer(string name, string title, GridSet gridset, ICache cache, IProvider provider, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
+            // validate params
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("Layer name cannot be null");
+            }
+
+            if (gridset == null)
+            {
+                throw new ArgumentNullException("Layer GridSet cannot be null");
+            }
+
+            if (formats == null && provider == null)
+            {
+                throw new ArgumentNullException("Layer formats and provider cannot both be null");
+            }
+
+            //Set defaults
+            if (bounds == null)
+            {
+                bounds = gridset.Envelope;
+            }
+
+            if (maxZoom == 0)
+            {
+                maxZoom = gridset.Grids.Count;
+            }
+
+            if (formats == null)
+            {
+                formats = provider.GetFormats();
+            }
+
+            // Set properties
+            this._name = name;
+            this._title = title;
+            this._cache = cache;
+            this._provider = provider;
+            this._gridSet = gridset;
+            this._bounds = bounds;
+            this._minZoom = minZoom;
+            this._maxZoom = maxZoom;
+            this._formats = formats;
+            this._browserCache = browserCache;
+            this._disableCache = DisableCache;
+            this._disableProvider = DisableProvider;
         }
 
-        public Layer(string name, string title, ICache cache, IProvider provider, GridSet gridset)
-            : this(name, title, cache, provider, gridset, gridset.Envelope, 0, gridset.Grids.Count, provider.GetFormats(), 3600, false, false) { }
+        
+        public string Name { get{ return this._name;} }
+        public string Title { get{ return this._title;} }
+        public ICache Cache { get{ return this._cache;} }
+        public IProvider Provider { get{ return this._provider;} }
+        public GridSet Gridset { get{ return this._gridSet;} }
+        public Envelope Bounds { get{ return this._bounds;} }
+        public int MinZoom { get{ return this._minZoom;} }
+        public int MaxZoom { get{ return this._maxZoom;} }
+        public IList<string> Formats { get{ return this._formats;} }
+        public int BrowserCache { get{ return this._browserCache;} }
+        public bool DisableCache { get{ return this._disableCache;} }
+        public bool DisableProvider { get{ return this._disableProvider;} }
 
-
-        public Layer(string name, string title,ICache cache, IProvider provider, GridSet gridset, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
-        {
-            this.Name = name;
-            this.Title = title;
-            this.Cache = cache;
-            this.Provider = provider;
-            this.Gridset = gridset;
-            this.Bounds = bounds;
-            this.MinZoom = minZoom;
-            this.MaxZoom = maxZoom;
-            this.Formats = formats;
-            this.BrowserCache = browserCache;
-            this.DisableCache = DisableCache;
-            this.DisableProvider = DisableProvider;
-        }
-
-        [DataMember(IsRequired = true)]
-        public string Name { get; set; }
-
-        [DataMember]
-        public string Title { get; set; }
-
-        [DataMember]
-        public ICache Cache { get; set; }
-
-        [DataMember]
-        public IProvider Provider { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public GridSet Gridset { get; set; }
-
-        [DataMember]
-        public Envelope Bounds { get; set; }
-
-        [DataMember]
-        public int MinZoom { get; set; }
-
-        [DataMember]
-        public int MaxZoom { get; set; }
-
-        [DataMember]
-        public List<string> Formats { get; set; }
-
-        [DataMember]
-        public int BrowserCache { get; set; }
-
-        [DataMember]
-        public bool DisableCache { get; set; }
-
-        [DataMember]
-        public bool DisableProvider { get; set; }
- 
         public byte[] GetTile(int z, int x, int y, string format)
         {
             //check if format supported
@@ -144,23 +163,6 @@ namespace TileCook
                 throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.MinZoom, this.MaxZoom));
             }
             return this.Gridset.GridHeight(z) - y - 1;
-        }
-
-        [OnDeserialized()]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            //minZoom defaults to 0
-            //browserCache defaults to 0
-            //DisableCache defaults to false
-            //DisableProvider defaults to flase
-            if (this.Title == null) { this.Title = ""; }
-            if (this.Bounds == null) { this.Bounds = this.Gridset.Envelope; }
-            if (this.MaxZoom == 0) { this.MaxZoom = this.Gridset.Grids.Count; }
-            if (this.Formats == null) 
-            {
-                if (this.Provider != null) { this.Formats = this.Provider.GetFormats(); }
-                else { this.Formats = new List<string> {}; }
-            }
         }
     }
 }

@@ -2,26 +2,31 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Threading;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class DiskCache : ICache
     {
         private const int ACCESS_POLL_COUNT = 5;
         private const int ACCESS_POLL_INTERVAL = 100; //100 milliseconds
 
-        private DiskCache() { }
+        private string _cacheDirectory;
 
         public DiskCache(string directory)
         {
-            this.CacheDirectory = directory;
+            if (string.IsNullOrEmpty(directory))
+            {
+                throw new ArgumentNullException("DiskCache directory cannot be null");
+            }
+            this._cacheDirectory = directory;
         }
-        
-        [DataMember(IsRequired=true)]
-        public string CacheDirectory { get; set; }
+
+        public string CacheDirectory
+        {
+            get {return this._cacheDirectory;}
+        }
 
         public byte[] Get(int z, int x, int y, string format)
         {
@@ -117,7 +122,7 @@ namespace TileCook
         {
             string filename = y.ToString() + "." + format;
             string path = Path.Combine(
-                this.CacheDirectory,
+                this._cacheDirectory,
                 z.ToString(),
                 x.ToString(),
                 filename

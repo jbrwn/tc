@@ -10,7 +10,7 @@ using System.IO;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class WMSProvider : IEnvelopeProvider
     {
         private WMSProvider() { }
@@ -37,24 +37,24 @@ namespace TileCook
             this.transparent = transparent;
         }
 
-        [DataMember(IsRequired = true)]
+        
         public string url { get; set; }
-        [DataMember(IsRequired = true)]
+        
         public string version { get; set; }
-        [DataMember(IsRequired = true)]
+        
         public string layers { get; set; }
-        [DataMember(IsRequired = true)]
+        
         public string crs { get; set; }
-        [DataMember(IsRequired = true)]
+        
         public string styles { get; set; }
-        [DataMember(IsRequired = true)]
+        
         public string format { get; set; }
 
-        [DataMember]
+        
         public string sld { get; set; }
-        [DataMember]
+        
         public string bgcolor { get; set; }
-        [DataMember]
+        
         public string transparent { get; set; }
 
         public byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight)

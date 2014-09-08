@@ -10,7 +10,7 @@ using System.IO;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class ProxyProvider : IPassThoughProvider
     {
         private ProxyProvider() {}
@@ -24,7 +24,7 @@ namespace TileCook
             this._formats = new List<string> { format };
         }
 
-        [DataMember(IsRequired = true)]
+        
         public string urlTemplate {get; set;}
 
         public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)

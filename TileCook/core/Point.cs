@@ -8,14 +8,17 @@ namespace TileCook
 {
     public class Point
     {
+        private double _x;
+        private double _y;
+
         public Point(double x, double y)
         {
-            this.X = x;
-            this.Y = y;
+            this._x = x;
+            this._y = y;
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { get { return this._x; } }
+        public double Y { get { return this._y; } }
 
     }
 }

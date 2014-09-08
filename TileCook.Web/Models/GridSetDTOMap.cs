@@ -11,19 +11,19 @@ namespace TileCook.Web.Models
         {
             if (obj != null)
             {
-                // Special case - well known gridset is provided
-                if (
-                    obj.Name != null &&
-                    obj.SRS == null &&
-                    obj.Envelope == null &&
-                    obj.TileSize == 0 &&
-                    obj.ZoomLevels == 0 &&
-                    obj.MetersPerUnit == 0 &&
-                    obj.TopOrigin == false
-                )
-                {
-                    return new GridSet(obj.Name);
-                }
+                //// Special case - well known gridset is provided
+                //if (
+                //    obj.Name != null &&
+                //    obj.SRS == null &&
+                //    obj.Envelope == null &&
+                //    obj.TileSize == 0 &&
+                //    obj.ZoomLevels == 0 &&
+                //    obj.MetersPerUnit == 0 &&
+                //    obj.TopOrigin == false
+                //)
+                //{
+                //    return new GridSet(obj.Name);
+                //}
 
                 // get envelope
                 EnvelopeDTOMap envMap = new EnvelopeDTOMap();

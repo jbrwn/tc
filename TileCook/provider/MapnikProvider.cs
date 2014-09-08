@@ -10,7 +10,7 @@ using Ionic.Zlib;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class MapnikProvider : IEnvelopeProvider,IVectorTileProvider
     {
 
@@ -38,28 +38,28 @@ namespace TileCook
             _map.LoadMap(xmlConfig);
         }
 
-        [DataMember(IsRequired=true)]
+
         public string xmlConfig { get; set; }
 
-        [DataMember]
+        
         public int Buffer { get; set; }
 
-        [DataMember]
+        
         public string pngOptions { get; set; }
 
-        [DataMember]
+        
         public string jpegOptions { get; set; }
 
-        [DataMember]
+        
         public int gridLayerIndex { get; set; }
 
-        [DataMember]
+        
         public List<string> gridFields { get; set; }
 
-        [DataMember]
+        
         public int gridResolution { get; set; }
 
-        [DataMember]
+        
         public string Compression { get; set; }
 
         public byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
@@ -214,26 +214,26 @@ namespace TileCook
         }
     }
 
-    [DataContract]
+    
     public class MapnikVectorTileMetadata
     {
         public MapnikVectorTileMetadata() { }
 
-        [DataMember]
+        
         public List<MapnikVectorLayerMetadata> vector_layers { get; set; }
 
     }
 
-    [DataContract]
+    
     public class MapnikVectorLayerMetadata
     {
         public MapnikVectorLayerMetadata() { }
 
-        [DataMember]
+        
         public string id { get; set; }
-        [DataMember]
+        
         public string description { get; set; }
-        [DataMember]
+        
         public Dictionary<string, string> fields { get; set; }
     }
 
