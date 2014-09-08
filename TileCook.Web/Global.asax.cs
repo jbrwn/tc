@@ -28,21 +28,21 @@ namespace TileCook.Web
             MapnikProvider.RegisterFonts(Server.MapPath("~/bin/mapnik/fonts"));
 
             //TileCook config
-            LayerCache.ConfigDirectory = Server.MapPath("~/App_Data/Config");
-            WellKnownScaleSet.RegisterDirectory(Path.Combine(LayerCache.ConfigDirectory, "WellKnownScaleSets"));
+            //LayerCache.ConfigDirectory = Server.MapPath("~/App_Data/Config");
+            //WellKnownScaleSet.RegisterDirectory(Path.Combine(LayerCache.ConfigDirectory, "WellKnownScaleSets"));
 
-            foreach (string file in Directory.EnumerateFiles(LayerCache.ConfigDirectory, "*.json", SearchOption.TopDirectoryOnly))
-            {
-                try
-                {
+            //foreach (string file in Directory.EnumerateFiles(LayerCache.ConfigDirectory, "*.json", SearchOption.TopDirectoryOnly))
+            //{
+            //    try
+            //    {
 
-                    LayerCache.RegisterFile(file);
-                }
-                catch (Exception e)
-                {
-                    //log failed config load
-                }
-            }
+            //        LayerCache.RegisterFile(file);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        //log failed config load
+            //    }
+            //}
 
         }
     }

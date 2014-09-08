@@ -82,7 +82,6 @@
     <Compile Include="provider\IPassThoughProvider.cs" />
     <Compile Include="provider\IProvider.cs" />
     <Compile Include="core\Layer.cs" />
-    <Compile Include="core\LayerCache.cs" />
     <Compile Include="provider\IVectorTileProvider.cs" />
     <Compile Include="provider\MapnikProvider.cs" />
     <Compile Include="cache\MBTilesCache.cs" />

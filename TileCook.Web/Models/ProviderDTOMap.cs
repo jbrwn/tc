@@ -17,7 +17,8 @@ namespace TileCook.Web.Models
                     case "mapnik":
                         return new MapnikProvider(obj.XmlConfig);
                     case "mapnikvector":
-                        return new MapnikVectorTileProvider(obj.XmlConfig, obj.TileSource);
+                        return null;
+                        //return new MapnikVectorTileProvider(obj.XmlConfig, obj.TileSource);
                     case "proxy":
                         return new ProxyProvider(obj.UrlTemplate);
                     case "test":

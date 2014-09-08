@@ -9,7 +9,7 @@ namespace TileCook.Test
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ctor_NullGridSet_throws()
+        public void Ctor_NullGridSet_throws()
         {
             Layer l = new Layer(
                 "test",
@@ -22,7 +22,7 @@ namespace TileCook.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ctor_NullName_throws()
+        public void Ctor_NullName_throws()
         {
             Layer l = new Layer(
                 null,
@@ -35,7 +35,7 @@ namespace TileCook.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void ctor_NullProviderNullFormats_throws()
+        public void Ctor_NullProviderNullFormats_throws()
         {
             Layer l = new Layer(
                 "test",
@@ -54,27 +54,20 @@ namespace TileCook.Test
         }
 
         [TestMethod]
-        public void ctor_GridSetOnly_DefaultsSetCorrectly()
+        public void Ctor_MinimalArgs_DefaultsSetCorrectly()
         {
             Layer l = new Layer(
                 "test",
                 "test layer",
                 new GridSet("Spherical Mercator", "EPSG:900913", new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789), 18, 256, 1, false),
                 new DiskCache(@".\"),
-                new TestProvider(),
-                null,
-                0,
-                0,
-                null,
-                0,
-                false,
-                false
+                new TestProvider()
             );
 
             Assert.IsTrue(l.Bounds.Equals(new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789)));
             Assert.AreEqual(l.MaxZoom, 18);
             Assert.IsNotNull(l.Formats);
-            CollectionAssert.AreEquivalent((List<string>)l.Formats, l.Provider.GetFormats());
+            CollectionAssert.AreEquivalent(l.Formats, l.Provider.GetFormats());
         }
 
 

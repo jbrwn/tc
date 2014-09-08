@@ -10,58 +10,46 @@ using Ionic.Zlib;
 
 namespace TileCook
 {
-    
     public class MapnikProvider : IEnvelopeProvider,IVectorTileProvider
     {
-
         private Map _map;
         private static readonly Object mapLock = new Object();
+        private string _pngOptions;
+        private string _jpegOptions;
+        private int _gridLayerIndex;
+        private int _gridResolution;
+        private List<string> _gridFields;
+        private string _compression;
 
-        private MapnikProvider() { }
-        
         public MapnikProvider(string xmlConfig)
+            : this(xmlConfig, 0, null, null, 0, 0, null, null) { }
+
+
+        public MapnikProvider(string xmlConfig, int buffer, string pngOptions, string jpegOptions, int gridLayerIndex, int gridResolution, List<string> gridFields, string compression)
         {
-            this.xmlConfig = xmlConfig;
-            this.Buffer = 0;
-
-            //set img defaults
-            this.pngOptions = "png";
-            this.jpegOptions = "jpeg";
-
-            //set grid defaults
-            this.gridLayerIndex = 0;
-            this.gridResolution = 4;
-            this.gridFields = new List<string>();
-
-
-            _map = new Map();
+            if (string.IsNullOrEmpty(xmlConfig))
+            {
+                throw new ArgumentNullException("MapnikProvider xmlConfig cannot be null or empty");
+            }
+            this._map = new Map();
             _map.LoadMap(xmlConfig);
+            this._map.Buffer = buffer;
+
+            // set defaults
+            if (this._jpegOptions == null) { this._jpegOptions = "jpeg"; }
+            if (this._pngOptions == null) { this._pngOptions = "png"; }
+            if (this._gridResolution == 0) { this._gridResolution = 4; }
+            if (this._gridFields == null) { this._gridFields = new List<string>(); }
+            if (this._compression == null) { this._compression = "gzip"; }
         }
 
-
-        public string xmlConfig { get; set; }
-
+        public string JpegOptions { get { return this._jpegOptions; } }
+        public string PngOptions { get { return this._pngOptions; } }
+        public int GridLayerIndex { get { return this._gridLayerIndex; } }
+        public int GridResolution { get { return this._gridResolution; } }
+        public List<string> GridFields { get { return this._gridFields; } }
+        public string Compression { get { return this._compression; } }
         
-        public int Buffer { get; set; }
-
-        
-        public string pngOptions { get; set; }
-
-        
-        public string jpegOptions { get; set; }
-
-        
-        public int gridLayerIndex { get; set; }
-
-        
-        public List<string> gridFields { get; set; }
-
-        
-        public int gridResolution { get; set; }
-
-        
-        public string Compression { get; set; }
-
         public byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
             // Lock map object for rendering
@@ -71,7 +59,6 @@ namespace TileCook
                 _map.Width = Convert.ToUInt32(tileWidth);
                 _map.Height = Convert.ToUInt32(tileHeight);
                 _map.ZoomToBox(envelope.Minx, envelope.Miny, envelope.Maxx, envelope.Maxy);
-                _map.Buffer = this.Buffer;
 
                 format = format.ToLower();
                 // Render Image
@@ -81,11 +68,11 @@ namespace TileCook
                     _map.Render(img);
                     if (format == "png")
                     {
-                        format = this.pngOptions;
+                        format = this._pngOptions;
                     }
                     if (format == "jpg")
                     {
-                        format = this.jpegOptions;
+                        format = this._jpegOptions;
                     }
                     return img.Encode(format);
                 }
@@ -94,8 +81,8 @@ namespace TileCook
                 else if (format == "json")
                 {
                     NETMapnik.Grid grd = new NETMapnik.Grid(_map.Width, _map.Height);
-                    _map.Render(grd, Convert.ToUInt32(this.gridLayerIndex), this.gridFields);
-                    string json = JsonConvert.SerializeObject(grd.Encode("utf", true, Convert.ToUInt32(this.gridResolution)));
+                    _map.Render(grd, Convert.ToUInt32(this._gridLayerIndex), this._gridFields);
+                    string json = JsonConvert.SerializeObject(grd.Encode("utf", true, Convert.ToUInt32(this._gridResolution)));
                     return Encoding.UTF8.GetBytes(json);
                 }
 
@@ -121,31 +108,12 @@ namespace TileCook
 
         public List<string> GetFormats()
         {
-            return new List<string>{"png", "jpg", "json", "pbf"};
-        }
-
-        [OnDeserialized()]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            if (this.jpegOptions == null) { this.jpegOptions = "jpeg"; }
-            if (this.pngOptions == null) { this.pngOptions = "png"; }
-            if (this.gridResolution == 0) { this.gridResolution = 4; }
-            if (this.gridFields == null) { this.gridFields = new List<string>(); }
-            //gridLayerIndex defaults to 0
-            //buffer defaults to 0
-            if (this.Compression == null) { this.Compression = "gzip"; }
-            
-            if (!Path.IsPathRooted(this.xmlConfig))
-            {
-                xmlConfig = Path.Combine(LayerCache.ConfigDirectory,this.xmlConfig);
-            }
-            _map = new Map();
-            _map.LoadMap(this.xmlConfig);
+            return new List<string> { "png", "jpg", "json", "pbf" };
         }
 
         private byte[] Compress(byte[] bytes)
         {
-            if (this.Compression.ToLower() == "gzip")
+            if (this._compression.ToLower() == "gzip")
             {
                 using (MemoryStream memory = new MemoryStream())
                 {
@@ -156,7 +124,7 @@ namespace TileCook
                     return memory.ToArray();
                 }
             }
-            if (this.Compression.ToLower() == "deflate")
+            if (this._compression.ToLower() == "deflate")
             {
                 using (MemoryStream memory = new MemoryStream())
                 {
@@ -218,8 +186,6 @@ namespace TileCook
     public class MapnikVectorTileMetadata
     {
         public MapnikVectorTileMetadata() { }
-
-        
         public List<MapnikVectorLayerMetadata> vector_layers { get; set; }
 
     }
@@ -228,12 +194,8 @@ namespace TileCook
     public class MapnikVectorLayerMetadata
     {
         public MapnikVectorLayerMetadata() { }
-
-        
         public string id { get; set; }
-        
         public string description { get; set; }
-        
         public Dictionary<string, string> fields { get; set; }
     }
 

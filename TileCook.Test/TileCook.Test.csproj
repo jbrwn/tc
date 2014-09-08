@@ -54,12 +54,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GridSetTests.cs" />
     <Compile Include="LayerTests.cs" />
+    <Compile Include="MapnikProviderTests.cs" />
+    <Compile Include="MapnikVectorProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TileCook\TileCook.csproj">
       <Project>{b3e33476-87ad-45b8-8d21-a1e9cd012a33}</Project>
       <Name>TileCook</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.runsettings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\empty.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

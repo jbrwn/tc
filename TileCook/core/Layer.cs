@@ -83,7 +83,7 @@ namespace TileCook
         public Envelope Bounds { get{ return this._bounds;} }
         public int MinZoom { get{ return this._minZoom;} }
         public int MaxZoom { get{ return this._maxZoom;} }
-        public IList<string> Formats { get{ return this._formats;} }
+        public List<string> Formats { get{ return this._formats;} }
         public int BrowserCache { get{ return this._browserCache;} }
         public bool DisableCache { get{ return this._disableCache;} }
         public bool DisableProvider { get{ return this._disableProvider;} }
