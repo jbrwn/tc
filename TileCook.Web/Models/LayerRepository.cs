@@ -16,17 +16,22 @@ namespace TileCook.Web.Models
 
         public Layer Get(string name)
         {
-            return LayerCache.GetLayer(name);
+            Layer layer = null;
+            _layers.TryGetValue(name, out layer);
+            return layer;
         }
 
         public IEnumerable<Layer> GetAll()
         {
-            return LayerCache.GetLayers();
+            return _layers.Values.ToList<Layer>();
         }
 
         public void Put(Layer layer)
         {
-            throw new NotImplementedException();
+            if (!_layers.TryAdd(layer.Name, layer))
+            {
+                throw new InvalidOperationException(string.Format("Put failed for layer {0}", layer.Name));
+            }
         }
 
         public void Update(Layer layer)
@@ -44,17 +49,17 @@ namespace TileCook.Web.Models
             throw new NotImplementedException();
         }
 
-        // convenience method for initial load of _layers dictionary
-        // should only be called when app starts for first time
-        public void Load(TextReader textReader)
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            using (JsonTextReader reader = new JsonTextReader(textReader))
-            {
-                LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader);
-                // map layerDTO to layer object
-                //_layers.add
-            }
-        }
+        //// convenience method for initial load of _layers dictionary
+        //// should only be called when app starts for first time
+        //public void Load(TextReader textReader)
+        //{
+        //    JsonSerializer serializer = new JsonSerializer();
+        //    using (JsonTextReader reader = new JsonTextReader(textReader))
+        //    {
+        //        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader);
+        //        // map layerDTO to layer object
+        //        //_layers.add
+        //    }
+        //}
     }
 }

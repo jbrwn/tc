@@ -11,7 +11,7 @@ using Ionic.Zlib;
 namespace TileCook
 {
     [DataContract]
-    class MapnikVectorTileProvider : IPassThoughProvider
+    public class MapnikVectorTileProvider : IPassThoughProvider
     {
 
         private Map _map;
