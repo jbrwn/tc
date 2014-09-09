@@ -11,13 +11,13 @@ namespace TileCook.Test
     // bottom left origin
     public class GridSetBuilder
     {
-        private string _name = "test gridset";
-        private string _srs = "epsg:900913";
-        private Envelope _envelope = new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789);
-        private int _tileSize = 256;
-        private int _levels = 18;
-        private double _metersPerUnit = 1;
-        private bool _topOrigin = false;
+        private string _name;
+        private string _srs;
+        private Envelope _envelope;
+        private int _tileSize;
+        private int _levels;
+        private double _metersPerUnit;
+        private bool _topOrigin;
 
         public GridSet Build()
         {
@@ -30,6 +30,18 @@ namespace TileCook.Test
                 this._metersPerUnit,
                 this._topOrigin
             );
+        }
+
+        public GridSetBuilder SphericalMercator()
+        {
+            this._name = "test gridset";
+            this._srs = "epsg:900913";
+            this._envelope = new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789);
+            this._tileSize = 256;
+            this._levels = 18;
+            this._metersPerUnit = 1;
+            this._topOrigin = false;
+            return this;
         }
 
         public static implicit operator GridSet(GridSetBuilder obj)

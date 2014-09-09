@@ -11,14 +11,16 @@ namespace TileCook.Test
         [TestMethod]
         public void Ctor_SphericalMercator_GridsCreated()
         {
-            GridSet g = new GridSetBuilder();
+            GridSet g = new GridSetBuilder()
+                .SphericalMercator();
             Assert.AreEqual(18, g.Grids.Count);
         }
 
         [TestMethod]
         public void CoordToEnvelope_SphericalMercator_ReturnsEnvelope()
         {
-            GridSet g = new GridSetBuilder();
+            GridSet g = new GridSetBuilder()
+                .SphericalMercator();
             Envelope env = g.Envelope;
 
             // 0/0/0 coord should match gridset envelope
@@ -28,14 +30,16 @@ namespace TileCook.Test
         [TestMethod]
         public void GridWidth_SphericalMercator_ReturnsWidth()
         {
-            GridSet g = new GridSetBuilder();
+            GridSet g = new GridSetBuilder()
+                .SphericalMercator();
             Assert.AreEqual(4, g.GridWidth(2));
         }
 
         [TestMethod]
         public void GridHeight_SphericalMercator_ReturnsHeight()
         {
-            GridSet g = new GridSetBuilder();
+            GridSet g = new GridSetBuilder()
+                .SphericalMercator();
             Assert.AreEqual(4, g.GridHeight(2));
         }
     }

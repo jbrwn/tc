@@ -8,7 +8,7 @@ namespace TileCook.Test
 {
     class DiskCacheBuilder
     {
-        private string _cacheDirectory = null;
+        private string _cacheDirectory;
 
         public DiskCacheBuilder SetCacheDirectory(string cacheDirectory)
         {

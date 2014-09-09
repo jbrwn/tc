@@ -31,16 +31,64 @@ namespace TileCook
             {
                 throw new ArgumentNullException("MapnikProvider xmlConfig cannot be null or empty");
             }
+
+            // set jpegOptions
+            if (jpegOptions == null) 
+            { 
+                this._jpegOptions = "jpeg"; 
+            }
+            else
+            {
+                this._jpegOptions = jpegOptions;
+            }
+
+            // set pngOptions
+            if (pngOptions == null) 
+            {
+                this._pngOptions = "png"; 
+            }
+            else
+            {
+                this._pngOptions = pngOptions;
+            }
+
+            // set gridLayerIndex
+            this._gridLayerIndex = gridLayerIndex;
+
+            // set gridResolution
+            if (gridResolution == 0) 
+            {
+                this._gridResolution = 4; 
+            }
+            else
+            {
+                this._gridResolution = gridResolution;
+            }
+
+            // set gridFields
+            if (gridFields == null)
+            { 
+                this._gridFields = new List<string>(); 
+            }
+            else
+            {
+                this._gridFields = gridFields;
+            }
+
+            // set compression
+            if (compression == null) 
+            { 
+                this._compression = "gzip"; 
+            }
+            else
+            {
+                this._compression = compression;
+            }
+
+            // create internal mapnik object
             this._map = new Map();
             _map.LoadMap(xmlConfig);
             this._map.Buffer = buffer;
-
-            // set defaults
-            if (this._jpegOptions == null) { this._jpegOptions = "jpeg"; }
-            if (this._pngOptions == null) { this._pngOptions = "png"; }
-            if (this._gridResolution == 0) { this._gridResolution = 4; }
-            if (this._gridFields == null) { this._gridFields = new List<string>(); }
-            if (this._compression == null) { this._compression = "gzip"; }
         }
 
         public string JpegOptions { get { return this._jpegOptions; } }

@@ -11,13 +11,16 @@ namespace TileCook.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_NullXml_Throws()
         {
-            MapnikProvider m = new MapnikProvider(null);
+            MapnikProvider m = new MapnikProviderBuilder()
+                .SetXmlConfig(null);
         }
 
         [TestMethod]
         public void Ctor_XmlOnly_DefaultsSetCorrectly()
         {
-            MapnikProvider m = new MapnikProvider(@"..\..\data\empty.xml");
+            MapnikProvider m = new MapnikProviderBuilder()
+                .SetXmlConfig(@"..\..\data\empty.xml");
+
             Assert.AreEqual("png", m.PngOptions);
             Assert.AreEqual("jpeg", m.JpegOptions);
             Assert.AreEqual(0, m.GridLayerIndex);

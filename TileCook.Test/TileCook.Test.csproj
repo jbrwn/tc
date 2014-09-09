@@ -57,6 +57,7 @@
     <Compile Include="DiskCacheTests.cs" />
     <Compile Include="GridSetBuilder.cs" />
     <Compile Include="LayerBuilder.cs" />
+    <Compile Include="MapnikProviderBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GridSetTests.cs" />
     <Compile Include="LayerTests.cs" />

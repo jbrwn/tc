@@ -28,14 +28,40 @@ namespace TileCook
 
         public GridSet(string name, string srs, Envelope envelope, int zoomLevels, int tileSize, double metersPerUnit, bool topOrigin)
         {
-            this._name = name;
+            // Set name
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("GridSet name cannot be null or empty");
+            }
+            else
+            {
+                this._name = name;
+            }
+            
+            // set SRS
             this._srs = srs;
-            this._envelope = envelope;
+
+            // set Envelope
+            if (envelope == null)
+            {
+                throw new ArgumentNullException("GridSet Envelope cannot be null");
+            }
+            else
+            {
+                this._envelope = envelope;
+            }
+
+            // Set tile size
             this._tileWidth = tileSize;
             this._tileHeight = tileSize;
+
+            // Set meters per unit
             this._metersPerUnit = metersPerUnit;
+
+            // Set top orgin
             this._topOrigin = topOrigin;
 
+            // Initialize grid list
             this._grids = new List<Grid>();
             double initialResolution = (envelope.Maxx - envelope.Minx) / tileSize;
             for (int i = 0; i < zoomLevels; i++)
@@ -48,12 +74,14 @@ namespace TileCook
             }
         }
 
-
         public string Name { get { return this._name; } }
         public string SRS { get { return this._srs; } }
         public double MetersPerUnit { get { return this._metersPerUnit;} }
         public Envelope Envelope { get { return this._envelope; } }
-        public IList<Grid> Grids { get { return this._grids; } }
+
+        // TO DO: return deep copy clone
+        public List<Grid> Grids { get { return new List<Grid>(this._grids); } }
+
         public int TileWidth { get { return this._tileWidth; } }
         public int TileHeight { get { return this._tileHeight; } }
         public bool TopOrigin { get { return this._topOrigin; } }
