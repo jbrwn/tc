@@ -11,14 +11,16 @@ namespace TileCook.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_NullDirectory_Throws()
         {
-            DiskCache dc = new DiskCache(null);
+            DiskCache dc = new DiskCacheBuilder()
+                .SetCacheDirectory(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_EmptyDirectory_Throws()
         {
-            DiskCache dc = new DiskCache("");
+            DiskCache dc = new DiskCacheBuilder()
+                .SetCacheDirectory("");
         }
     }
 }

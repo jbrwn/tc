@@ -77,6 +77,7 @@
     <Compile Include="core\Grid.cs" />
     <Compile Include="core\GridSet.cs" />
     <Compile Include="cache\ICache.cs" />
+    <Compile Include="core\IGridSet.cs" />
     <Compile Include="provider\IEnvelopeProvider.cs" />
     <Compile Include="core\InvalidTileFormatException.cs" />
     <Compile Include="provider\IPassThoughProvider.cs" />

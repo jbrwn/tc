@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-
 
 namespace TileCook
 {
     
-    public class GridSet
+    public class GridSet : IGridSet
     {
         
         private const double METER_PER_PIXEL = .00028;  //.28 mm

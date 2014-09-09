@@ -156,7 +156,7 @@ namespace TileCook.Web.Controllers
             }
 
             IList<Layer> layers = (IList<Layer>)this._repository.GetAll();
-            Dictionary<string, GridSet> uniqueGridSets = new Dictionary<string, GridSet>();
+            Dictionary<string, IGridSet> uniqueGridSets = new Dictionary<string, IGridSet>();
             foreach (Layer l in layers)
             {
                 if (!uniqueGridSets.ContainsKey(l.Gridset.Name))
@@ -164,7 +164,7 @@ namespace TileCook.Web.Controllers
                     uniqueGridSets[l.Gridset.Name] = l.Gridset;
                 }
             }
-            List<GridSet> gridSets = new List<GridSet>(uniqueGridSets.Values);
+            List<IGridSet> gridSets = new List<IGridSet>(uniqueGridSets.Values);
             
             // Start capabilities 
             Capabilities capabilities = new Capabilities();

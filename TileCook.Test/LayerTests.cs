@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Moq;
 
 namespace TileCook.Test
 {
@@ -11,60 +12,48 @@ namespace TileCook.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_NullGridSet_throws()
         {
-            Layer l = new Layer(
-                "test",
-                "test layer", 
-                null, 
-                new DiskCache(@".\"),
-                new TestProvider()
-            );
+            Layer l = new LayerBuilder()
+                .SetName("test")
+                .SetProvider(new Mock<IProvider>().Object)
+                .SetGridSet(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_NullName_throws()
         {
-            Layer l = new Layer(
-                null,
-                "test layer",
-                new GridSet( "Spherical Mercator", "EPSG:900913", new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789), 18, 256, 1, false),
-                new DiskCache(@".\"),
-                new TestProvider()
-            );
+            Layer l = new LayerBuilder()
+                .SetName(null)
+                .SetProvider(new Mock<IProvider>().Object)
+                .SetGridSet(new Mock<IGridSet>().Object);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Ctor_NullProviderNullFormats_throws()
         {
-            Layer l = new Layer(
-                "test",
-                "test layer",
-                new GridSet("Spherical Mercator", "EPSG:900913", new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789), 18, 256, 1, false),
-                new DiskCache(@".\"),
-                null,
-                new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789),
-                0,
-                0,
-                null,
-                0,
-                false,
-                false
-            );
+            Layer l = new LayerBuilder()
+                .SetName("test")
+                .SetProvider(null)
+                .SetGridSet(new Mock<IGridSet>().Object);
         }
 
         [TestMethod]
         public void Ctor_MinimalArgs_DefaultsSetCorrectly()
         {
-            Layer l = new Layer(
-                "test",
-                "test layer",
-                new GridSet("Spherical Mercator", "EPSG:900913", new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789), 18, 256, 1, false),
-                new DiskCache(@".\"),
-                new TestProvider()
-            );
+            var mockProvider = new Mock<IProvider>();
+            mockProvider.Setup(m=> m.GetFormats()).Returns(new List<string>());
 
-            Assert.IsTrue(l.Bounds.Equals(new Envelope(20037508.342789, 20037508.342789, -20037508.342789, -20037508.342789)));
+            var mockGridSet = new Mock<IGridSet>();
+            mockGridSet.Setup(m => m.Grids.Count).Returns(18);
+            mockGridSet.Setup(m => m.Envelope).Returns(new Envelope(0, 0, 1, 1));
+
+            Layer l = new LayerBuilder()
+                .SetName("test")
+                .SetProvider(mockProvider.Object)
+                .SetGridSet(mockGridSet.Object);
+
+            Assert.IsTrue(l.Bounds.Equals(new Envelope(0, 0, 1, 1)));
             Assert.AreEqual(l.MaxZoom, 18);
             Assert.IsNotNull(l.Formats);
             CollectionAssert.AreEquivalent(l.Formats, l.Provider.GetFormats());

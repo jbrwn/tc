@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.Serialization;
 
 namespace TileCook
 {
@@ -11,7 +10,7 @@ namespace TileCook
         private string _title;
         private ICache _cache;
         private IProvider _provider;
-        private GridSet _gridSet;
+        private IGridSet _gridSet;
         private Envelope _bounds;
         private int _minZoom;
         private int _maxZoom;
@@ -21,11 +20,11 @@ namespace TileCook
         private bool _disableProvider;
 
 
-        public Layer(string name, string title, GridSet gridset, ICache cache, IProvider provider)
+        public Layer(string name, string title, IGridSet gridset, ICache cache, IProvider provider)
             : this(name, title, gridset, cache, provider, null, 0, 0, null, 0, false, false) { }
 
 
-        public Layer(string name, string title, GridSet gridset, ICache cache, IProvider provider, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
+        public Layer(string name, string title, IGridSet gridset, ICache cache, IProvider provider, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
             // validate params
             if (string.IsNullOrEmpty(name))
@@ -79,7 +78,7 @@ namespace TileCook
         public string Title { get{ return this._title;} }
         public ICache Cache { get{ return this._cache;} }
         public IProvider Provider { get{ return this._provider;} }
-        public GridSet Gridset { get{ return this._gridSet;} }
+        public IGridSet Gridset { get{ return this._gridSet;} }
         public Envelope Bounds { get{ return this._bounds;} }
         public int MinZoom { get{ return this._minZoom;} }
         public int MaxZoom { get{ return this._maxZoom;} }
