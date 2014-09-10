@@ -30,10 +30,8 @@ namespace TileCook
             {
                 throw new ArgumentNullException("Layer Name cannot be null");
             }
-            else
-            {
-                this._name = name;
-            }
+            this._name = name;
+ 
 
             // Set title
             this._title = title;
@@ -43,10 +41,7 @@ namespace TileCook
             {
                 throw new ArgumentNullException("Layer GridSet cannot be null");
             }
-            else
-            {
-                this._gridSet = gridset;
-            }
+            this._gridSet = gridset;           
 
             // Set Cache
             this._cache = cache;
@@ -65,12 +60,20 @@ namespace TileCook
             }
 
             // Set MinZoom
+            if (minZoom < 0)
+            {
+                throw new ArgumentOutOfRangeException("MinZoom cannot be less than 0");
+            }
             this._minZoom = minZoom;
-
+        
             // Set MaxZoom
+            if (maxZoom > gridset.Grids.Count - 1)
+            {
+                throw new ArgumentOutOfRangeException("MaxZoom cannot be greater than grid count");
+            }
             if (maxZoom == 0)
             {
-                this._maxZoom = gridset.Grids.Count;
+                this._maxZoom = gridset.Grids.Count - 1;
             }
             else
             {
@@ -94,6 +97,9 @@ namespace TileCook
             {
                 this._formats = formats;
             }
+
+            // Set BrowserCache
+            this._browserCache = browserCache;
 
             // Set Cache and Provider disable overrides
             this._disableCache = DisableCache;
@@ -122,6 +128,7 @@ namespace TileCook
                 throw new InvalidTileFormatException(string.Format("Invalid tile FORMAT {0}", format)); 
             }
 
+            //check for zoom level constraints
             if (z < this.MinZoom || z > this.MaxZoom)
             {
                 throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", z, this.MinZoom, this.MaxZoom));

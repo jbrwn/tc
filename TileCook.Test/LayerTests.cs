@@ -38,7 +38,5 @@ namespace TileCook.Test
             Assert.AreEqual(l.MaxZoom, 1);
             Assert.IsNotNull(l.Formats);
         }
-
-
     }
 }
