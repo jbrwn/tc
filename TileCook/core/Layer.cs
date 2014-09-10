@@ -19,56 +19,79 @@ namespace TileCook
         private bool _disableCache;
         private bool _disableProvider;
 
-
         public Layer(string name, string title, IGridSet gridset, ICache cache, IProvider provider)
             : this(name, title, gridset, cache, provider, null, 0, 0, null, 0, false, false) { }
 
 
         public Layer(string name, string title, IGridSet gridset, ICache cache, IProvider provider, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
-            // validate params
+            // Set name
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("Layer name cannot be null");
             }
+            else
+            {
+                this._name = name;
+            }
 
+            // Set title
+            this._title = title;
+
+            // Set GridSet
             if (gridset == null)
             {
                 throw new ArgumentNullException("Layer GridSet cannot be null");
             }
-
-            if (formats == null && provider == null)
+            else
             {
-                throw new ArgumentNullException("Layer formats and provider cannot both be null");
+                this._gridSet = gridset;
             }
 
-            //Set defaults
+            // Set Cache
+            this._cache = cache;
+
+            // Set Provider
+            this._provider = provider;
+            
+            // set Bounds
             if (bounds == null)
             {
-                bounds = gridset.Envelope;
+                this._bounds = gridset.Envelope;
+            } 
+            else
+            {
+                this._bounds = bounds;
             }
 
+            // Set MinZoom
+            this._minZoom = minZoom;
+
+            // Set MaxZoom
             if (maxZoom == 0)
             {
-                maxZoom = gridset.Grids.Count;
+                this._maxZoom = gridset.Grids.Count;
             }
-
+            else
+            {
+                this._maxZoom = maxZoom;
+            }
+            
+            // Set Formats
             if (formats == null)
             {
-                formats = provider.GetFormats();
+                if (this._provider == null)
+                {
+                    throw new ArgumentNullException("Layer formats and provider cannot both be null");
+                }
+                this._formats = this._provider.GetFormats();
+            }
+            else
+            {
+                this._formats = formats;
             }
 
-            // Set properties
-            this._name = name;
-            this._title = title;
-            this._cache = cache;
-            this._provider = provider;
-            this._gridSet = gridset;
-            this._bounds = bounds;
-            this._minZoom = minZoom;
-            this._maxZoom = maxZoom;
-            this._formats = formats;
-            this._browserCache = browserCache;
+            // Set Cache and Provider disable overrides
             this._disableCache = DisableCache;
             this._disableProvider = DisableProvider;
         }

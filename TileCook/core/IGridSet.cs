@@ -12,7 +12,7 @@ namespace TileCook
         string SRS { get; }
         double MetersPerUnit { get; }
         Envelope Envelope { get; }
-        IList<Grid> Grids { get; }
+        List<Grid> Grids { get; }
         int TileWidth { get; }
         int TileHeight { get; }
         bool TopOrigin { get; }
