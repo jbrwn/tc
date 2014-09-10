@@ -9,7 +9,7 @@ namespace TileCook.Web.Models
     {
         public IProvider Map(ProviderDTO obj)
         {
-            if (obj.Type != null)
+            if (obj != null && !string.IsNullOrEmpty(obj.Type))
             {
                 // use factory class?
                 switch (obj.Type.ToLower())

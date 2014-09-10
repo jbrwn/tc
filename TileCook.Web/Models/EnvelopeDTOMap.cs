@@ -9,12 +9,16 @@ namespace TileCook.Web.Models
     {
         public Envelope Map(EnvelopeDTO obj)
         {
-            return new Envelope(
-                obj.Minx,
-                obj.Miny,
-                obj.Maxx,
-                obj.Maxy
-            );
+            if (obj != null)
+            {
+                return new Envelope(
+                    obj.Minx,
+                    obj.Miny,
+                    obj.Maxx,
+                    obj.Maxy
+                );
+            }
+            return null;
         }
 
         public EnvelopeDTO Map(Envelope obj)

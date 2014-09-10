@@ -58,7 +58,7 @@ namespace TileCook.Web
                 {
                     using (JsonTextReader reader = new JsonTextReader(sr))
                     {
-                        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader);
+                        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader, typeof(LayerDTO));
                         Layer l = layerDTOMap.Map(layerDTO);
                         repo.Put(l);
                     }

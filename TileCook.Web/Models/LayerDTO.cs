@@ -11,7 +11,7 @@ namespace TileCook.Web.Models
     {
         public LayerDTO() { }
 
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public string Name { get; set; }
         [DataMember]
         public string Title { get; set; }
@@ -19,7 +19,7 @@ namespace TileCook.Web.Models
         public CacheDTO Cache { get; set; }
         [DataMember]
         public ProviderDTO Provider { get; set; }
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public GridSetDTO Gridset { get; set; }
         [DataMember]
         public EnvelopeDTO Bounds { get; set; }
@@ -28,7 +28,7 @@ namespace TileCook.Web.Models
         [DataMember]
         public int MaxZoom { get; set; }
         [DataMember]
-        public IEnumerable<string> Formats { get; set; }
+        public IList<string> Formats { get; set; }
         [DataMember]
         public int BrowserCache { get; set; }
         [DataMember]

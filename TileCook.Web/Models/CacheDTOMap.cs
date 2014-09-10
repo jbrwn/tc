@@ -9,7 +9,7 @@ namespace TileCook.Web.Models
     {
         public ICache Map(CacheDTO obj)
         {
-            if (obj.Type != null)
+            if (obj != null && !string.IsNullOrEmpty(obj.Type))
             {
                 // use dedicated factory class?
                 switch (obj.Type.ToLower())

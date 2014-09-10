@@ -14,7 +14,7 @@ namespace TileCook
         private Envelope _bounds;
         private int _minZoom;
         private int _maxZoom;
-        private List<string> _formats;
+        private IList<string> _formats;
         private int _browserCache;
         private bool _disableCache;
         private bool _disableProvider;
@@ -23,7 +23,7 @@ namespace TileCook
             : this(name, title, gridset, cache, provider, null, 0, 0, null, 0, false, false) { }
 
 
-        public Layer(string name, string title, IGridSet gridset, ICache cache, IProvider provider, Envelope bounds, int minZoom, int maxZoom, List<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
+        public Layer(string name, string title, IGridSet gridset, ICache cache, IProvider provider, Envelope bounds, int minZoom, int maxZoom, IList<string> formats, int browserCache, bool DisableCache, bool DisableProvider)
         {
             // Set name
             if (string.IsNullOrEmpty(name))
@@ -78,7 +78,7 @@ namespace TileCook
             }
             
             // Set Formats
-            if (formats == null)
+            if (formats == null || formats.Count == 0)
             {
                 // Set Formats from provider if possible
                 if (this._provider != null)
@@ -87,7 +87,7 @@ namespace TileCook
                 }
                 else
                 {
-                    this._formats = new List<string>();
+                    throw new ArgumentNullException("Layer Formats cannot be a null or empty list");
                 }
             }
             else
@@ -109,7 +109,7 @@ namespace TileCook
         public Envelope Bounds { get{ return this._bounds;} }
         public int MinZoom { get{ return this._minZoom;} }
         public int MaxZoom { get{ return this._maxZoom;} }
-        public List<string> Formats { get{ return this._formats;} }
+        public IList<string> Formats { get{ return this._formats;} }
         public int BrowserCache { get{ return this._browserCache;} }
         public bool DisableCache { get{ return this._disableCache;} }
         public bool DisableProvider { get{ return this._disableProvider;} }
@@ -117,7 +117,7 @@ namespace TileCook
         public byte[] GetTile(int z, int x, int y, string format)
         {
             //check if format supported
-            if (!this.Formats.Contains(format) || !this.Provider.GetFormats().Contains(format))
+            if (!this._formats.Contains(format))
             {
                 throw new InvalidTileFormatException(string.Format("Invalid tile FORMAT {0}", format)); 
             }
