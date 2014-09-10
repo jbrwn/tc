@@ -82,6 +82,25 @@ namespace TileCook.Test
             return this;
         }
 
+        // builds bare bones layer object with mocks
+        public LayerBuilder Initialize()
+        {
+            var mockProvider = new Mock<IProvider>();
+            mockProvider.Setup(m => m.GetFormats()).Returns(new List<string>());
+
+            var mockGridSet = new Mock<IGridSet>();
+            mockGridSet.Setup(m => m.Grids.Count).Returns(1);
+            mockGridSet.Setup(m => m.Envelope).Returns(new Envelope(0, 0, 0, 0));
+
+            var mockCache = new Mock<ICache>();
+
+            this._name = "test";
+            this._gridSet = mockGridSet.Object;
+            this._provider = mockProvider.Object;
+            this._cache = mockCache.Object;
+            return this;
+        }
+
         public static implicit operator Layer(LayerBuilder obj)
         {
             return obj.Build();

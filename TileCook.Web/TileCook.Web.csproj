@@ -183,7 +183,6 @@
     <Content Include="Views\Layers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Config\WellKnownScaleSets\GoogleMapsCompatible.json" />
     <Content Include="App_Data\Config\Data\world_merc.dbf" />
     <Content Include="App_Data\Config\Data\world_merc.prj" />
     <Content Include="App_Data\Config\Data\world_merc.shp" />

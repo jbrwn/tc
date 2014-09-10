@@ -1,18 +1,20 @@
 {
     "Name": "Demo",
     "Title": "Demo tile layer with no cache",
-    "Formats": ["png","jpg"],
     "GridSet": {
-        "Name": "sm",
-        "SRS": "900913",
-        "ZoomLevels": 10,
+        "Name": "Web Mercator",
+        "SRS": "EPSG:900913",
+        "ZoomLevels": 18,
         "Envelope": {
-            "Minx": 0,
-            "Miny": 0,
-            "Maxx": 0,
-            "Maxy": 0
+			"Maxx": 20037508.342789,
+			"Maxy": 20037508.342789,
+			"Minx": -20037508.342789,
+			"Miny": -20037508.342789
         },
         "TileSize": 256,
         "MetersPerUnit": 1 
-    }
+    },
+	"Provider": {
+		"Type":"test"
+	}
 }
