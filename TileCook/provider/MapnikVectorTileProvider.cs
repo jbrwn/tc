@@ -29,18 +29,39 @@ namespace TileCook
             {
                 throw new ArgumentNullException("MapnikVectorProvider xmlConfig cannot be null or empty");
             }
+
             if (tileSource == null )
             {
                 throw new ArgumentNullException("MapnikVectorProvider tileSource cannot be null");
+            }
+            else
+            {
+                this._tileSource = tileSource;
+            }
+
+            // set jpegOptions
+            if (jpegOptions == null)
+            {
+                this._jpegOptions = "jpeg";
+            }
+            else
+            {
+                this._jpegOptions = jpegOptions;
+            }
+
+            // set pngOptions
+            if (pngOptions == null)
+            {
+                this._pngOptions = "png";
+            }
+            else
+            {
+                this._pngOptions = pngOptions;
             }
 
             this._map = new Map();
             _map.LoadMap(xmlConfig);
             this._map.Buffer = buffer;
-
-            // set defaults
-            if (this._jpegOptions == null) { this._jpegOptions = "jpeg"; }
-            if (this._pngOptions == null) { this._pngOptions = "png"; }
         }
 
         public string JpegOptions { get { return this._jpegOptions; } }

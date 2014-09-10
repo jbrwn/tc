@@ -28,7 +28,7 @@ namespace TileCook
             // Set name
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentNullException("Layer name cannot be null");
+                throw new ArgumentNullException("Layer Name cannot be null");
             }
             else
             {
@@ -80,11 +80,15 @@ namespace TileCook
             // Set Formats
             if (formats == null)
             {
-                if (this._provider == null)
+                // Set Formats from provider if possible
+                if (this._provider != null)
                 {
-                    throw new ArgumentNullException("Layer formats and provider cannot both be null");
+                    this._formats = this._provider.GetFormats();
                 }
-                this._formats = this._provider.GetFormats();
+                else
+                {
+                    this._formats = new List<string>();
+                }
             }
             else
             {

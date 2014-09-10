@@ -7,7 +7,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Configuration;
-using TileCook;
+using TileCook.Web.Models;
+using Newtonsoft.Json;
+
 
 namespace TileCook.Web
 {
@@ -44,6 +46,24 @@ namespace TileCook.Web
             //    }
             //}
 
+            // Load layer repository
+            ILayerRepository repo = new LayerRepository();
+            LayerDTOMap layerDTOMap = new LayerDTOMap();
+            
+            string layerDir = Server.MapPath("~/App_Data/Config");
+            JsonSerializer serializer = new JsonSerializer();
+            foreach (string file in Directory.EnumerateFiles(layerDir, "*.json", SearchOption.TopDirectoryOnly))
+            {
+                using (StreamReader sr = new StreamReader(file))
+                {
+                    using (JsonTextReader reader = new JsonTextReader(sr))
+                    {
+                        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader);
+                        Layer l = layerDTOMap.Map(layerDTO);
+                        repo.Put(l);
+                    }
+                }
+            }
         }
     }
 }

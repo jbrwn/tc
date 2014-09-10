@@ -80,7 +80,7 @@ namespace TileCook
         public Envelope Envelope { get { return this._envelope; } }
 
         // TO DO: return deep copy clone
-        public List<Grid> Grids { get { return new List<Grid>(this._grids); } }
+        public IList<Grid> Grids { get { return new List<Grid>(this._grids); } }
 
         public int TileWidth { get { return this._tileWidth; } }
         public int TileHeight { get { return this._tileHeight; } }

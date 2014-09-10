@@ -52,6 +52,12 @@ namespace TileCook.Test
             return this;
         }
 
+        public LayerBuilder SetCache(ICache cache)
+        {
+            this._cache = cache;
+            return this;
+        }
+
         public LayerBuilder SetProvider(IProvider provider)
         {
             this._provider = provider;
@@ -61,6 +67,18 @@ namespace TileCook.Test
         public LayerBuilder SetFormats(List<string> formats)
         {
             this._formats = formats;
+            return this;
+        }
+
+        public LayerBuilder SetBounds(Envelope envelope)
+        {
+            this._bounds = envelope;
+            return this;
+        }
+
+        public LayerBuilder SetMaxZoom(int maxZoom)
+        {
+            this._maxZoom = maxZoom;
             return this;
         }
 

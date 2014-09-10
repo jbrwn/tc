@@ -35,7 +35,7 @@ namespace TileCook.Web.Models
 
         // mapnik vector tile provider
         [DataMember]
-        public string TileSource { get; set; }
+        public LayerDTO TileSource { get; set; }
 
         // proxy provider
         [DataMember]

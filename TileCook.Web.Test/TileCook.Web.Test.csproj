@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C5863E73-F914-4097-9219-5DBD24A08FEF}</ProjectGuid>
+    <ProjectGuid>{241467BD-A914-4FDD-A79D-094A16ED5BCB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TileCook.Test</RootNamespace>
-    <AssemblyName>TileCook.Test</AssemblyName>
+    <RootNamespace>TileCook.Web.Test</RootNamespace>
+    <AssemblyName>TileCook.Web.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1408.0717\lib\net40\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -53,28 +50,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DiskCacheBuilder.cs" />
-    <Compile Include="DiskCacheTests.cs" />
-    <Compile Include="GridSetBuilder.cs" />
-    <Compile Include="LayerBuilder.cs" />
-    <Compile Include="MapnikProviderBuilder.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GridSetTests.cs" />
-    <Compile Include="LayerTests.cs" />
-    <Compile Include="MapnikProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TileCook\TileCook.csproj">
-      <Project>{b3e33476-87ad-45b8-8d21-a1e9cd012a33}</Project>
-      <Name>TileCook</Name>
+    <ProjectReference Include="..\TileCook.Web\TileCook.Web.csproj">
+      <Project>{2683224c-5395-4686-b29d-f655edd67bc9}</Project>
+      <Name>TileCook.Web</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="test.runsettings" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="data\empty.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

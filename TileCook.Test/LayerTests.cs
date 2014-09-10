@@ -14,8 +14,10 @@ namespace TileCook.Test
         {
             Layer l = new LayerBuilder()
                 .SetName("test")
-                .SetProvider(new Mock<IProvider>().Object)
-                .SetGridSet(null);
+                .SetGridSet(null)
+                .SetCache(new Mock<ICache>().Object)
+                .SetProvider(new Mock<IProvider>().Object);
+
         }
 
         [TestMethod]
@@ -24,18 +26,9 @@ namespace TileCook.Test
         {
             Layer l = new LayerBuilder()
                 .SetName(null)
-                .SetProvider(new Mock<IProvider>().Object)
-                .SetGridSet(new Mock<IGridSet>().Object);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Ctor_NullProviderNullFormats_throws()
-        {
-            Layer l = new LayerBuilder()
-                .SetName("test")
-                .SetProvider(null)
-                .SetGridSet(new Mock<IGridSet>().Object);
+                .SetGridSet(new Mock<IGridSet>().Object)
+                .SetCache(new Mock<ICache>().Object)
+                .SetProvider(new Mock<IProvider>().Object);
         }
 
         [TestMethod]
@@ -50,8 +43,9 @@ namespace TileCook.Test
 
             Layer l = new LayerBuilder()
                 .SetName("test")
-                .SetProvider(mockProvider.Object)
-                .SetGridSet(mockGridSet.Object);
+                .SetGridSet(mockGridSet.Object)
+                .SetCache(new Mock<ICache>().Object)
+                .SetProvider(mockProvider.Object);
 
             Assert.IsTrue(l.Bounds.Equals(new Envelope(0, 0, 1, 1)));
             Assert.AreEqual(l.MaxZoom, 18);

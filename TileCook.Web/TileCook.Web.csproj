@@ -188,8 +188,6 @@
     <Content Include="App_Data\Config\Data\world_merc.prj" />
     <Content Include="App_Data\Config\Data\world_merc.shp" />
     <Content Include="App_Data\Config\Data\world_merc.shx" />
-    <Content Include="App_Data\Config\VectorFrontend.json" />
-    <Content Include="App_Data\Config\VectorBackend.json" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
   </ItemGroup>
   <PropertyGroup>

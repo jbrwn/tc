@@ -10,26 +10,31 @@ using System.IO;
 
 namespace TileCook
 {
-    
     public class ProxyProvider : IPassThoughProvider
     {
-        private ProxyProvider() {}
-
-        private List<string> _formats;
+        private readonly List<string> _formats;
+        private readonly string _urlTemplate;
 
         public ProxyProvider(string urlTemplate)
         {
-            this.urlTemplate = urlTemplate;
+            if (string.IsNullOrEmpty(urlTemplate))
+            {
+                throw new ArgumentNullException("ProxyProvider url template cannot be null or empty");
+            }
+            else
+            {
+                this._urlTemplate = urlTemplate;
+            }
+
             string format = Path.GetExtension(urlTemplate).Substring(1);
             this._formats = new List<string> { format };
         }
 
-        
-        public string urlTemplate {get; set;}
+        public string UrlTemplate { get { return this._urlTemplate; } }
 
         public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)
         {
-            string urlRequest = this.urlTemplate;
+            string urlRequest = this._urlTemplate;
             urlRequest = Regex.Replace(urlRequest, "{z}", coord.Z.ToString(), RegexOptions.IgnoreCase);
             urlRequest = Regex.Replace(urlRequest,"{x}", coord.Z.ToString(), RegexOptions.IgnoreCase);
             urlRequest = Regex.Replace(urlRequest,"{y}", coord.Z.ToString(), RegexOptions.IgnoreCase);
@@ -54,15 +59,5 @@ namespace TileCook
         {
             return this._formats;
         }
-
-        [OnDeserialized()]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            //validate urlTemplate?
-
-            string format = Path.GetExtension(urlTemplate).Substring(1);
-            this._formats = new List<string> { format };
-        }
-
     }
 }

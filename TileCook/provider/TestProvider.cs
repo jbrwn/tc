@@ -5,13 +5,13 @@ using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Text;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    
     public class TestProvider : IEnvelopeProvider
-    {   
+    {
+        public TestProvider() { }
+
         public byte [] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
             using (Bitmap img = new Bitmap(tileWidth, tileHeight))

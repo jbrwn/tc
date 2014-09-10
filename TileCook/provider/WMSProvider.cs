@@ -10,10 +10,17 @@ using System.IO;
 
 namespace TileCook
 {
-    
     public class WMSProvider : IEnvelopeProvider
     {
-        private WMSProvider() { }
+        private string _url;
+        private string _version;
+        private string _layers;
+        private string _crs;
+        private string _styles;
+        private string _format;
+        private string _sld;
+        private string _bgcolor;
+        private string _transparent;
 
         public WMSProvider(string url, string version, string layers, string crs, string styles, string format)
             : this(url, version, layers, crs, styles, format, null, null, null) {}
@@ -26,56 +33,102 @@ namespace TileCook
 
         public WMSProvider(string url, string version, string layers, string crs, string styles, string format, string sld, string bgcolor, string transparent)
         {
-            this.url = url;
-            this.version = version;
-            this.layers = layers;
-            this.crs = crs;
-            this.styles = styles;
-            this.format = format;
-            this.sld = sld;
-            this.bgcolor = bgcolor;
-            this.transparent = transparent;
+            // Set Url
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("WMSProvider Url cannot be null or empty");
+            } 
+            else 
+            {
+                this._url = url;
+            }
+
+            // Set Version
+            if (string.IsNullOrEmpty(version))
+            {
+                throw new ArgumentNullException("WMSProvider Version cannot be null or empty");
+            } 
+            else 
+            {
+                this._version = version;
+            }
+
+            // Set Layers
+            if (string.IsNullOrEmpty(layers))
+            {
+                throw new ArgumentNullException("WMSProvider Layers cannot be null or empty");
+            }
+            else
+            {
+                this._layers = layers;
+            }
+
+            // Set Crs
+            if (string.IsNullOrEmpty(crs))
+            {
+                throw new ArgumentNullException("WMSProvider CRS cannot be null or empty");
+            }
+            else
+            {
+                this._crs = crs;
+            }
+
+            // Set Styles
+            if (string.IsNullOrEmpty(styles))
+            {
+                throw new ArgumentNullException("WMSProvider Styles cannot be null or empty");
+            }
+            else
+            {
+                this._styles = styles;
+            }
+
+            // Set Format
+            if (string.IsNullOrEmpty(format))
+            {
+                throw new ArgumentNullException("WMSProvider Format cannot be null or empty");
+            }
+            else
+            {
+                this._format = format;
+            }
+
+            // Set optional properties
+            this._sld = sld;
+            this._bgcolor = bgcolor;
+            this._transparent = transparent;
         }
 
-        
-        public string url { get; set; }
-        
-        public string version { get; set; }
-        
-        public string layers { get; set; }
-        
-        public string crs { get; set; }
-        
-        public string styles { get; set; }
-        
-        public string format { get; set; }
 
-        
-        public string sld { get; set; }
-        
-        public string bgcolor { get; set; }
-        
-        public string transparent { get; set; }
+        public string Url { get { return this._url; } }
+        public string Version { get { return this._version; } }
+        public string Layers { get { return this._layers; } }
+        public string Crs { get { return this._crs; } }
+        public string Styles { get { return this._styles; } }
+        public string Format { get { return this._format; } }
+        public string Sld { get { return this._sld; } }
+        public string Bgcolor { get { return this._bgcolor; } }
+        public string Transparent { get { return this._transparent; } }
 
         public byte[] Render(Envelope envelope, string format, int tileWidth, int tileHeight)
         {
             StringBuilder query = new StringBuilder();
             query.Append("request=GetMap");
             query.Append("&service=WMS");
-            query.Append("&version=" + HttpUtility.UrlEncode(this.version));
-            query.Append("&layers=" + HttpUtility.UrlEncode(this.layers));
-            query.Append("&styles=" + HttpUtility.UrlEncode(this.styles));
-            if (version.Equals("1.3.0")) { query.Append("&crs=" + HttpUtility.UrlEncode(this.crs)); }
-            else { query.Append("&srs=" + HttpUtility.UrlEncode(this.crs)); }
+            query.Append("&version=" + HttpUtility.UrlEncode(this._version));
+            query.Append("&layers=" + HttpUtility.UrlEncode(this._layers));
+            query.Append("&styles=" + HttpUtility.UrlEncode(this._styles));
+            if (this._version.Equals("1.3.0")) { query.Append("&crs=" + HttpUtility.UrlEncode(this._crs)); }
+            else { query.Append("&srs=" + HttpUtility.UrlEncode(this._crs)); }
             query.Append("&bbox=" + envelope.Minx.ToString() + "," + envelope.Miny.ToString() + "," + envelope.Maxx.ToString() + "," + envelope.Maxy.ToString());
             query.Append("&width=" + tileWidth.ToString());
             query.Append("&height=" + tileHeight.ToString());
             query.Append("&format=" + HttpUtility.UrlEncode(format));
-            if (this.sld != null) { query.Append("&sld=" + HttpUtility.UrlEncode(this.sld)); }
-            if (this.bgcolor != null) { query.Append("&bgcolor=" + HttpUtility.UrlEncode(this.bgcolor)); }    
-            if (this.transparent != null) { query.Append("&transparent=" + HttpUtility.UrlEncode(this.transparent)); }
+            if (this._sld != null) { query.Append("&sld=" + HttpUtility.UrlEncode(this._sld)); }
+            if (this._bgcolor != null) { query.Append("&bgcolor=" + HttpUtility.UrlEncode(this._bgcolor)); }    
+            if (this._transparent != null) { query.Append("&transparent=" + HttpUtility.UrlEncode(this._transparent)); }
 
-            UriBuilder ub = new UriBuilder(this.url);
+            UriBuilder ub = new UriBuilder(this._url);
             ub.Query = query.ToString();
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ub.Uri);
@@ -94,7 +147,7 @@ namespace TileCook
 
         public List<string> GetFormats()
         {
-            return new List<string> { this.format };
+            return new List<string> { this._format };
         }
     }
 }
