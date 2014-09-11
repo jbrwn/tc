@@ -20,12 +20,6 @@ namespace TileCook
         private bool _topOrigin;
         private List<Grid> _grids;
 
-        //public GridSet(string wellKnownScaleSet)
-        //{
-        //    this.CopyFrom(WellKnownScaleSet.GetGridSet(wellKnownScaleSet));
-
-        //}
-
         public GridSet(string name, string srs, Envelope envelope, int zoomLevels, int tileSize, double metersPerUnit, bool topOrigin)
         {
             // Set name
@@ -56,7 +50,14 @@ namespace TileCook
             this._tileHeight = tileSize;
 
             // Set meters per unit
-            this._metersPerUnit = metersPerUnit;
+            if (metersPerUnit == 0)
+            {
+                this._metersPerUnit = 1;
+            }
+            else
+            {
+                this._metersPerUnit = metersPerUnit;
+            }
 
             // Set top orgin
             this._topOrigin = topOrigin;

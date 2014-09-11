@@ -5,14 +5,13 @@
         "Name": "Web Mercator",
         "SRS": "EPSG:900913",
         "ZoomLevels": 18,
+        "TileSize": 256,
         "Envelope": {
 			"Maxx": 20037508.342789,
 			"Maxy": 20037508.342789,
 			"Minx": -20037508.342789,
 			"Miny": -20037508.342789
-        },
-        "TileSize": 256,
-        "MetersPerUnit": 1 
+        }
     },
 	"Provider": {
 		"Type":"test"
