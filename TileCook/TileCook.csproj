@@ -92,7 +92,6 @@
     <Compile Include="provider\ProxyProvider.cs" />
     <Compile Include="provider\TestProvider.cs" />
     <Compile Include="core\TileOutOfRangeException.cs" />
-    <Compile Include="core\WellKnownScaleSet.cs" />
     <Compile Include="provider\WMSProvider.cs" />
   </ItemGroup>
   <ItemGroup>

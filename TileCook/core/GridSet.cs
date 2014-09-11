@@ -69,7 +69,7 @@ namespace TileCook
             {
                 
                 string gridName = i.ToString();
-                double gridScale = (initialResolution / Math.Pow(2, i)) / METER_PER_PIXEL * metersPerUnit;
+                double gridScale = (initialResolution / Math.Pow(2, i)) / METER_PER_PIXEL * this._metersPerUnit;
                 Grid g = new Grid(gridName, gridScale);
                 this._grids.Add(g);
             }
