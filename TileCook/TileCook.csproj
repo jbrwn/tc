@@ -77,12 +77,12 @@
     <Compile Include="core\Grid.cs" />
     <Compile Include="core\GridSet.cs" />
     <Compile Include="cache\ICache.cs" />
+    <Compile Include="core\IGridSet.cs" />
     <Compile Include="provider\IEnvelopeProvider.cs" />
     <Compile Include="core\InvalidTileFormatException.cs" />
     <Compile Include="provider\IPassThoughProvider.cs" />
     <Compile Include="provider\IProvider.cs" />
     <Compile Include="core\Layer.cs" />
-    <Compile Include="core\LayerCache.cs" />
     <Compile Include="provider\IVectorTileProvider.cs" />
     <Compile Include="provider\MapnikProvider.cs" />
     <Compile Include="cache\MBTilesCache.cs" />
@@ -92,7 +92,6 @@
     <Compile Include="provider\ProxyProvider.cs" />
     <Compile Include="provider\TestProvider.cs" />
     <Compile Include="core\TileOutOfRangeException.cs" />
-    <Compile Include="core\WellKnownScaleSet.cs" />
     <Compile Include="provider\WMSProvider.cs" />
   </ItemGroup>
   <ItemGroup>

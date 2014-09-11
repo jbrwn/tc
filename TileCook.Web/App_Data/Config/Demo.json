@@ -1,12 +1,19 @@
 {
     "Name": "Demo",
     "Title": "Demo tile layer with no cache",
-    "Provider": {
-        "__type": "MapnikProvider:#TileCook",
-        "xmlConfig": "data\\demo.xml",
-        "Buffer":  "128"
+    "GridSet": {
+        "Name": "Web Mercator",
+        "SRS": "EPSG:900913",
+        "ZoomLevels": 18,
+        "TileSize": 256,
+        "Envelope": {
+			"Maxx": 20037508.342789,
+			"Maxy": 20037508.342789,
+			"Minx": -20037508.342789,
+			"Miny": -20037508.342789
+        }
     },
-    "Gridset": {
-        "Name": "GoogleMapsCompatible"
-    }
+	"Provider": {
+		"Type":"test"
+	}
 }

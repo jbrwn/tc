@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    [DataContract]
     public class Grid
     {
-        [DataMember(IsRequired = true)]
-        public string Name { get; set; }
+        private string _name;
+        private double _scale;
 
-        [DataMember(IsRequired = true)]
-        public double Scale { get; set; }
-
+        public Grid(string name, double scale)
+        {
+            this._name = name;
+            this._scale = scale;
+        }
+        public string Name { get { return this._name; } }
+        public double Scale { get { return this._scale; } }
     }
 }

@@ -7,7 +7,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Configuration;
-using TileCook;
+using TileCook.Web.Models;
+using Newtonsoft.Json;
+
 
 namespace TileCook.Web
 {
@@ -27,23 +29,24 @@ namespace TileCook.Web
             MapnikProvider.RegisterDatasources(Server.MapPath("~/bin/mapnik/input"));
             MapnikProvider.RegisterFonts(Server.MapPath("~/bin/mapnik/fonts"));
 
-            //TileCook config
-            LayerCache.ConfigDirectory = Server.MapPath("~/App_Data/Config");
-            WellKnownScaleSet.RegisterDirectory(Path.Combine(LayerCache.ConfigDirectory, "WellKnownScaleSets"));
-
-            foreach (string file in Directory.EnumerateFiles(LayerCache.ConfigDirectory, "*.json", SearchOption.TopDirectoryOnly))
+            // Load layer repository
+            ILayerRepository repo = new LayerRepository();
+            LayerDTOMap layerDTOMap = new LayerDTOMap();
+            
+            string layerDir = Server.MapPath("~/App_Data/Config");
+            JsonSerializer serializer = new JsonSerializer();
+            foreach (string file in Directory.EnumerateFiles(layerDir, "*.json", SearchOption.TopDirectoryOnly))
             {
-                try
+                using (StreamReader sr = new StreamReader(file))
                 {
-
-                    LayerCache.RegisterFile(file);
-                }
-                catch (Exception e)
-                {
-                    //log failed config load
+                    using (JsonTextReader reader = new JsonTextReader(sr))
+                    {
+                        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader, typeof(LayerDTO));
+                        Layer l = layerDTOMap.Map(layerDTO);
+                        repo.Put(l);
+                    }
                 }
             }
-
         }
     }
 }

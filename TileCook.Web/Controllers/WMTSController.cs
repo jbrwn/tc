@@ -9,11 +9,19 @@ using System.Web.Http;
 using TileCook.Web.WMTSService;
 using TileCook.Web.Formatting;
 using System.Xml.Serialization;
+using TileCook.Web.Models;
 
 namespace TileCook.Web.Controllers
 {
     public class WMTSController : ApiController
     {
+        private ILayerRepository _repository;
+
+        public WMTSController()
+        {
+            this._repository = new LayerRepository();
+        }
+
         [HttpGet]
         [ActionName("GetTile")]
         public HttpResponseMessage GetTile(string Version, string Layer, string Style, string TileMatrixSet, int TileMatrix, int TileRow, int TileCol, string Format)
@@ -30,7 +38,7 @@ namespace TileCook.Web.Controllers
             }
 
             // Validate layer
-            Layer layer = LayerCache.GetLayer(Layer);
+            Layer layer = this._repository.Get(Layer);
             if (layer == null)
             {
                 return GenerateOWSException(
@@ -147,8 +155,8 @@ namespace TileCook.Web.Controllers
                 );
             }
 
-            List<Layer> layers = new List<Layer>(LayerCache.GetLayers().Values);
-            Dictionary<string, GridSet> uniqueGridSets = new Dictionary<string, GridSet>();
+            IList<Layer> layers = (IList<Layer>)this._repository.GetAll();
+            Dictionary<string, IGridSet> uniqueGridSets = new Dictionary<string, IGridSet>();
             foreach (Layer l in layers)
             {
                 if (!uniqueGridSets.ContainsKey(l.Gridset.Name))
@@ -156,7 +164,7 @@ namespace TileCook.Web.Controllers
                     uniqueGridSets[l.Gridset.Name] = l.Gridset;
                 }
             }
-            List<GridSet> gridSets = new List<GridSet>(uniqueGridSets.Values);
+            List<IGridSet> gridSets = new List<IGridSet>(uniqueGridSets.Values);
             
             // Start capabilities 
             Capabilities capabilities = new Capabilities();

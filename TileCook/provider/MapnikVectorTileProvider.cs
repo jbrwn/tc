@@ -10,49 +10,68 @@ using Ionic.Zlib;
 
 namespace TileCook
 {
-    [DataContract]
-    class MapnikVectorTileProvider : IPassThoughProvider
+    
+    public class MapnikVectorTileProvider : IPassThoughProvider
     {
 
         private Map _map;
         private static readonly Object mapLock = new Object();
+        private Layer _tileSource;
+        private string _pngOptions;
+        private string _jpegOptions;
 
-        private MapnikVectorTileProvider() { }
+        public MapnikVectorTileProvider(string xmlConfig, Layer tileSource)
+            : this(xmlConfig, tileSource, 0, null, null) {}
 
-        public MapnikVectorTileProvider(string xmlConfig, string TileSource)
+        public MapnikVectorTileProvider(string xmlConfig, Layer tileSource, int buffer, string pngOptions, string jpegOptions)
         {
-            this.XmlConfig = xmlConfig;
-            this.TileSource = TileSource;
-            this.Buffer = 0;
+            if (string.IsNullOrEmpty(xmlConfig))
+            {
+                throw new ArgumentNullException("MapnikVectorProvider xmlConfig cannot be null or empty");
+            }
 
-            //set img defaults
-            this.pngOptions = "png";
-            this.jpegOptions = "jpeg";
+            if (tileSource == null )
+            {
+                throw new ArgumentNullException("MapnikVectorProvider tileSource cannot be null");
+            }
+            else
+            {
+                this._tileSource = tileSource;
+            }
 
-            _map = new Map();
+            // set jpegOptions
+            if (jpegOptions == null)
+            {
+                this._jpegOptions = "jpeg";
+            }
+            else
+            {
+                this._jpegOptions = jpegOptions;
+            }
+
+            // set pngOptions
+            if (pngOptions == null)
+            {
+                this._pngOptions = "png";
+            }
+            else
+            {
+                this._pngOptions = pngOptions;
+            }
+
+            this._map = new Map();
             _map.LoadMap(xmlConfig);
+            this._map.Buffer = buffer;
         }
 
-        [DataMember(IsRequired = true)]
-        public string XmlConfig { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public string TileSource{ get; set; }
-
-        [DataMember]
-        public int Buffer { get; set; }
-
-        [DataMember]
-        public string pngOptions { get; set; }
-
-        [DataMember]
-        public string jpegOptions { get; set; }
+        public string JpegOptions { get { return this._jpegOptions; } }
+        public string PngOptions { get { return this._pngOptions; } }
 
         public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)
         {
             // Get source layer
-            Layer sourceLayer = LayerCache.GetLayer(TileSource);
-            byte[] tileBytes = sourceLayer.GetTile(coord.Z, coord.X, coord.Y, "pbf");
+            //Layer sourceLayer = LayerCache.GetLayer(TileSource);
+            byte[] tileBytes = this._tileSource.GetTile(coord.Z, coord.X, coord.Y, "pbf");
             
             // Uncompress bytes
             if (tileBytes.Length > 0)
@@ -61,10 +80,10 @@ namespace TileCook
             }
 
             // Flip y coordinate - mapnik vector tile assumes top left origin.
-            int flippedY = sourceLayer.FlipY(coord.Z, coord.Y);
+            int flippedY = this._tileSource.FlipY(coord.Z, coord.Y);
             VectorTile vTile = new VectorTile(coord.Z, coord.X, flippedY, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
             vTile.SetBytes(tileBytes);
-            Envelope envelope = sourceLayer.Gridset.CoordToEnvelope(new Coord(coord.Z,coord.X,coord.Y));
+            Envelope envelope = this._tileSource.Gridset.CoordToEnvelope(new Coord(coord.Z,coord.X,coord.Y));
 
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 
@@ -73,7 +92,6 @@ namespace TileCook
                 _map.Width = Convert.ToUInt32(tileWidth);
                 _map.Height = Convert.ToUInt32(tileHeight);
                 _map.ZoomToBox(envelope.Minx, envelope.Miny, envelope.Maxx, envelope.Maxy);
-                _map.Buffer = this.Buffer;
                 Image img = new Image(Convert.ToInt32(_map.Width), Convert.ToInt32(_map.Height));
                 vTile.Render(_map, img);
 
@@ -81,11 +99,11 @@ namespace TileCook
                 {
                     if (format == "png")
                     {
-                        format = this.pngOptions;
+                        format = this._pngOptions;
                     }
                     if (format == "jpg")
                     {
-                        format = this.jpegOptions;
+                        format = this._jpegOptions;
                     }
                     return img.Encode(format);
                 }
@@ -132,21 +150,5 @@ namespace TileCook
             }
             return bytes;
         }
-
-        [OnDeserialized()]
-        internal void OnDeserializedMethod(StreamingContext context)
-        {
-            if (this.jpegOptions == null) { this.jpegOptions = "jpeg"; }
-            if (this.pngOptions == null) { this.pngOptions = "png"; }
-            //buffer defaults to 0
-
-            if (!Path.IsPathRooted(this.XmlConfig))
-            {
-                this.XmlConfig = Path.Combine(LayerCache.ConfigDirectory, this.XmlConfig);
-            }
-            _map = new Map();
-            _map.LoadMap(this.XmlConfig);
-        }
-
     }
 }

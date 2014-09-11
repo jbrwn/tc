@@ -2,34 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    [DataContract]
+    
     public class Envelope
     {
-        private Envelope() { }
+        private double _minx;
+        private double _miny;
+        private double _maxx;
+        private double _maxy;
 
         public Envelope(double minx, double miny, double maxx, double maxy)
         {
-            this.Minx = minx;
-            this.Miny = miny;
-            this.Maxx = maxx;
-            this.Maxy = maxy;
+            this._minx = minx;
+            this._miny = miny;
+            this._maxx = maxx;
+            this._maxy = maxy;
         }
 
-        [DataMember(IsRequired=true)]
-        public double Minx { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public double Miny { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public double Maxx { get; set; }
-
-        [DataMember(IsRequired = true)]
-        public double Maxy { get; set; }
+        public double Minx { get { return this._minx; } }
+        public double Miny { get { return this._miny; } }
+        public double Maxx { get { return this._maxx; } }
+        public double Maxy { get { return this._maxy; } }
 
         public bool Equals(Envelope other)
         {
@@ -41,8 +36,6 @@ namespace TileCook
                 return true;
             }
             return false;
-        }
-
-        
+        } 
     }
 }
