@@ -44,6 +44,12 @@ namespace TileCook.Test
             return this;
         }
 
+        public GridSetBuilder SetMetersPerUnit(int metersPerUnit)
+        {
+            this._metersPerUnit = metersPerUnit;
+            return this;
+        }
+
         public static implicit operator GridSet(GridSetBuilder obj)
         {
             return obj.Build();

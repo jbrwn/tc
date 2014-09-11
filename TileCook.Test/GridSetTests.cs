@@ -42,5 +42,15 @@ namespace TileCook.Test
                 .SphericalMercator();
             Assert.AreEqual(4, g.GridHeight(2));
         }
+
+        [TestMethod]
+        public void Ctor_0MetersPerUnit_MetersPerUnitSetTo1()
+        {
+            GridSet g = new GridSetBuilder()
+                .SphericalMercator()
+                .SetMetersPerUnit(0);
+            Assert.AreEqual(1.0, g.MetersPerUnit);
+        }
+
     }
 }
