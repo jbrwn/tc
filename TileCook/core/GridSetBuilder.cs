@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TileCook.core
+namespace TileCook
 {
     public class GridSetBuilder
     {
@@ -22,7 +22,7 @@ namespace TileCook.core
             // Set defaults
             this._tileSize = 256;
             this._levels = 18;
-            this._step = Math.Sqrt(2);
+            this._step = 2;
             this._pixelSize = .00028;
             this._topOrigin = false;
         }
@@ -35,7 +35,7 @@ namespace TileCook.core
             List<double> resolutions = new List<double>();
             for (int i = 0; i < this._levels; i++)
             {
-                double r = (this._envelope.Maxx - this._envelope.Minx) / this._tileSize / this._step;
+                double r = (this._envelope.Maxx - this._envelope.Minx) / this._tileSize / Math.Pow(this._step, i);
                 resolutions.Add(r);
             }
             return new GridSet(
