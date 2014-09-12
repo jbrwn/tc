@@ -67,13 +67,13 @@ namespace TileCook
             this._minZoom = minZoom;
         
             // Set MaxZoom
-            if (maxZoom > gridset.Grids.Count - 1)
+            if (maxZoom > gridset.Resolutions.Count - 1)
             {
                 throw new ArgumentOutOfRangeException("MaxZoom cannot be greater than grid count");
             }
             if (maxZoom == 0)
             {
-                this._maxZoom = gridset.Grids.Count - 1;
+                this._maxZoom = gridset.Resolutions.Count - 1;
             }
             else
             {
