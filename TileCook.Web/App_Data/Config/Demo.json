@@ -2,10 +2,8 @@
     "Name": "Demo",
     "Title": "Demo tile layer with no cache",
     "GridSet": {
-        "Name": "Web Mercator",
+        "Name": "SphericalMercator",
         "SRS": "EPSG:900913",
-        "ZoomLevels": 18,
-        "TileSize": 256,
         "Envelope": {
 			"Maxx": 20037508.342789,
 			"Maxy": 20037508.342789,
