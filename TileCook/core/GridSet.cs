@@ -39,10 +39,10 @@ namespace TileCook
             this._resolutions = resolutions as List<double>;
             
             // Set tile sizes
-            if (tileWidth < 1)
+            if (tileWidth <= 0)
                 throw new ArgumentOutOfRangeException("GridSet TileWidth must be greater than 0");
             this._tileWidth = tileWidth;
-            if (tileHeight < 1)
+            if (tileHeight <= 0)
                 throw new ArgumentOutOfRangeException("GridSet TileHeight must be greater than 0");
             this._tileHeight = tileHeight;
 

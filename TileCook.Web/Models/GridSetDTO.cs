@@ -7,22 +7,25 @@ using System.Runtime.Serialization;
 
 namespace TileCook.Web.Models
 {
+    [DataContract]
     public class GridSetDTO
     {
         public GridSetDTO() { }
 
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public string Name { get; set; }
         [DataMember]
         public string SRS { get; set; }
-        [DataMember]
-        public double MetersPerUnit { get; set; }
         [DataMember]
         public EnvelopeDTO Envelope { get; set; }
         [DataMember]
         public int TileSize { get; set; }
         [DataMember]
-        public int ZoomLevels { get; set; }
+        public int Levels { get; set; }
+        [DataMember]
+        public int Step { get; set; }
+        [DataMember]
+        public int PixelSize { get; set; }
         [DataMember]
         public bool TopOrigin { get; set; }
     }

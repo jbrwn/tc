@@ -61,7 +61,7 @@
     <Compile Include="GridSetTests.cs" />
     <Compile Include="LayerTests.cs" />
     <Compile Include="MapnikProviderTests.cs" />
-    <Compile Include="GridSetBuilderTests.cs" />
+    <Compile Include="GridSetFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TileCook\TileCook.csproj">
