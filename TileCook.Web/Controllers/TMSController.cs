@@ -197,11 +197,11 @@ namespace TileCook.Web.Controllers
             tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.Formats[0]);
             tileMap.TileFormat.extension = layer.Formats[0];
             tileMap.TileSets = new TileSets();
-            for(int i=0;i<layer.Gridset.Grids.Count;i++)
+            for(int i=0;i<layer.Gridset.Resolutions.Count;i++)
             {
                 TileSet tileSet = new TileSet();
                 tileSet.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = layer.Name }) + "/" + i.ToString() ;
-                tileSet.unitsperpixel = layer.Gridset.Resolution(i).ToString();
+                tileSet.unitsperpixel = layer.Gridset.Resolutions[i].ToString();
                 tileSet.order = i.ToString();
                 tileMap.TileSets.Add(tileSet);
             }

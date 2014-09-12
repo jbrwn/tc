@@ -10,7 +10,14 @@ namespace TileCook.Web.Models
     [DataContract]
     public class GridSetDTO
     {
-        public GridSetDTO() { }
+        public GridSetDTO() 
+        {
+            this.TileSize = 256;
+            this.Levels = 18;
+            this.Step = 2;
+            this.PixelSize = .00028;
+            this.TopOrigin = false;
+        }
 
         [DataMember]
         public string Name { get; set; }
@@ -25,7 +32,7 @@ namespace TileCook.Web.Models
         [DataMember]
         public int Step { get; set; }
         [DataMember]
-        public int PixelSize { get; set; }
+        public double PixelSize { get; set; }
         [DataMember]
         public bool TopOrigin { get; set; }
     }
