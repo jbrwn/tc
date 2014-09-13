@@ -47,6 +47,8 @@ namespace TileCook
             this._tileHeight = tileHeight;
 
             // Set pixelSize
+            if (pixelSize <= 0)
+                throw new ArgumentOutOfRangeException("PixelSize must be greater than 0");
             this._pixelSize = pixelSize;
 
             // Set top orgin
@@ -64,7 +66,7 @@ namespace TileCook
 
         public double Scale(int z)
         {
-            return this._resolutions[z] * this._pixelSize;
+            return this._resolutions[z] / this._pixelSize;
         }
 
         public int GridWidth(int z)

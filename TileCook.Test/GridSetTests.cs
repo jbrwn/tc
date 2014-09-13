@@ -41,7 +41,7 @@ namespace TileCook.Test
                 new List<double>() { 10, 5, 2.5 },
                 10,
                 10,
-                0,
+                1,
                 true
             );
 

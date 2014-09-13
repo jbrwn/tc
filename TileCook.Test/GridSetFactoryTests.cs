@@ -10,15 +10,6 @@ namespace TileCook.Test
         [TestMethod]
         public void Build_SimpleGridWithDefaults_ResolutionsCreated()
         {
-            //G 
-            //    .SetName("test")
-            //    .SetSRS("epsg:test")
-            //    .SetEnvelope(new Envelope(0, 0, 512, 512))
-            //    .SetTileSize(256)
-            //    .SetLevels(3)
-            //    .SetStep(2);
-            //GridSet gs = g.Build();
-
             IGridSet gs = GridSetFactory.CreateGridSet(
                 "test",
                 "epsg:test",
