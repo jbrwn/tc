@@ -10,14 +10,14 @@ namespace TileCook
     {
         string Name { get; }
         string SRS { get; }
-        double MetersPerUnit { get; }
+        double PixelSize { get; }
         Envelope Envelope { get; }
-        IList<Grid> Grids { get; }
+        IList<double> Resolutions { get; }
         int TileWidth { get; }
         int TileHeight { get; }
         bool TopOrigin { get; }
 
-        double Resolution(int z);
+        double Scale(int z);
         int GridWidth(int z);
         int GridHeight(int z);
         Envelope CoordToEnvelope(Coord coord);

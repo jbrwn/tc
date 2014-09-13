@@ -10,7 +10,7 @@ using Ionic.Zlib;
 
 namespace TileCook
 {
-    public class MapnikProvider : IEnvelopeProvider,IVectorTileProvider
+    public class MapnikProvider : IEnvelopeProvider, IVectorTileProvider
     {
         private Map _map;
         private static readonly Object mapLock = new Object();

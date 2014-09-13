@@ -5,45 +5,27 @@ using System.Web;
 
 namespace TileCook.Web.Models
 {
-    public class GridSetDTOMap : IMap<GridSet, GridSetDTO>
+    public class GridSetDTOMap : IMap<IGridSet, GridSetDTO>
     {
-        public GridSet Map(GridSetDTO obj)
+        public IGridSet Map(GridSetDTO obj)
         {
             if (obj != null)
             {
-                //// Special case - well known gridset is provided
-                //if (
-                //    obj.Name != null &&
-                //    obj.SRS == null &&
-                //    obj.Envelope == null &&
-                //    obj.TileSize == 0 &&
-                //    obj.ZoomLevels == 0 &&
-                //    obj.MetersPerUnit == 0 &&
-                //    obj.TopOrigin == false
-                //)
-                //{
-                //    return new GridSet(obj.Name);
-                //}
+                // Check if name is well known gridset
+                WellKnownGridSet wkgs;
+                if (Enum.TryParse<WellKnownGridSet>(obj.Name, out wkgs))
+                    return GridSetFactory.CreateGridSet(wkgs);
 
                 // get envelope
                 EnvelopeDTOMap envMap = new EnvelopeDTOMap();
                 Envelope env = envMap.Map(obj.Envelope);
 
-                // return new gridset
-                return new GridSet(
-                        obj.Name,
-                        obj.SRS,
-                        env,
-                        obj.ZoomLevels,
-                        obj.TileSize,
-                        obj.MetersPerUnit,
-                        obj.TopOrigin
-                );
+                return GridSetFactory.CreateGridSet(obj.Name, obj.SRS, env, obj.TileSize, obj.Levels, obj.Step, obj.PixelSize, obj.TopOrigin);
             }
             return null;
         }
 
-        public GridSetDTO Map(GridSet obj)
+        public GridSetDTO Map(IGridSet obj)
         {
             throw new NotImplementedException();
         }

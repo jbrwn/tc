@@ -89,7 +89,7 @@ namespace TileCook.Test
             mockProvider.Setup(m => m.GetFormats()).Returns(new List<string>());
 
             var mockGridSet = new Mock<IGridSet>();
-            mockGridSet.Setup(m => m.Grids.Count).Returns(1);
+            mockGridSet.Setup(m => m.Resolutions.Count).Returns(1);
             mockGridSet.Setup(m => m.Envelope).Returns(new Envelope(0, 0, 0, 0));
 
             var mockCache = new Mock<ICache>();
