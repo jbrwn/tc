@@ -120,19 +120,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CacheDTO.cs" />
-    <Compile Include="Models\CacheDTOMap.cs" />
-    <Compile Include="Models\EnvelopeDTO.cs" />
-    <Compile Include="Models\EnvelopeDTOMap.cs" />
-    <Compile Include="Models\GridSetDTO.cs" />
-    <Compile Include="Models\GridSetDTOMap.cs" />
+    <Compile Include="Models\Config\CacheConfig.cs" />
+    <Compile Include="Models\Config\CacheMap.cs" />
+    <Compile Include="Models\Config\IPathResolver.cs" />
+    <Compile Include="Models\Config\PathResolver.cs" />
+    <Compile Include="Models\Config\VectorTileProviderMap.cs" />
+    <Compile Include="Models\Config\VectorTileLayerMap.cs" />
+    <Compile Include="Models\Config\EnvelopeConfig.cs" />
+    <Compile Include="Models\Config\EnvelopeMap.cs" />
+    <Compile Include="Models\Config\GridSetConfig.cs" />
+    <Compile Include="Models\Config\GridSetMap.cs" />
     <Compile Include="Models\ILayerRepository.cs" />
-    <Compile Include="Models\LayerDTO.cs" />
-    <Compile Include="Models\LayerDTOMap.cs" />
+    <Compile Include="Models\Config\LayerConfig.cs" />
+    <Compile Include="Models\Config\LayerMap.cs" />
     <Compile Include="Models\LayerRepository.cs" />
     <Compile Include="Models\IMap.cs" />
-    <Compile Include="Models\ProviderDTO.cs" />
-    <Compile Include="Models\ProviderDTOMap.cs" />
+    <Compile Include="Models\Config\ProviderConfig.cs" />
+    <Compile Include="Models\Config\ProviderMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TileJSONService.cs" />
     <Compile Include="TMSService.cs" />

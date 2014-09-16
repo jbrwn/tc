@@ -56,8 +56,8 @@ namespace TileCook.Web.Models
         //    JsonSerializer serializer = new JsonSerializer();
         //    using (JsonTextReader reader = new JsonTextReader(textReader))
         //    {
-        //        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader);
-        //        // map layerDTO to layer object
+        //        LayerConfig LayerConfig = (LayerConfig)serializer.Deserialize(reader);
+        //        // map LayerConfig to layer object
         //        //_layers.add
         //    }
         //}

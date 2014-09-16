@@ -4,25 +4,25 @@ using System.Linq;
 using System.Web;
 using System.Runtime.Serialization;
 
-namespace TileCook.Web.Models
+namespace TileCook.Web.Models.Config
 {
     [DataContract]
-    public class LayerDTO
+    public class LayerConfig
     {
-        public LayerDTO() { }
+        public LayerConfig() { }
 
         [DataMember]
         public string Name { get; set; }
         [DataMember]
         public string Title { get; set; }
         [DataMember]
-        public CacheDTO Cache { get; set; }
+        public CacheConfig Cache { get; set; }
         [DataMember]
-        public ProviderDTO Provider { get; set; }
+        public ProviderConfig Provider { get; set; }
         [DataMember]
-        public GridSetDTO Gridset { get; set; }
+        public GridSetConfig Gridset { get; set; }
         [DataMember]
-        public EnvelopeDTO Bounds { get; set; }
+        public EnvelopeConfig Bounds { get; set; }
         [DataMember]
         public int MinZoom { get; set; }
         [DataMember]
