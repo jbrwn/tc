@@ -5,12 +5,12 @@ using System.Web;
 using System.Runtime.Serialization;
 
 
-namespace TileCook.Web.Models
+namespace TileCook.Web.Models.Config
 {
 
-    public class ProviderDTO
+    public class ProviderConfig
     {
-        public ProviderDTO() { }
+        public ProviderConfig() { }
 
         [DataMember(IsRequired = true)]
         public string Type { get; set; }
@@ -35,7 +35,7 @@ namespace TileCook.Web.Models
 
         // mapnik vector tile provider
         [DataMember]
-        public LayerDTO TileSource { get; set; }
+        public LayerConfig TileSource { get; set; }
 
         // proxy provider
         [DataMember]

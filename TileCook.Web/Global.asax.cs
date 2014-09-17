@@ -7,7 +7,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Configuration;
+using System.Diagnostics;
 using TileCook.Web.Models;
+using TileCook.Web.Models.Config;
 using Newtonsoft.Json;
 
 
@@ -29,23 +31,54 @@ namespace TileCook.Web
             MapnikProvider.RegisterDatasources(Server.MapPath("~/bin/mapnik/input"));
             MapnikProvider.RegisterFonts(Server.MapPath("~/bin/mapnik/fonts"));
 
-            // Load layer repository
+            // Get config file directory            
+            string layerDir = WebConfigurationManager.AppSettings["ConfigDirectory"] != null ?
+                WebConfigurationManager.AppSettings["ConfigDirectory"] : Server.MapPath("~/App_Data/Config");
+            IPathResolver pathResolver = new PathResolver(layerDir);
+
+            // Create configuration object map
+            LayerMap LayerMap = new LayerMap(
+                new GridSetMap(
+                    new EnvelopeMap()
+                ),
+                new CacheMap(pathResolver),
+                new ProviderMap(
+                    new VectorTileLayerMap(
+                        new GridSetMap(
+                            new EnvelopeMap()
+                        ),
+                        new CacheMap(pathResolver),
+                        new VectorTileProviderMap(pathResolver),
+                        new EnvelopeMap()
+                    ),
+                    pathResolver
+                ),
+                new EnvelopeMap()
+            );
+
+            // Get layer repository
             ILayerRepository repo = new LayerRepository();
-            LayerDTOMap layerDTOMap = new LayerDTOMap();
-            
-            string layerDir = Server.MapPath("~/App_Data/Config");
+
+            // Deserialize config files
             JsonSerializer serializer = new JsonSerializer();
-            foreach (string file in Directory.EnumerateFiles(layerDir, "*.json", SearchOption.TopDirectoryOnly))
+            try
             {
-                using (StreamReader sr = new StreamReader(file))
+                foreach (string file in Directory.EnumerateFiles(layerDir, "*.json", SearchOption.TopDirectoryOnly))
                 {
-                    using (JsonTextReader reader = new JsonTextReader(sr))
+                    using (StreamReader sr = new StreamReader(file))
                     {
-                        LayerDTO layerDTO = (LayerDTO)serializer.Deserialize(reader, typeof(LayerDTO));
-                        Layer l = layerDTOMap.Map(layerDTO);
-                        repo.Put(l);
+                        using (JsonTextReader reader = new JsonTextReader(sr))
+                        {
+                            LayerConfig LayerConfig = (LayerConfig)serializer.Deserialize(reader, typeof(LayerConfig));
+                            Layer l = LayerMap.Map(LayerConfig);
+                            repo.Put(l);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                //Trace.TraceWarning()
             }
         }
     }

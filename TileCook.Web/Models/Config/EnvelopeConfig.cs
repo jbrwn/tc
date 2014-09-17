@@ -5,18 +5,18 @@ using System.Web;
 using System.Runtime.Serialization;
 
 
-namespace TileCook.Web.Models
+namespace TileCook.Web.Models.Config
 {
-    public class EnvelopeDTO
+    public class EnvelopeConfig
     {
-        public EnvelopeDTO() { }
-        [DataMember(IsRequired = true)]
+        public EnvelopeConfig() { }
+        [DataMember]
         public double Minx { get; set; }
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public double Miny { get; set; }
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public double Maxx { get; set; }
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public double Maxy { get; set; }
     }
 }

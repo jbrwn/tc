@@ -5,12 +5,12 @@ using System.Web;
 using System.Runtime.Serialization;
 
 
-namespace TileCook.Web.Models
+namespace TileCook.Web.Models.Config
 {
     [DataContract]
-    public class GridSetDTO
+    public class GridSetConfig
     {
-        public GridSetDTO() 
+        public GridSetConfig() 
         {
             this.TileSize = 256;
             this.Levels = 18;
@@ -24,7 +24,7 @@ namespace TileCook.Web.Models
         [DataMember]
         public string SRS { get; set; }
         [DataMember]
-        public EnvelopeDTO Envelope { get; set; }
+        public EnvelopeConfig Envelope { get; set; }
         [DataMember]
         public int TileSize { get; set; }
         [DataMember]

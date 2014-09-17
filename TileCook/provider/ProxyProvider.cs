@@ -10,7 +10,7 @@ using System.IO;
 
 namespace TileCook
 {
-    public class ProxyProvider : IPassThoughProvider
+    public class ProxyProvider : IPassThoughProvider, IVectorTileProvider
     {
         private readonly List<string> _formats;
         private readonly string _urlTemplate;
@@ -58,6 +58,11 @@ namespace TileCook
         public List<string> GetFormats()
         {
             return this._formats;
+        }
+
+        public List<VectorLayerMetadata> GetVectorTileMetadata()
+        {
+            return new List<VectorLayerMetadata>();
         }
     }
 }

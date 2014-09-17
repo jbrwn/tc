@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace TileCook.Web.Models
+namespace TileCook.Web.Models.Config
 {
-    public class EnvelopeDTOMap : IMap<Envelope, EnvelopeDTO>
+    public class EnvelopeMap : IMap<Envelope, EnvelopeConfig>
     {
-        public Envelope Map(EnvelopeDTO obj)
+        public Envelope Map(EnvelopeConfig obj)
         {
             if (obj != null)
             {
@@ -19,11 +19,6 @@ namespace TileCook.Web.Models
                 );
             }
             return null;
-        }
-
-        public EnvelopeDTO Map(Envelope obj)
-        {
-            throw new NotImplementedException();
         }
     }
 }

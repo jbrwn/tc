@@ -5,13 +5,13 @@ using System.Web;
 using System.Runtime.Serialization;
 
 
-namespace TileCook.Web.Models
+namespace TileCook.Web.Models.Config
 {
-    public class CacheDTO
+    public class CacheConfig
     {
-        public CacheDTO() { }
+        public CacheConfig() { }
 
-        [DataMember(IsRequired = true)]
+        [DataMember]
         public string Type { get; set; }
 
         // DiskCache

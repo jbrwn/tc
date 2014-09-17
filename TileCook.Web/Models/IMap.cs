@@ -11,6 +11,5 @@ namespace TileCook.Web.Models
         where T: class
     {
         S Map(T obj);
-        T Map(S obj);
     }
 }
