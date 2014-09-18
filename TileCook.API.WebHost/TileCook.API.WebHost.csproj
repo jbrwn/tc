@@ -75,11 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="App_Data\Config\Data\world_merc.dbf" />
-    <Content Include="App_Data\Config\Data\world_merc.prj" />
-    <Content Include="App_Data\Config\Data\world_merc.shp" />
-    <Content Include="App_Data\Config\Data\world_merc.shx" />
-    <Content Include="App_Data\Config\Demo.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -88,7 +83,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Config\Data\demo.xml" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -113,6 +107,9 @@
       <Project>{b3e33476-87ad-45b8-8d21-a1e9cd012a33}</Project>
       <Name>TileCook</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\Config\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

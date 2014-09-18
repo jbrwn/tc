@@ -1,11 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web;
-//using System.Web.Security;
-//using System.Web.SessionState;
-
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,55 +23,11 @@ namespace TileCook.API.WebHost
             MapnikProvider.RegisterDatasources(Server.MapPath("~/bin/mapnik/input"));
             MapnikProvider.RegisterFonts(Server.MapPath("~/bin/mapnik/fonts"));
 
-            // Get config file directory            
+            //Bootstrap TileCook config file repository                
             string layerDir = WebConfigurationManager.AppSettings["ConfigDirectory"] != null ?
                 WebConfigurationManager.AppSettings["ConfigDirectory"] : Server.MapPath("~/App_Data/Config");
             IPathResolver pathResolver = new PathResolver(layerDir);
-
-            // Create configuration object map
-            LayerMap LayerMap = new LayerMap(
-                new GridSetMap(
-                    new EnvelopeMap()
-                ),
-                new CacheMap(pathResolver),
-                new ProviderMap(
-                    new VectorTileLayerMap(
-                        new GridSetMap(
-                            new EnvelopeMap()
-                        ),
-                        new CacheMap(pathResolver),
-                        new VectorTileProviderMap(pathResolver),
-                        new EnvelopeMap()
-                    ),
-                    pathResolver
-                ),
-                new EnvelopeMap()
-            );
-
-            // Get layer repository
-            ILayerRepository repo = new LayerRepository();
-
-            // Deserialize config files
-            JsonSerializer serializer = new JsonSerializer();
-            try
-            {
-                foreach (string file in Directory.EnumerateFiles(layerDir, "*.json", SearchOption.TopDirectoryOnly))
-                {
-                    using (StreamReader sr = new StreamReader(file))
-                    {
-                        using (JsonTextReader reader = new JsonTextReader(sr))
-                        {
-                            LayerConfig LayerConfig = (LayerConfig)serializer.Deserialize(reader, typeof(LayerConfig));
-                            Layer l = LayerMap.Map(LayerConfig);
-                            repo.Put(l);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //Trace.TraceWarning(ex)
-            }
+            TileCookConfig.LoadConfigs(new LayerRepository(), layerDir);
         }
 
         protected void Session_Start(object sender, EventArgs e)

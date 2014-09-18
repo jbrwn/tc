@@ -62,6 +62,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="ContentEncoding.cs" />
     <Compile Include="ContentType.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\TileJSONController.cs" />
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\WMTSController.cs" />

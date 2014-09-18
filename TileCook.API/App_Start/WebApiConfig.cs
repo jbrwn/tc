@@ -54,6 +54,13 @@ namespace TileCook.API
                 defaults: new { Controller = "TileJSON", action = "GetTileJSON" }
             );
 
+            // Landing page
+            config.Routes.MapHttpRoute(
+                name: "Default",
+                routeTemplate: "",
+                defaults: new { controller = "Default" }
+            );
+
             // Set Formatters 
             config.Formatters.XmlFormatter.UseXmlSerializer = true;
 

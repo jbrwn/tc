@@ -2,15 +2,6 @@
 using System;
 using System.Net.Http;
 
-using System;
-using Microsoft.Owin;
-using Owin;
-using System.Web.Http;
-using TileCook.API;
-using TileCook.Models;
-using Newtonsoft.Json;
-using System.IO;
-
 namespace TileCook.API.SelfHost
 {
     class Program
