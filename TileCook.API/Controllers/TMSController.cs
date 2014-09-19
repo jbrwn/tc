@@ -27,7 +27,7 @@ namespace TileCook.API.Controllers
 
         [HttpGet]
         [ActionName("Tile")]
-        public HttpResponseMessage Tile(string Version, string TileMap, int Z, int X, int Y, string Format)
+        public HttpResponseMessage Tile(string Version, string TileMap, int? Z, int? X, int? Y, string Format)
         {
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
@@ -41,9 +41,17 @@ namespace TileCook.API.Controllers
                 throw new InvalidRequestParameterException(
                     string.Format("The requested LAYER {0} does not exist on this server", TileMap)
                 );
-            
+
+            // Validate tile coordinate paramaters
+            if (Z == null)
+                throw new InvalidRequestParameterException("Z paramater is not a valid integer");
+            if (X == null)
+                throw new InvalidRequestParameterException("X paramater is not a valid integer");
+            if (Y == null)
+                throw new InvalidRequestParameterException("Y paramater is not a valid integer");
+
             // Get image
-            byte[] img = layer.GetTile(Z, X, Y, Format);
+            byte[] img = layer.GetTile(Z.Value, X.Value, Y.Value, Format);
 
             // Start response
             HttpResponseMessage response = new HttpResponseMessage();

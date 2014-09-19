@@ -62,8 +62,6 @@ namespace TileCook.API
                 defaults: new { controller = "Default" }
             );
 
-            // Set Formatters 
-            config.Formatters.XmlFormatter.UseXmlSerializer = true;
         }
     }
 }

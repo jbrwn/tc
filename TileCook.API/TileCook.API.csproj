@@ -69,14 +69,14 @@
     <Compile Include="Controllers\TMSController.cs" />
     <Compile Include="Controllers\WMTSController.cs" />
     <Compile Include="GlobalExceptionHandler.cs" />
-    <Compile Include="ExtendedXmlMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\ExtendedXmlMediaTypeFormatter.cs" />
     <Compile Include="InvalidRequestParameterException.cs" />
-    <Compile Include="OWSException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TileJSONService.cs" />
     <Compile Include="Models\TMSService.cs" />
     <Compile Include="Models\WMTSService.cs" />
-    <Compile Include="TMSExceptionFilter.cs" />
+    <Compile Include="Filters\TMSExceptionFilter.cs" />
+    <Compile Include="Filters\WMTSExceptionFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TileCook.Models\TileCook.Models.csproj">
