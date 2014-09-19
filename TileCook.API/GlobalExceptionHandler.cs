@@ -10,6 +10,7 @@ class GlobalExceptionHandler : ExceptionHandler
 {
     public override void Handle(ExceptionHandlerContext context)
     {
+        //context.Result = context.ExceptionContext.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "oops!");
         context.Result = new ErrorResult
         {
             Request = context.ExceptionContext.Request,
@@ -25,10 +26,7 @@ class GlobalExceptionHandler : ExceptionHandler
 
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
-            HttpResponseMessage response =
-                             new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            response.Content = new StringContent(Content);
-            response.RequestMessage = Request;
+            HttpResponseMessage response = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, Content);
             return Task.FromResult(response);
         }
     }

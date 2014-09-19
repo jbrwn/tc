@@ -16,6 +16,7 @@ namespace TileCook.API.SelfHost
         {
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            ErrorConfig.Register(config);
             app.UseWebApi(config);
 
             //Mapnik config

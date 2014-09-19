@@ -9,8 +9,8 @@ namespace TileCook.API
     {
         public static string GetContentType(string extension)
         {
-            string contentType;
-            switch (extension)
+            string contentType = null;
+            switch (extension.ToLower())
             {
                 case "json":
                     contentType = "application/json";
@@ -18,8 +18,11 @@ namespace TileCook.API
                 case "pbf":
                     contentType = "application/x-protobuf";
                     break;
-                default:
-                    contentType = "text/plain";//MimeMapping.GetMimeMapping("." + extension);
+                case "png":
+                    contentType = "image/png";
+                    break;
+                case "jpg":
+                    contentType = "image/jpeg";
                     break;
             }
             return contentType;

@@ -64,20 +64,6 @@ namespace TileCook.API
 
             // Set Formatters 
             config.Formatters.XmlFormatter.UseXmlSerializer = true;
-
-
-
-            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultCatchall",
-                routeTemplate: "{*url}",
-                defaults: new
-                {
-                    controller = "Default",
-                    action = "Get"
-                });
-
         }
     }
 }

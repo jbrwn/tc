@@ -18,6 +18,7 @@ namespace TileCook.API.WebHost
         protected void Application_Start(object sender, EventArgs e)
         {
             WebApiConfig.Register(GlobalConfiguration.Configuration);
+            ErrorConfig.Register(GlobalConfiguration.Configuration);
 
             //Mapnik config
             MapnikProvider.RegisterDatasources(Server.MapPath("~/bin/mapnik/input"));
