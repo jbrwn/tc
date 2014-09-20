@@ -12,21 +12,9 @@ namespace TileCook.API.Controllers
     public class DefaultController : ApiController
     {
 
-        public HttpResponseMessage Get()
+        public string Get()
         {
-            // Start response
-            HttpResponseMessage response = new HttpResponseMessage();
-            response.StatusCode = HttpStatusCode.OK;
-            response.Content = new StringContent(@"
- _____  _  _          ___               _    
-/__   \(_)| |  ___   / __\ ___    ___  | | __
-  / /\/| || | / _ \ / /   / _ \  / _ \ | |/ /
- / /   | || ||  __// /___| (_) || (_) ||   < 
- \/    |_||_| \___|\____/ \___/  \___/ |_|\_\
-            ");
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
-            return response;
-
+            return "TileCook tile server!";
         }
     }
 }
