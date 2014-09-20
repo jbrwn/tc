@@ -58,6 +58,12 @@ namespace TileCook.API.Controllers
                 );
             
             // Validate tile coordinate parameters
+            if (TileMatrix == null)
+                throw new InvalidRequestParameterException("TILEMATRIX paramater is not a valid integer","TileMatrix");
+            if (TileCol == null)
+                throw new InvalidRequestParameterException("TILECOL paramater is not a valid integer", "TileCol");
+            if (TileRow == null)
+                throw new InvalidRequestParameterException("TILEROW paramater is not a valid integer", "TileRow");
 
 
             // Get image
