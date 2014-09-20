@@ -80,6 +80,7 @@
     <Compile Include="cache\ICache.cs" />
     <Compile Include="core\GridSetFactory.cs" />
     <Compile Include="core\IGridSet.cs" />
+    <Compile Include="core\TileNotFoundException.cs" />
     <Compile Include="provider\IEnvelopeProvider.cs" />
     <Compile Include="core\InvalidTileFormatException.cs" />
     <Compile Include="provider\IPassThoughProvider.cs" />

@@ -6,14 +6,18 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
+using System.Net.Http.Formatting;
 using TileCook;
 using TileCook.Models;
 using TileCook.API.Models;
+using TileCook.API.Filters;
 
 namespace TileCook.API.Controllers
 {
+    [TMSExceptionFilter]
     public class TMSController : ApiController
     {
+        // TO DO: inject repository through constructor
         private ILayerRepository _repository;
 
         public TMSController()
@@ -23,51 +27,31 @@ namespace TileCook.API.Controllers
 
         [HttpGet]
         [ActionName("Tile")]
-        public HttpResponseMessage Tile(string Version, string TileMap, int Z, int X, int Y, string Format)
+        public HttpResponseMessage Tile(string Version, string TileMap, int? Z, int? X, int? Y, string Format)
         {
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested service VERSION {0} is not supported by this server", Version);
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested service VERSION {0} is not supported by this server", Version)
+                );
 
             // Validate layer
             Layer layer = this._repository.Get(TileMap);
             if (layer == null)
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested LAYER {0} does not exist on this server", TileMap);
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
-            
-            // Get image
-            byte[] img;
-            try
-            {
-                img = layer.GetTile(Z, X, Y, Format);
-            }
-            catch (TileOutOfRangeException e)
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = e.Message;
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
-            catch (InvalidTileFormatException e)
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = e.Message;
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested LAYER {0} does not exist on this server", TileMap)
+                );
 
-            // Check for null image
-            if (img == null)
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("You requested a map tile /{0}/{1}/{2} that does not exist.", Z, X, Y);
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
+            // Validate tile coordinate paramaters
+            if (Z == null)
+                throw new InvalidRequestParameterException("Z paramater is not a valid integer");
+            if (X == null)
+                throw new InvalidRequestParameterException("X paramater is not a valid integer");
+            if (Y == null)
+                throw new InvalidRequestParameterException("Y paramater is not a valid integer");
+
+            // Get image
+            byte[] img = layer.GetTile(Z.Value, X.Value, Y.Value, Format);
 
             // Start response
             HttpResponseMessage response = new HttpResponseMessage();
@@ -99,22 +83,19 @@ namespace TileCook.API.Controllers
             metadata.href = Url.Link("TMSService", new { Version = "1.0.0" });
             services.Add(metadata);
 
-            return Request.CreateResponse(HttpStatusCode.OK, services, Configuration.Formatters.XmlFormatter);
+            return Request.CreateResponse(HttpStatusCode.OK, services, new XmlMediaTypeFormatter() { UseXmlSerializer = true });
         }
 
         [HttpGet]
         [ActionName("Service")]
         public HttpResponseMessage Service(string Version)
         {
-
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested service VERSION {0} is not supported by this server", Version);
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
-
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested service VERSION {0} is not supported by this server", Version)
+                );
+            
             TileMapService tileMapService = new TileMapService();
             tileMapService.version = "1.0.0";
             tileMapService.services = Url.Link("TMSRoot", new { });
@@ -163,20 +144,16 @@ namespace TileCook.API.Controllers
         {
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested service VERSION {0} is not supported by this server", Version);
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested service VERSION {0} is not supported by this server", Version)
+                );
 
             // Validate layer
             Layer layer = this._repository.Get(TileMap);
             if (layer == null)
-            {
-                TileMapServiceError error = new TileMapServiceError();
-                error.Message = string.Format("The requested LAYER {0} does not exist on this server", TileMap);
-                return Request.CreateResponse(HttpStatusCode.NotFound, error, Configuration.Formatters.XmlFormatter);
-            }
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested LAYER {0} does not exist on this server", TileMap)
+                );
 
             TileMap tileMap = new TileMap();
             tileMap.version = "1.0.0";

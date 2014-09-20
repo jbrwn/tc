@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
 namespace TileCook
 {
-    public class InvalidTileFormatException : Exception
+    public class TileNotFoundException : Exception
     {
-        public InvalidTileFormatException(string message)
+        public TileNotFoundException(string message)
             : base(message) { }
 
-        protected InvalidTileFormatException(SerializationInfo info, StreamingContext ctxt)
+        protected TileNotFoundException(SerializationInfo info, StreamingContext ctxt)
             : base(info, ctxt) { }
     }
 }

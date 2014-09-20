@@ -8,11 +8,13 @@ using System.Web;
 using System.Web.Http;
 using TileCook.API.Models;
 using TileCook.API.Formatting;
+using TileCook.API.Filters;
 using System.Xml.Serialization;
 using TileCook.Models;
 
 namespace TileCook.API.Controllers
 {
+    [WMTSExceptionFilter]
     public class WMTSController : ApiController
     {
         private ILayerRepository _repository;
@@ -24,101 +26,49 @@ namespace TileCook.API.Controllers
 
         [HttpGet]
         [ActionName("GetTile")]
-        public HttpResponseMessage GetTile(string Version, string Layer, string Style, string TileMatrixSet, int TileMatrix, int TileRow, int TileCol, string Format)
+        public HttpResponseMessage GetTile(string Version, string Layer, string Style, string TileMatrixSet, int? TileMatrix, int? TileRow, int? TileCol, string Format)
         {
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.NotFound,
-                    "InvalidParameterValue",
-                    string.Format("The requested service VERSION {0} is not supported by this server",Version),
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested service VERSION {0} is not supported by this server", Version),
                     "Version"
                 );
-            }
 
             // Validate layer
             Layer layer = this._repository.Get(Layer);
             if (layer == null)
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.NotFound,
-                    "InvalidParameterValue",
+                throw new InvalidRequestParameterException(
                     string.Format("The requested LAYER {0} does not exist on this server", Layer),
                     "Layer"
                 );
-            }
 
             // Validate style
             if (!Style.Equals("default", StringComparison.OrdinalIgnoreCase))
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.NotFound,
-                    "InvalidParameterValue",
+                throw new InvalidRequestParameterException(
                     string.Format("The requested STYLE {0} is Invalid for LAYER {1}", Style, Layer),
                     "Style"
                 );
-            }
-
+            
+            // Validate TileMatrixSet
             if (!TileMatrixSet.Equals(layer.Gridset.Name, StringComparison.OrdinalIgnoreCase))
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.NotFound,
-                    "InvalidParameterValue",
+                throw new InvalidRequestParameterException(
                     string.Format("The requested TILEMATRIXSET {0} is Invalid for LAYER {1}", TileMatrixSet, Layer),
                     "TileMatrixSet"
                 );
-            }
+            
+            // Validate tile coordinate parameters
+            if (TileMatrix == null)
+                throw new InvalidRequestParameterException("TILEMATRIX paramater is not a valid integer","TileMatrix");
+            if (TileCol == null)
+                throw new InvalidRequestParameterException("TILECOL paramater is not a valid integer", "TileCol");
+            if (TileRow == null)
+                throw new InvalidRequestParameterException("TILEROW paramater is not a valid integer", "TileRow");
+
 
             // Get image
-            byte[] img;
-            try
-            {
-                TileRow = layer.FlipY(TileMatrix, TileRow);
-                img = layer.GetTile(TileMatrix, TileCol, TileRow, Format);
-            }
-            catch (TileOutOfRangeException e)
-            {
-                string locator = e.Message.Split(' ')[0];
-                switch (locator)
-                {
-                    case "Zoom":
-                        locator = "TileMatrix";
-                        break;
-                    case "Column":
-                        locator = "TileCol";
-                        break;
-                    case "Row":
-                        locator = "TileRow";
-                        break;
-                }
-                return GenerateOWSException(
-                    HttpStatusCode.BadRequest,
-                    "TileOutOfRange",
-                    e.Message,
-                    locator
-                );
-            }
-            catch (InvalidTileFormatException e)
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.BadRequest,
-                    "InvalidParameterValue",
-                    e.Message,
-                    "Format"
-                );
-            }
-
-            // Check for null image
-            if (img == null)
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.NotFound,
-                    "FileNotFound",
-                    string.Format("You requested a map tile /{0}/{1}/{2} that does not exist.", TileMatrix, TileCol, TileRow),
-                    ""
-                );
-            }
+            TileRow = layer.FlipY(TileMatrix.Value, TileRow.Value);
+            byte[] img = layer.GetTile(TileMatrix.Value, TileCol.Value, TileRow.Value, Format);
 
             // Start response
             HttpResponseMessage response = new HttpResponseMessage();
@@ -146,14 +96,11 @@ namespace TileCook.API.Controllers
         {
             // Validate version
             if (!Version.Equals("1.0.0", StringComparison.OrdinalIgnoreCase))
-            {
-                return GenerateOWSException(
-                    HttpStatusCode.NotFound,
-                    "InvalidParameterValue",
-                    "The requested service version is not supported by this server",
+                throw new InvalidRequestParameterException(
+                    string.Format("The requested service VERSION {0} is not supported by this server",Version),
                     "Version"
                 );
-            }
+
 
             IList<Layer> layers = (IList<Layer>)this._repository.GetAll();
             Dictionary<string, IGridSet> uniqueGridSets = new Dictionary<string, IGridSet>();
@@ -288,21 +235,6 @@ namespace TileCook.API.Controllers
             ns.Add("gml", "http://www.opengis.net/gml");
 
             return Request.CreateResponse(HttpStatusCode.OK, capabilities, new ExtendedXmlMediaTypeFormatter(ns));
-        }
-
-        private HttpResponseMessage GenerateOWSException(HttpStatusCode statusCode, string code, string message, string locator)
-        {
-            ExceptionReport ex = new ExceptionReport();
-            ex.lang = "en";
-            ex.version = "1.0.0";
-            ex.Exception = new ExceptionType[] { new ExceptionType() };
-            ex.Exception[0].ExceptionText = new string[] { message };
-            ex.Exception[0].exceptionCode = code;
-            ex.Exception[0].locator = locator;
-
-            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-            ns.Add("ows", "http://www.opengis.net/ows/1.1");
-            return Request.CreateResponse(statusCode, ex, new ExtendedXmlMediaTypeFormatter(ns));           
         }
            
     }
