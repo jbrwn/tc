@@ -51,7 +51,7 @@ namespace TileCook.API.Controllers
                 throw new InvalidRequestParameterException("Y paramater is not a valid integer");
 
             // Get image
-            byte[] img = layer.GetTile(Z.Value, X.Value, Y.Value, Format);
+            byte[] img = layer.GetTile(new Coord(Z.Value, X.Value, Y.Value, false), Format);
 
             // Start response
             HttpResponseMessage response = new HttpResponseMessage();
@@ -66,8 +66,8 @@ namespace TileCook.API.Controllers
             response.Content.Headers.Add("Content-Encoding", ContentEncoding.GetContentEncoding(img));
 
             // Set browser cache control
-            response.Headers.CacheControl = new CacheControlHeaderValue();
-            response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.BrowserCache);
+            //response.Headers.CacheControl = new CacheControlHeaderValue();
+            //response.Headers.CacheControl.MaxAge = TimeSpan.FromSeconds(layer.BrowserCache);
 
             return response;
         }
@@ -122,8 +122,8 @@ namespace TileCook.API.Controllers
             {
                 TileMapMetadata tileMapMetadata = new TileMapMetadata();
                 tileMapMetadata.title = layer.Title;
-                tileMapMetadata.srs = layer.Gridset.SRS;
-                if (layer.Gridset.Name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase))
+                tileMapMetadata.srs = layer.GridSet.SRS;
+                if (layer.GridSet.Name.Equals("GoogleMapsCompatible", StringComparison.OrdinalIgnoreCase))
                 {
                     tileMapMetadata.profile = "global-mercator";
                 }
@@ -135,7 +135,7 @@ namespace TileCook.API.Controllers
                 tileMapService.TileMaps.Add(tileMapMetadata);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, tileMapService, Configuration.Formatters.XmlFormatter);
+            return Request.CreateResponse(HttpStatusCode.OK, tileMapService, new XmlMediaTypeFormatter() { UseXmlSerializer = true });
         }
 
         [HttpGet]
@@ -159,31 +159,31 @@ namespace TileCook.API.Controllers
             tileMap.version = "1.0.0";
             tileMap.tilemapservice = Url.Link("TMSService", new { Version = "1.0.0" });
             tileMap.Title = layer.Title;
-            tileMap.SRS = layer.Gridset.SRS;
+            tileMap.SRS = layer.GridSet.SRS;
             tileMap.BoudningBox = new BoundingBox();
-            tileMap.BoudningBox.minx = layer.Bounds.Minx.ToString();
-            tileMap.BoudningBox.miny = layer.Bounds.Miny.ToString();
-            tileMap.BoudningBox.maxx = layer.Bounds.Maxx.ToString();
-            tileMap.BoudningBox.maxy = layer.Bounds.Maxy.ToString();
+            tileMap.BoudningBox.minx = layer.GridSet.Envelope.Minx.ToString();
+            tileMap.BoudningBox.miny = layer.GridSet.Envelope.Miny.ToString();
+            tileMap.BoudningBox.maxx = layer.GridSet.Envelope.Maxx.ToString();
+            tileMap.BoudningBox.maxy = layer.GridSet.Envelope.Maxy.ToString();
             tileMap.Origin = new Origin();
-            tileMap.Origin.x = layer.Bounds.Minx.ToString();
-            tileMap.Origin.y = layer.Bounds.Miny.ToString();
+            tileMap.Origin.x = layer.GridSet.Envelope.Minx.ToString();
+            tileMap.Origin.y = layer.GridSet.Envelope.Miny.ToString();
             tileMap.TileFormat = new TileFormat();
-            tileMap.TileFormat.width = layer.Gridset.TileHeight.ToString();
-            tileMap.TileFormat.height = layer.Gridset.TileWidth.ToString();
-            tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.Formats[0]);
-            tileMap.TileFormat.extension = layer.Formats[0];
+            tileMap.TileFormat.width = layer.GridSet.TileHeight.ToString();
+            tileMap.TileFormat.height = layer.GridSet.TileWidth.ToString();
+            tileMap.TileFormat.mimetype = ContentType.GetContentType(layer.Provider.GetFormats()[0]);
+            tileMap.TileFormat.extension = layer.Provider.GetFormats()[0];
             tileMap.TileSets = new TileSets();
-            for(int i=0;i<layer.Gridset.Resolutions.Count;i++)
+            for(int i=0;i<layer.GridSet.Resolutions.Count;i++)
             {
                 TileSet tileSet = new TileSet();
                 tileSet.href = Url.Link("TMSTileMap", new { Version = "1.0.0", TileMap = layer.Name }) + "/" + i.ToString() ;
-                tileSet.unitsperpixel = layer.Gridset.Resolutions[i].ToString();
+                tileSet.unitsperpixel = layer.GridSet.Resolutions[i].ToString();
                 tileSet.order = i.ToString();
                 tileMap.TileSets.Add(tileSet);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, tileMap, Configuration.Formatters.XmlFormatter);
+            return Request.CreateResponse(HttpStatusCode.OK, tileMap, new XmlMediaTypeFormatter() { UseXmlSerializer = true });
         }
 
     }

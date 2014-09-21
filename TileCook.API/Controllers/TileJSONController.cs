@@ -47,8 +47,8 @@ namespace TileCook.API.Controllers
             tilejson.name = tileLayer.Name;
             tilejson.descritpion = tileLayer.Title;
             tilejson.scheme = "tms";
-            tilejson.minzoom = tileLayer.MinZoom;
-            tilejson.maxzoom = tileLayer.MaxZoom;
+            tilejson.minzoom = 0;
+            tilejson.maxzoom = tileLayer.GridSet.Resolutions.Count - 1;
 
             // Check for UTFGrid
             if (HasUTFGrid(tileLayer))
@@ -81,7 +81,7 @@ namespace TileCook.API.Controllers
 
         private string GetDefaultFormat(Layer layer)
         {
-            foreach (string format in layer.Formats)
+            foreach (string format in layer.Provider.GetFormats())
             {
                 if (format.ToLower() != "json")
                 {
@@ -93,7 +93,7 @@ namespace TileCook.API.Controllers
 
         private bool HasUTFGrid(Layer layer)
         {
-            foreach (string format in layer.Formats)
+            foreach (string format in layer.Provider.GetFormats())
             {
                 if (format.ToLower() == "json")
                 {

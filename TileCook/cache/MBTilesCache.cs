@@ -47,8 +47,12 @@ namespace TileCook
             get { return this._database; } 
         }
 
-        public byte[] Get(int z, int x, int y, string Format)
+        public byte[] Get(Coord coord, string Format)
         {
+            int z = coord.Z;
+            int x = coord.X;
+            int y = coord.Y;
+
             byte[] img = null;
             if (Format.Equals(this._format, StringComparison.OrdinalIgnoreCase))
             {       
@@ -74,8 +78,12 @@ namespace TileCook
             return img;
         }
 
-        public void Put(int z, int x, int y, string Format, byte[] image)
+        public void Put(Coord coord, string Format, byte[] image)
         {
+            int z = coord.Z;
+            int x = coord.X;
+            int y = coord.Y;
+
             if (Format.Equals(this._format, StringComparison.OrdinalIgnoreCase))
             {
                 if (this._isCompressed)
@@ -129,8 +137,12 @@ namespace TileCook
             }
         }
 
-        public void Delete(int z, int x, int y, string Format)
+        public void Delete(Coord coord, string Format)
         {
+            int z = coord.Z;
+            int x = coord.X;
+            int y = coord.Y;
+
             if (Format.Equals(this._format, StringComparison.OrdinalIgnoreCase))
             {
                 if (this._isCompressed)

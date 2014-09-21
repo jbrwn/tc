@@ -22,5 +22,6 @@ namespace TileCook
         int GridHeight(int z);
         Envelope CoordToEnvelope(Coord coord);
         Coord PointToCoord(Point p, int z);
-    }
+        Coord SetY(Coord coord);
+    } 
 }

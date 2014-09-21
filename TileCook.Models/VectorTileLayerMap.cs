@@ -31,15 +31,8 @@ namespace TileCook.Models
                     obj.Name,
                     obj.Title,
                     this._GridSetMap.Map(obj.Gridset),
-                    this._CacheMap.Map(obj.Cache),
                     this._vectorTileProviderMap.Map(obj.Provider) as IProvider,
-                    this._EnvelopeMap.Map(obj.Bounds),
-                    obj.MinZoom,
-                    obj.MaxZoom,
-                    obj.Formats,
-                    obj.BrowserCache,
-                    obj.DisableCache,
-                    obj.DisableProvider
+                    this._CacheMap.Map(obj.Cache)
                 );
             }
             return null;

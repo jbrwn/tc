@@ -7,8 +7,8 @@ namespace TileCook
     
     public interface ICache
     {
-        byte[] Get(int z, int x, int y, string format);
-        void Put(int z, int x, int y, string format, byte[] image);
-        void Delete(int z, int x, int y, string format);
+        byte[] Get(Coord coord, string format);
+        void Put(Coord coord, string format, byte[] image);
+        void Delete(Coord coord, string format);
     }
 }
