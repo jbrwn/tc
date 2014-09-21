@@ -87,10 +87,19 @@ namespace TileCook
             int x = coord.X;
             int y = coord.Y;
 
-            if (this._topOrigin)
+            if (coord.TopOrigin)
             {
                 y = this.GridHeight(z) - y - 1;
             }
+
+            if (!(z >= 0 && z < this._resolutions.Count))
+                throw new TileOutOfRangeException(string.Format("Zoom level {0} is out of range (min: {1} max: {2})", coord.Z, 0, this._resolutions.Count - 1));
+            int xMax = GridWidth(z);
+            if (!(x >=0 && x < xMax))
+                throw new TileOutOfRangeException(string.Format("Column {0} is out of range (min: {1} max: {2})", coord.X, 0, xMax - 1));
+            int yMax = GridHeight(z);
+            if (!(y >=0 && y < yMax))
+                throw new TileOutOfRangeException(string.Format("Row {0} is out of range (min: {1} max: {2})", coord.Y, 0, yMax - 1));
 
             double res = this._resolutions[z];
             double minx = x * this._tileWidth * res + this._envelope.Minx;
@@ -99,7 +108,6 @@ namespace TileCook
             double maxy = (y + 1) * this._tileHeight * res + this._envelope.Miny;
 
             return new Envelope(minx, miny, maxx, maxy);
-
         }
 
         public Coord PointToCoord(Point p , int z)
@@ -108,6 +116,20 @@ namespace TileCook
             int x =  (int)Math.Ceiling((p.X - this._envelope.Minx) / res / this._tileWidth);
             int y = (int)Math.Ceiling((p.Y - this._envelope.Miny) / res / this._tileHeight);
             return new Coord(z,x,y);
+        }
+
+        public Coord SetY(Coord coord)
+        {
+            if (this.TopOrigin != coord.TopOrigin)
+                return FlipY(coord);
+
+            return coord;
+        }
+
+        private Coord FlipY(Coord coord)
+        {
+            int y = this.GridHeight(coord.Z) - coord.Y - 1;
+            return new Coord(coord.Z, coord.X, y, !coord.TopOrigin);
         }
     }
 }

@@ -150,7 +150,9 @@ namespace TileCook
                     return bytes;
                 }
                 // Format not expected so throw exception
-                throw new InvalidOperationException(string.Format("Format {0} not expected",format));
+                throw new InvalidTileFormatException(
+                    string.Format("Invalid tile FORMAT {0}", format)
+                );
             }
         }
 

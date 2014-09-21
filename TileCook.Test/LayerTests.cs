@@ -27,30 +27,5 @@ namespace TileCook.Test
                 .Initialize()
                 .SetName(null);
         }
-
-        [TestMethod]
-        public void Ctor_BareBonesArgs_DefaultsSetCorrectly()
-        {
-            Layer l = new LayerBuilder()
-                .Initialize();
-
-            Assert.IsTrue(l.Bounds.Equals(new Envelope(0, 0, 0, 0)));
-            Assert.AreEqual(l.MaxZoom, 0);
-            Assert.IsNotNull(l.Formats);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(TileOutOfRangeException))]
-        public void GetTile_ZOutOfRange_Throws()
-        {
-            var mockProvider = new Mock<IProvider>();
-            mockProvider.Setup(p => p.GetFormats()).Returns(new List<string>() { "png" });
-
-            Layer l = new LayerBuilder()
-                .Initialize()
-                .SetProvider(mockProvider.Object);
-
-            l.GetTile(1, 0, 0, "png");
-        }
     }
 }

@@ -14,13 +14,6 @@ namespace TileCook.Test
         private ICache _cache;
         private IProvider _provider;
         private IGridSet _gridSet;
-        private Envelope _bounds;
-        private int _minZoom;
-        private int _maxZoom;
-        private List<string> _formats;
-        private int _browserCache;
-        private bool _disableCache;
-        private bool _disableProvider;
 
         public Layer Build()
         {
@@ -28,15 +21,8 @@ namespace TileCook.Test
                 this._name,
                 this._title,
                 this._gridSet,
-                this._cache,
                 this._provider,
-                this._bounds,
-                this._minZoom,
-                this._maxZoom,
-                this._formats,
-                this._browserCache,
-                this._disableCache,
-                this._disableProvider
+                this._cache
             );
         }
 
@@ -61,24 +47,6 @@ namespace TileCook.Test
         public LayerBuilder SetProvider(IProvider provider)
         {
             this._provider = provider;
-            return this;
-        }
-
-        public LayerBuilder SetFormats(List<string> formats)
-        {
-            this._formats = formats;
-            return this;
-        }
-
-        public LayerBuilder SetBounds(Envelope envelope)
-        {
-            this._bounds = envelope;
-            return this;
-        }
-
-        public LayerBuilder SetMaxZoom(int maxZoom)
-        {
-            this._maxZoom = maxZoom;
             return this;
         }
 

@@ -51,6 +51,7 @@ namespace TileCook.API
             }
             catch (Exception e)
             {
+                throw;
                 //Trace.TraceWarning()
             }
 

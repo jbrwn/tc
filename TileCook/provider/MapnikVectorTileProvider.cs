@@ -69,21 +69,25 @@ namespace TileCook
 
         public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)
         {
-            // Get source layer
-            //Layer sourceLayer = LayerCache.GetLayer(TileSource);
-            byte[] tileBytes = this._tileSource.GetTile(coord.Z, coord.X, coord.Y, "pbf");
+            byte[] tileBytes = this._tileSource.GetTile(coord, "pbf");
             
             // Uncompress bytes
             if (tileBytes.Length > 0)
             {
                 tileBytes = Decompress(tileBytes);
             }
+            
+            // Set vector tile bytes
+            // mapnik vector tile assumes top left origin
+            int y = coord.Y;
+            if (!coord.TopOrigin)
+                y = this._tileSource.GridSet.GridHeight(coord.Z) - coord.Y - 1;
 
-            // Flip y coordinate - mapnik vector tile assumes top left origin.
-            int flippedY = this._tileSource.FlipY(coord.Z, coord.Y);
-            VectorTile vTile = new VectorTile(coord.Z, coord.X, flippedY, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
+            VectorTile vTile = new VectorTile(coord.Z, coord.X, y, Convert.ToUInt32(tileWidth), Convert.ToUInt32(tileHeight));
             vTile.SetBytes(tileBytes);
-            Envelope envelope = this._tileSource.Gridset.CoordToEnvelope(new Coord(coord.Z,coord.X,coord.Y));
+
+            // Get coord envelope
+            Envelope envelope = this._tileSource.GridSet.CoordToEnvelope(coord);
 
             // Lock map object for rendering
             // TO DO: better strategy is to create a pool of map objects 
@@ -95,6 +99,7 @@ namespace TileCook
                 Image img = new Image(Convert.ToInt32(_map.Width), Convert.ToInt32(_map.Height));
                 vTile.Render(_map, img);
 
+                format = format.ToLower();
                 if (format == "png" || format == "jpg")
                 {
                     if (format == "png")
@@ -108,7 +113,9 @@ namespace TileCook
                     return img.Encode(format);
                 }
                 // Format not expected so throw exception
-                throw new InvalidOperationException(string.Format("Format {0} not expected", format));
+                throw new InvalidTileFormatException(
+                    string.Format("Invalid tile FORMAT {0}", format)
+                );
 
             }
         }

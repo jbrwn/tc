@@ -27,5 +27,20 @@ namespace TileCook.Test
             Assert.AreEqual(4, m.GridResolution);
             CollectionAssert.AreEquivalent(new List<string>(), m.GridFields);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidTileFormatException))]
+        public void Render_InvalidFormat_Throws()
+        {
+            MapnikProvider m = new MapnikProviderBuilder()
+                .SetXmlConfig(@"..\..\data\empty.xml");
+
+            m.Render(
+                new Envelope(0, 0, 0, 0),
+                "invalid format",
+                256,
+                256
+            );
+        }
     }
 }

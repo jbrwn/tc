@@ -28,9 +28,9 @@ namespace TileCook
             get {return this._cacheDirectory;}
         }
 
-        public byte[] Get(int z, int x, int y, string format)
+        public byte[] Get(Coord coord, string format)
         {
-            string path = this.buildPath(z, x, y, format);
+            string path = this.buildPath(coord, format);
             byte[] img = null;
 
             int i = 0;
@@ -61,9 +61,9 @@ namespace TileCook
             return img;
         }
 
-        public void Put(int z, int x, int y, string format, byte[] image)
+        public void Put(Coord coord, string format, byte[] image)
         {
-            string path = this.buildPath(z, x, y, format);
+            string path = this.buildPath(coord, format);
             int i = 0;
             while (true)
             {
@@ -90,9 +90,9 @@ namespace TileCook
             }
         }
 
-        public void Delete(int z, int x, int y, string format)
+        public void Delete(Coord coord, string format)
         {
-            string path = this.buildPath(z, x, y, format);
+            string path = this.buildPath(coord, format);
             int i = 0;
             while (true)
             {
@@ -118,13 +118,13 @@ namespace TileCook
             }
         }
 
-        private string buildPath(int z, int x, int y, string format)
+        private string buildPath(Coord coord, string format)
         {
-            string filename = y.ToString() + "." + format;
+            string filename = coord.Y.ToString() + "." + format;
             string path = Path.Combine(
                 this._cacheDirectory,
-                z.ToString(),
-                x.ToString(),
+                coord.Z.ToString(),
+                coord.Z.ToString(),
                 filename
             );
             return path;

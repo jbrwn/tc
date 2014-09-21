@@ -40,19 +40,17 @@ namespace TileCook.Test
                 new Envelope(0, 0, 100, 100),
                 new List<double>() { 10, 5, 2.5 },
                 10,
-                10,
-                1,
-                true
+                10
             );
 
             Envelope expected = new Envelope(0, 0, 100, 100);
-            Assert.IsTrue(expected.Equals(g.CoordToEnvelope(new Coord(0, 0, 0))));
+            Assert.IsTrue(expected.Equals(g.CoordToEnvelope(new Coord(0, 0, 0, true))));
 
             expected = new Envelope(0, 0, 50, 50);
-            Assert.IsTrue(expected.Equals(g.CoordToEnvelope(new Coord(1, 0, 1))));
+            Assert.IsTrue(expected.Equals(g.CoordToEnvelope(new Coord(1, 0, 1, true))));
 
             expected = new Envelope(75, 75, 100, 100);
-            Assert.IsTrue(expected.Equals(g.CoordToEnvelope(new Coord(2, 3, 0))));
+            Assert.IsTrue(expected.Equals(g.CoordToEnvelope(new Coord(2, 3, 0, true))));
         }
 
         [TestMethod]
@@ -85,6 +83,138 @@ namespace TileCook.Test
             Assert.AreEqual(g.GridWidth(2), 4);
         }
 
+
+        [TestMethod]
+        [ExpectedException(typeof(TileOutOfRangeException))]
+        public void CoordToEnvelope_InvalidZ_throws()
+        {
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10
+            );
+
+            g.CoordToEnvelope(new Coord(3, 0, 0));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TileOutOfRangeException))]
+        public void CoordToEnvelope_InvalidX_throws()
+        {
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10
+            );
+
+            g.CoordToEnvelope(new Coord(0, 1, 0));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TileOutOfRangeException))]
+        public void CoordToEnvelope_InvalidY_throws()
+        {
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10
+            );
+
+            g.CoordToEnvelope(new Coord(0, 0, 1));
+        }
+
+        [TestMethod]
+        public void SetY_TopCoordBottomGridSet_Flips()
+        {
+            Coord c = new Coord(1, 0, 0, true);
+
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10,
+                .00028,
+                false
+            );
+
+            Coord cResult = g.SetY(c);
+            Assert.IsFalse(cResult.TopOrigin);
+            Assert.AreEqual(cResult.Y, 1);
+        }
+
+        [TestMethod]
+        public void SetY_TopCoordTopGridSet_NoFlip()
+        {
+            Coord c = new Coord(1, 0, 0, true);
+
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10,
+                .00028,
+                true
+            );
+
+            Coord cResult = g.SetY(c);
+            Assert.IsTrue(cResult.TopOrigin);
+            Assert.AreEqual(cResult.Y, 0);
+        }
+
+        [TestMethod]
+        public void SetY_BottomCoordTopGridSet_Flips()
+        {
+            Coord c = new Coord(1, 0, 0, false);
+
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10,
+                .00028,
+                true
+            );
+
+            Coord cResult = g.SetY(c);
+            Assert.IsTrue(cResult.TopOrigin);
+            Assert.AreEqual(cResult.Y, 1);
+        }
+
+        [TestMethod]
+        public void SetY_BottomCoordBottomGridSet_NoFlip()
+        {
+            Coord c = new Coord(1, 0, 0, false);
+
+            GridSet g = new GridSet(
+                "test",
+                "epsg:test",
+                new Envelope(0, 0, 100, 100),
+                new List<double>() { 10, 5, 2.5 },
+                10,
+                10,
+                .00028,
+                false
+            );
+
+            Coord cResult = g.SetY(c);
+            Assert.IsFalse(cResult.TopOrigin);
+            Assert.AreEqual(cResult.Y, 0);
+        }
 
     }
 }

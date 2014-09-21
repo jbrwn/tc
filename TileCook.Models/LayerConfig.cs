@@ -21,19 +21,5 @@ namespace TileCook.Models
         public ProviderConfig Provider { get; set; }
         [DataMember]
         public GridSetConfig Gridset { get; set; }
-        [DataMember]
-        public EnvelopeConfig Bounds { get; set; }
-        [DataMember]
-        public int MinZoom { get; set; }
-        [DataMember]
-        public int MaxZoom { get; set; }
-        [DataMember]
-        public IList<string> Formats { get; set; }
-        [DataMember]
-        public int BrowserCache { get; set; }
-        [DataMember]
-        public bool DisableCache { get; set; }
-        [DataMember]
-        public bool DisableProvider { get; set; }
     }
 }
