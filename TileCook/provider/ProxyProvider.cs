@@ -14,19 +14,14 @@ namespace TileCook
     {
         private readonly List<string> _formats;
         private readonly string _urlTemplate;
+        private readonly List<VectorLayerMetadata> _vectorLayers;
 
-        public ProxyProvider(string urlTemplate)
+        public ProxyProvider(string urlTemplate, string format, IEnumerable<VectorLayerMetadata> vectorLayers = null)
         {
             if (string.IsNullOrEmpty(urlTemplate))
-            {
                 throw new ArgumentNullException("ProxyProvider url template cannot be null or empty");
-            }
-            else
-            {
-                this._urlTemplate = urlTemplate;
-            }
+            this._urlTemplate = urlTemplate;
 
-            string format = Path.GetExtension(urlTemplate).Substring(1);
             this._formats = new List<string> { format };
         }
 
@@ -34,6 +29,11 @@ namespace TileCook
 
         public byte[] Render(Coord coord, string format, int tileWidth, int tileHeight)
         {
+            if (!this._formats.Contains(format.ToLower()))
+                throw new InvalidTileFormatException(
+                    string.Format("Invalid tile FORMAT {0}", format)
+                );
+
             string urlRequest = this._urlTemplate;
             urlRequest = Regex.Replace(urlRequest, "{z}", coord.Z.ToString(), RegexOptions.IgnoreCase);
             urlRequest = Regex.Replace(urlRequest,"{x}", coord.Z.ToString(), RegexOptions.IgnoreCase);
@@ -41,28 +41,41 @@ namespace TileCook
             Uri uri = new Uri(urlRequest);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            try
             {
-                using (Stream responseStream = response.GetResponseStream())
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
-                    using (MemoryStream ms = new MemoryStream())
+                    using (Stream responseStream = response.GetResponseStream())
                     {
-                        responseStream.CopyTo(ms);
-                        return ms.ToArray();
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            responseStream.CopyTo(ms);
+                            return ms.ToArray();
+                        }
                     }
                 }
             }
+            catch (WebException ex)
+            {
+                throw new TileNotFoundException(
+                    "The requested tile was not found",
+                    ex
+                );
+            }
+
         }
 
         public List<string> GetFormats()
         {
-            return this._formats;
+            return new List<string>(this._formats);
         }
 
         public List<VectorLayerMetadata> GetVectorTileMetadata()
         {
-            return new List<VectorLayerMetadata>();
+            List<VectorLayerMetadata> vl = new List<VectorLayerMetadata>();
+            if (this._vectorLayers != null)
+                vl.AddRange(this._vectorLayers);
+            return vl;
         }
     }
 }

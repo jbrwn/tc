@@ -12,6 +12,9 @@ namespace TileCook
         public TileNotFoundException(string message)
             : base(message) { }
 
+        public TileNotFoundException(string message, Exception innerException)
+            : base(message, innerException) { }
+
         protected TileNotFoundException(SerializationInfo info, StreamingContext ctxt)
             : base(info, ctxt) { }
     }
