@@ -10,7 +10,6 @@ using Ionic.Zlib;
 
 namespace TileCook
 {
-    
     public class MapnikVectorTileProvider : IPassThoughProvider
     {
 
