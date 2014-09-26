@@ -36,6 +36,18 @@ namespace TileCook
                 return true;
             }
             return false;
-        } 
+        }
+
+        public bool intersects(Envelope other)
+        {
+            if (this._minx <= other.Maxx &&
+                this._maxx >= other.Minx &&
+                this._miny <= other.Maxy &&
+                this._maxy >= other.Miny)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

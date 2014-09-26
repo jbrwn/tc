@@ -11,8 +11,9 @@ namespace TileCook
         private ICache _cache;
         private IProvider _provider;
         private IGridSet _gridSet;
+        private ITileFilter _cacheFitler;
 
-        public Layer(string name, string title, IGridSet gridset,IProvider provider, ICache cache = null)
+        public Layer(string name, string title, IGridSet gridset,IProvider provider, ICache cache = null, ITileFilter cacheFilter = null)
         {
             // Set name
             if (string.IsNullOrEmpty(name))
@@ -34,6 +35,8 @@ namespace TileCook
             if (provider == null)
                 throw new ArgumentNullException("Layer Provider cannot be null");
             this._provider = provider;
+
+            this._cacheFitler = cacheFilter;
         }
 
         
@@ -49,7 +52,8 @@ namespace TileCook
             // throws TileOutOfRange exception
             Envelope tileEnvelope = this._gridSet.CoordToEnvelope(coord);
 
-            //TO DO: add filter
+            //TO DO: add filter?
+
 
             // Set coord y value
             // must align coord y value origin with gridset
@@ -82,7 +86,7 @@ namespace TileCook
                 }
                 
                 // Put tile in cache?
-                if (this.Cache != null)
+                if (this.Cache != null && this._cacheFitler.IsValid(coord.Z, tileEnvelope, format))
                 {
                     this.Cache.Put(coord, format, img);
                 }
