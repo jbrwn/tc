@@ -24,9 +24,9 @@ namespace TileCook
     {
         public readonly IEnumerable<Envelope> _extents;
         public readonly IEnumerable<string> _formats;
-        public readonly IEnumerable<ZoomRange> _zLevels;
+        public readonly IEnumerable<Tuple<int,int>> _zLevels;
 
-        public TileFilter(IEnumerable<Envelope> extents, IEnumerable<string> formats, IEnumerable<ZoomRange> zLevels)
+        public TileFilter(IEnumerable<Envelope> extents, IEnumerable<string> formats, IEnumerable<Tuple<int,int>> zLevels)
         {
             this._extents = extents;
             this._formats = formats;
@@ -68,9 +68,9 @@ namespace TileCook
             if (this._zLevels == null)
                 return true;
         
-            foreach(ZoomRange range in this._zLevels)
+            foreach(Tuple<int,int> range in this._zLevels)
             {
-                if (Z >= range.MinZoom && Z <= range.MaxZoom)
+                if (Z >= range.Item1 && Z <= range.Item2)
                     return true;
             }
 

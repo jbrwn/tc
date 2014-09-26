@@ -31,7 +31,7 @@ namespace TileCook.Models
                             this._LayerMap.Map(obj.TileSource)
                         );
                     case "proxy":
-                        return new ProxyProvider(obj.UrlTemplate);
+                        return new ProxyProvider(obj.UrlTemplate, obj.Format);
                     case "test":
                         return new TestProvider();
                     case "wms":

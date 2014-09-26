@@ -24,7 +24,7 @@ namespace TileCook.Models
                     case "mapnik":
                         return new MapnikProvider(this._pathResolver.ResolvePath(obj.XmlConfig));
                     case "proxy":
-                        return new ProxyProvider(obj.UrlTemplate);
+                        return new ProxyProvider(obj.UrlTemplate, obj.Format);
                 }
             }
             return null;

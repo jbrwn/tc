@@ -21,5 +21,7 @@ namespace TileCook.Models
         public ProviderConfig Provider { get; set; }
         [DataMember]
         public GridSetConfig Gridset { get; set; }
+        [DataMember]
+        public FilterConfig CacheFilter { get; set; }
     }
 }

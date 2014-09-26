@@ -44,6 +44,8 @@
     <Compile Include="CacheMap.cs" />
     <Compile Include="EnvelopeConfig.cs" />
     <Compile Include="EnvelopeMap.cs" />
+    <Compile Include="FilterConfig.cs" />
+    <Compile Include="FilterMap.cs" />
     <Compile Include="GridSetConfig.cs" />
     <Compile Include="GridSetMap.cs" />
     <Compile Include="ILayerRepository.cs" />

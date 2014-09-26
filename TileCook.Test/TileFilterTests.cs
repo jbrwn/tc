@@ -80,7 +80,7 @@ namespace TileCook.Test
             TileFilter f = new TileFilter(
                 null,
                 null,
-                new List<ZoomRange>() { new ZoomRange(0,5), new ZoomRange(9,15)}
+                new List<Tuple<int,int>>() { new Tuple<int,int>(0,5), new Tuple<int,int>(9,15)}
             );
 
             Assert.IsTrue(f.IsZValid(11));
@@ -92,7 +92,7 @@ namespace TileCook.Test
             TileFilter f = new TileFilter(
                 null,
                 null,
-                new List<ZoomRange>() { new ZoomRange(0, 5), new ZoomRange(9, 15) }
+                new List<Tuple<int, int>>() { new Tuple<int, int>(0, 5), new Tuple<int, int>(9, 15) }
             );
 
             Assert.IsFalse(f.IsZValid(6));
